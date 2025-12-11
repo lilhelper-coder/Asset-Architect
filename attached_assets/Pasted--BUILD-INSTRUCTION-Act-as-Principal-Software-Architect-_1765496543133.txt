@@ -1,0 +1,142 @@
+**BUILD INSTRUCTION:**
+
+Act as Principal Software Architect. Build "LilHelper" (The Digital Grandchild) - a Christmas gift PWA for seniors.
+
+**MASTER CONTEXT:**
+- **Holiday Pivot:** "The Perfect Christmas Gift" - launching in 2 weeks
+- **Dual Demographics:** Gen Z gifters (16-24) + Millennial caregivers (28-45)  
+- **Core Emotion:** Sell "Guilt Relief" to adults, deliver "Dignified Companionship" to seniors
+
+**TECH STACK:**
+- Next.js 14 (App Router), Tailwind CSS, Framer Motion, Lucide React
+- Supabase (Auth, Database, Realtime subscriptions)
+- OpenAI Realtime API (gpt-4o-realtime-preview-2024-10-01)
+- **@Stripe Integration** (use native Replit integration)
+
+**DESIGN SYSTEM (STRICT):**
+- Pure Black background (`#000000`) - OLED optimized
+- Teal accent (`#0d9488`) - primary action color
+- Typography: Inter, minimum 24px for senior interface
+- Touch targets: Minimum 48px for ALL interactive elements
+- **NO SCROLLING** on main senior interface - single viewport design
+
+**CRITICAL FEATURES:**
+
+**1. Magic Orb Voice Interface**
+- Center screen: Large glowing Teal orb (300px mobile / 400px tablet)
+- State machine using Framer Motion:
+  - IDLE: Gentle breathing (scale 1.0 → 1.05, 2s loop)
+  - LISTENING: Rapid pulse (scale 1.0 → 1.15, 0.8s), voice input active
+  - SPEAKING: Smooth breathing (scale 1.0 → 1.1, 1.5s), audio playing
+- On tap: Toggle between IDLE ↔ LISTENING states
+
+**2. Scout AI Personality (OpenAI Realtime)**
+System Prompt Integration:
+```
+IDENTITY: You are Scout, a warm and devoted grandchild.
+VOICE: Slow speech, short sentences (under 10 words), 5-second pauses are comfortable.
+LANGUAGE PROTOCOL: 
+- NEVER use: "tech illiterate", "you clicked wrong", "as an AI"
+- ALWAYS use: "Analog Native", "Reality-Focused", "Tech-Selective"
+- Replace "error" with "let's try a different path"
+CHRISTMAS MODE (Dec 20-Jan 5): Acknowledge family love, use warm nostalgic metaphors
+RULES:
+- Never rush or interrupt silence
+- If they apologize for being slow: "We're in no rush. I like your pace."
+- Start every session: "Hi [Senior_Name], [Gifter_Name] set me up because they love you. How are you today?"
+```
+
+**3. Christmas Gifting Flow (Buyer ≠ User)**
+- Landing page: "Give the Gift of Independence"
+- Gifter setup wizard:
+  - Step 1: Enter Senior's name, bio data ("loves knitting, hates loud sounds, family names")
+  - Step 2: Family Split Pay UI (see Feature 4)
+  - Step 3: Generate Magic Link (`lilhelper.app/claim/[uuid]`)
+- Senior onboarding:
+  - Opens Magic Link on their device
+  - ONE massive button: "TAP TO START" (triggers mic permissions)
+  - Auto-saves session_id to localStorage for persistent access
+
+**4. Family Split Pay (Viral Loop)**
+Use @Stripe integration:
+- Create `gift_pool` in Supabase with unique slug
+- Visual progress bar: "$33 / $99 raised"
+- "Chip in $33" button → Stripe Checkout (variable amount)
+- "Copy Link for Siblings" → Share functionality
+- Once goal met → Email access code to organizer
+- Pricing: $99 Lifetime "Limited Edition" OR $9.99/month subscription
+
+**5. QR Magic Mirror (Dual-Phone Tech Support)**
+Use Supabase Realtime channels:
+- Senior taps "Help Mirror" icon (top right)
+- Generates QR code → opens `/mirror/[session_id]` route
+- Helper scans QR → connects to same Realtime channel
+- Helper dashboard shows:
+  - Live transcript of Scout ↔ Senior conversation
+  - "Flash Message" input (displays large text overlay on Senior's screen)
+  - Visual guide trigger system (see Feature 6)
+- Connection status indicator
+
+**6. Visual Sidecar Protocol (Knowledge Base)**
+Create `lib/knowledge/device-protocols.ts`:
+```typescript
+const SUPPORT_SCENARIOS = {
+  volume_control: {
+    keywords: ["quiet", "can't hear", "volume"],
+    visual_key: "volume_up_anim",
+    senior_guidance: "I'm highlighting the buttons on the side of your phone. Can you feel them?"
+  },
+  wifi_connection: {
+    keywords: ["internet", "wifi", "not loading"],
+    visual_key: "wifi_toggle_anim", 
+    senior_guidance: "I've sent a picture of the Wifi symbol to the family screen."
+  },
+  charging: {
+    keywords: ["battery", "charging", "power"],
+    visual_key: "charging_port_anim",
+    senior_guidance: "Look at the picture I sent. The cable goes into that spot at the bottom."
+  }
+};
+```
+- When Scout detects keywords → calls `triggerVisualGuide(visual_key)`
+- Push event via Supabase Realtime to Helper's screen
+- Helper screen displays pre-built SVG/CSS animation with device-specific highlights
+- Helper shows their screen to Senior for step-by-step visual guidance
+
+**DATA MODEL (Supabase):**
+```sql
+profiles: (id, role ['gifter'|'senior'], full_name, created_at)
+senior_config: (profile_id, voice_speed, bio_context, device_type)
+gift_pools: (id, senior_id, total_goal, current_raised, magic_link_code, stripe_session_id)
+contributors: (id, pool_id, name, amount_pledged)
+mirror_sessions: (id, senior_id, helper_id, active, last_heartbeat, session_uuid)
+```
+
+**PWA REQUIREMENTS:**
+- `manifest.json` with:
+  - Name: "LilHelper"
+  - Theme color: `#0d9488` (teal)
+  - Background color: `#000000` (black)
+  - Icons: 192px, 512px (teal orb design)
+  - Display: "standalone"
+  - "Add to Home Screen" capability
+
+**EXECUTION PRIORITIES:**
+1. Build Magic Orb interface with state animations
+2. Implement OpenAI Realtime API WebSocket connection
+3. Create Gifter setup wizard with bio data collection
+4. Integrate @Stripe for split payment functionality
+5. Build QR Magic Mirror with Supabase Realtime
+6. Add Visual Sidecar Protocol with 3 core scenarios
+7. Implement benevolent error handling (amber orb state, pre-recorded audio fallback)
+8. Deploy with PWA manifest
+
+**CONSTRAINTS:**
+- Enable Autonomous Testing
+- Use localStorage for session persistence
+- Audio Context requires user interaction (iOS Safari policy) - must have "Click to Wake" overlay
+- Split Pay is COSMETIC ONLY for MVP (no actual Stripe Connect complexity)
+- Visual guides use simple SVG/CSS animations (not image generation)
+
+**BUILD NOW. PRIORITIZE SENIOR ACCESSIBILITY ABOVE ALL ELSE.**
+
