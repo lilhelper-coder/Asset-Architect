@@ -3,9 +3,11 @@ import { LivingOrb } from "@/components/LivingOrb";
 import { useVoiceConnection } from "@/hooks/useVoiceConnection";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
+import { SignInModal } from "@/components/SignInModal";
 
 export default function SeniorInterface() {
   const [hasInteracted, setHasInteracted] = useState(false);
+  const [isSignInOpen, setIsSignInOpen] = useState(false);
   const [seniorConfig, setSeniorConfig] = useState<{
     seniorName: string;
     gifterName: string;
@@ -76,15 +78,17 @@ export default function SeniorInterface() {
           className="mt-20 text-center max-w-xs"
           style={{ 
             fontSize: "14px",
-            color: "#a1a1aa",
-            letterSpacing: "0.02em",
+            color: "rgba(13, 148, 136, 0.6)",
+            letterSpacing: "0.03em",
+            fontFamily: "'Poppins', sans-serif",
+            fontWeight: 300,
           }}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.8, duration: 1 }}
           data-testid="tagline"
         >
-          Your all-knowing companion for tech & life
+          Your Lil' Helper for Tech & Life
         </motion.p>
       </div>
 
@@ -104,11 +108,17 @@ export default function SeniorInterface() {
             fontSize: "16px",
             minHeight: "44px",
           }}
+          onClick={() => setIsSignInOpen(true)}
           data-testid="button-enter"
         >
           Begin
         </Button>
       </motion.div>
+
+      <SignInModal 
+        isOpen={isSignInOpen} 
+        onClose={() => setIsSignInOpen(false)} 
+      />
     </div>
   );
 }
