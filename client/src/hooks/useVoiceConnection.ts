@@ -15,10 +15,46 @@ interface VoiceConnectionState {
   transcript: Array<{ role: "user" | "assistant"; text: string }>;
 }
 
+interface SpeechRecognitionEvent extends Event {
+  results: SpeechRecognitionResultList;
+}
+
+interface SpeechRecognitionResultList {
+  readonly length: number;
+  item(index: number): SpeechRecognitionResult;
+  [index: number]: SpeechRecognitionResult;
+}
+
+interface SpeechRecognitionResult {
+  readonly length: number;
+  item(index: number): SpeechRecognitionAlternative;
+  [index: number]: SpeechRecognitionAlternative;
+}
+
+interface SpeechRecognitionAlternative {
+  readonly transcript: string;
+  readonly confidence: number;
+}
+
+interface SpeechRecognitionErrorEvent extends Event {
+  readonly error: string;
+}
+
+interface SpeechRecognition extends EventTarget {
+  continuous: boolean;
+  interimResults: boolean;
+  lang: string;
+  start(): void;
+  stop(): void;
+  onresult: ((event: SpeechRecognitionEvent) => void) | null;
+  onerror: ((event: SpeechRecognitionErrorEvent) => void) | null;
+  onend: (() => void) | null;
+}
+
 declare global {
   interface Window {
-    webkitSpeechRecognition: typeof SpeechRecognition;
-    SpeechRecognition: typeof SpeechRecognition;
+    SpeechRecognition: new () => SpeechRecognition;
+    webkitSpeechRecognition: new () => SpeechRecognition;
   }
 }
 
@@ -172,8 +208,18 @@ export function useVoiceConnection(options: VoiceConnectionOptions = {}) {
       
       recognitionRef.current = recognition;
       
-      const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
-      const wsUrl = `${protocol}//${window.location.host}/api/voice`;
+      // Use environment variable for API URL if set (for split deployment)
+      const apiBaseUrl = (import.meta as any).env?.VITE_API_BASE_URL;
+      let wsUrl: string;
+      
+      if (apiBaseUrl) {
+        // Production: use separate backend URL
+        wsUrl = apiBaseUrl.replace(/^http/, 'ws') + '/api/voice';
+      } else {
+        // Development: use same origin
+        const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
+        wsUrl = `${protocol}//${window.location.host}/api/voice`;
+      }
       
       wsRef.current = new WebSocket(wsUrl);
 
@@ -233,7 +279,7 @@ export function useVoiceConnection(options: VoiceConnectionOptions = {}) {
         }
       };
 
-      recognition.onresult = (event) => {
+      recognition.onresult = (event: SpeechRecognitionEvent) => {
         const transcript = event.results[0][0].transcript;
         
         if (transcript && wsRef.current?.readyState === WebSocket.OPEN) {
@@ -252,7 +298,7 @@ export function useVoiceConnection(options: VoiceConnectionOptions = {}) {
         }
       };
 
-      recognition.onerror = (event) => {
+      recognition.onerror = (event: SpeechRecognitionErrorEvent) => {
         console.log("Speech recognition error:", event.error);
         if (event.error === "no-speech") {
           setTimeout(() => {
