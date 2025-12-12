@@ -4,8 +4,8 @@
   "type": "module",
   "scripts": {
     "dev": "cross-env NODE_ENV=development npx tsx watch server/index.ts",
-    "start": "cross-env NODE_ENV=production node dist/index.js",
-    "build": "npx tsc",
+    "start": "cross-env NODE_ENV=production npx tsx server/index.ts",
+    "build": "npx vite build",
     "check": "npx tsc --noEmit",
     "sanity": "cross-env NODE_ENV=test npx tsx test-server.ts",
     "clean": "npx rimraf dist node_modules package-lock.json"
