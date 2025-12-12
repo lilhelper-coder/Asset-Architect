@@ -20,7 +20,8 @@ Preferred communication style: Simple, everyday language.
 - **State Management:** TanStack Query (React Query) for server state, AccessibilityContext for global a11y settings
 - **Styling:** Tailwind CSS with shadcn/ui component library
 - **Animations:** Framer Motion for the Magic Orb voice interface
-- **Design System:** OLED-optimized dark theme with pure black (#000000) background, teal (#0d9488) accent, minimum 24px typography for senior accessibility
+- **Design System:** Premium OLED-optimized dark theme with pure black (#000000) background, turquoise color family (rgb(94, 234, 212) accent), Poppins font family, minimum 24px typography for senior accessibility
+- **Design Benchmarks:** DoorDash, Bumble/Hinge, Apple product pages - clean, minimal, premium aesthetics
 - **Accessibility:** WCAG 2.1 AAA compliant with high contrast mode, reduced motion, customizable captions
 
 ### Backend Architecture
@@ -69,10 +70,12 @@ Preferred communication style: Simple, everyday language.
   - Camera toggle, microphone toggle, end session
   - Integrates with GhostTouchCanvas
 
-### Commerce Features (New)
-- **ChristmasPricing:** Holiday pricing card component
+### Commerce Features
+- **ChristmasPricing:** Premium pricing card component
   - Lifetime Edition: $99 (crossed out $199)
   - "Split with Family" feature for group gifting
+  - Turquoise/teal glassmorphism styling
+  - Christmas decorations (Santa hat, holiday badge) preserved for ads/social media campaigns only
   - Up to 5 contributors with individual thank-you messages
 
 ### Living Orb Component
