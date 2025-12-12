@@ -43,9 +43,9 @@
   --chart-3: 150 60% 32%;
   --chart-4: 186 75% 28%;
   --chart-5: 162 68% 30%;
-  --font-sans: Inter, sans-serif;
-  --font-serif: Georgia, serif;
-  --font-mono: Menlo, monospace;
+  --font-sans: 'Poppins', system-ui, sans-serif;
+  --font-serif: 'Poppins', Georgia, serif;
+  --font-mono: 'Fira Code', Menlo, monospace;
   --amber: 38 92% 50%;
   --amber-foreground: 0 0% 100%;
   --radius: .5rem;

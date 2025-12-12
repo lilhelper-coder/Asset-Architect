@@ -47,13 +47,21 @@ export function A11yToolbar() {
   return (
     <>
       <button
-        className="fixed bottom-6 right-6 z-40 rounded-full shadow-lg border border-teal-600/40 bg-black/80 hover:bg-black hover:border-teal-500 transition-colors flex items-center justify-center focus:outline-none focus-visible:ring-4 focus-visible:ring-teal-500/50"
-        style={{ width: "64px", height: "64px", minWidth: "64px", minHeight: "64px" }}
+        className="fixed bottom-6 right-6 z-40 transition-colors flex items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
+        style={{ 
+          width: "64px", 
+          height: "64px", 
+          minWidth: "64px", 
+          minHeight: "64px",
+          color: "rgba(94, 234, 212, 0.6)",
+        }}
+        onMouseEnter={(e) => e.currentTarget.style.color = "rgba(94, 234, 212, 1)"}
+        onMouseLeave={(e) => e.currentTarget.style.color = "rgba(94, 234, 212, 0.6)"}
         onClick={() => setIsOpen(true)}
         aria-label="Open accessibility settings"
         data-testid="button-a11y-toolbar"
       >
-        <Settings className="w-7 h-7 text-teal-500" />
+        <Settings className="w-7 h-7" />
       </button>
 
       <AnimatePresence>

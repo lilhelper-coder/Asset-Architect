@@ -92,7 +92,7 @@ export default function SeniorInterface() {
         style={{ paddingTop: "18vh" }}
         aria-label="Crystal Voice Assistant"
       >
-        <div className="absolute top-6 right-6 flex items-center gap-3 z-20">
+        <div className="absolute top-6 right-6 flex items-center gap-4 z-20">
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -101,16 +101,19 @@ export default function SeniorInterface() {
             <LanguagePicker />
           </motion.div>
           <motion.button
-            className="text-zinc-500/50 hover:text-zinc-400 transition-colors"
+            className="transition-colors"
             style={{
-              fontSize: "14px",
-              fontFamily: "Inter, system-ui, sans-serif",
+              fontSize: "15px",
+              fontFamily: "'Poppins', system-ui, sans-serif",
               fontWeight: 400,
+              color: "rgba(94, 234, 212, 0.6)",
             }}
             onClick={() => setIsSignInOpen(true)}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 1.5, duration: 0.8 }}
+            onMouseEnter={(e) => e.currentTarget.style.color = "rgba(94, 234, 212, 0.9)"}
+            onMouseLeave={(e) => e.currentTarget.style.color = "rgba(94, 234, 212, 0.6)"}
             aria-label="Sign in or sign up"
             data-testid="button-enter"
           >

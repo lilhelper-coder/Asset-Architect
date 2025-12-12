@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Globe, Check } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { useLanguage, LANGUAGES, type SupportedLanguage } from "@/context/language-context";
 
 export function LanguagePicker() {
@@ -13,16 +12,17 @@ export function LanguagePicker() {
 
   return (
     <div className="relative">
-      <Button
-        variant="ghost"
-        size="icon"
+      <button
         onClick={() => setIsOpen(!isOpen)}
-        className="text-zinc-400 hover:text-zinc-200"
+        className="p-2 transition-colors"
+        style={{ color: "rgba(94, 234, 212, 0.7)" }}
+        onMouseEnter={(e) => e.currentTarget.style.color = "rgba(94, 234, 212, 1)"}
+        onMouseLeave={(e) => e.currentTarget.style.color = "rgba(94, 234, 212, 0.7)"}
         aria-label={`Current language: ${currentLang.name}. Click to change.`}
         data-testid="button-language-picker"
       >
         <Globe className="w-5 h-5" />
-      </Button>
+      </button>
 
       <AnimatePresence>
         {isOpen && (
