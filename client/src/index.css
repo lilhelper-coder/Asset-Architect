@@ -295,37 +295,38 @@
 
 .living-orb-container {
   --orb-hue: 175;
-  --orb-saturation: 100%;
-  --orb-lightness: 45%;
+  --orb-saturation: 85%;
+  --orb-lightness: 35%;
   --orb-core-color: hsl(var(--orb-hue), var(--orb-saturation), var(--orb-lightness));
-  --orb-glow-color: hsla(var(--orb-hue), var(--orb-saturation), 55%, 0.5);
-  --orb-ring-color: hsla(var(--orb-hue), 90%, 65%, 0.7);
-  --orb-highlight-color: hsla(var(--orb-hue), 100%, 85%, 0.4);
-  --orb-status-color: hsl(var(--orb-hue), 80%, 75%);
+  --orb-glow-color: hsla(var(--orb-hue), var(--orb-saturation), 30%, 0.4);
+  --orb-ring-color: hsla(var(--orb-hue), 80%, 45%, 0.6);
+  --orb-highlight-color: hsla(var(--orb-hue), 70%, 60%, 0.25);
+  --orb-status-color: hsl(var(--orb-hue), 70%, 55%);
   transition: --orb-hue 0.8s ease-out, --orb-saturation 0.8s ease-out;
 }
 
 .living-orb-container.state-idle {
   --orb-hue: 175;
-  --orb-saturation: 100%;
+  --orb-saturation: 85%;
+  --orb-lightness: 35%;
 }
 
 .living-orb-container.state-listening {
   --orb-hue: 175;
-  --orb-saturation: 100%;
-  --orb-lightness: 50%;
+  --orb-saturation: 90%;
+  --orb-lightness: 40%;
 }
 
 .living-orb-container.state-speaking {
   --orb-hue: 155;
-  --orb-saturation: 100%;
-  --orb-lightness: 42%;
+  --orb-saturation: 85%;
+  --orb-lightness: 32%;
 }
 
 .living-orb-container.state-error {
   --orb-hue: 38;
-  --orb-saturation: 92%;
-  --orb-lightness: 50%;
+  --orb-saturation: 80%;
+  --orb-lightness: 40%;
 }
 
 .living-orb-wrapper {
@@ -355,31 +356,31 @@
   border-radius: 50%;
   background: radial-gradient(
     circle,
-    var(--orb-glow-color) 0%,
-    hsla(var(--orb-hue), var(--orb-saturation), 40%, 0.2) 40%,
+    hsla(var(--orb-hue), var(--orb-saturation), 25%, 0.35) 0%,
+    hsla(var(--orb-hue), var(--orb-saturation), 20%, 0.15) 40%,
     transparent 70%
   );
-  filter: blur(40px);
+  filter: blur(50px);
   pointer-events: none;
   animation: ambient-pulse 8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
 }
 
 @keyframes ambient-pulse {
   0%, 100% {
-    opacity: 0.4;
+    opacity: 0.3;
     transform: scale(0.95);
   }
   15% {
-    opacity: 0.7;
-    transform: scale(1.05);
+    opacity: 0.5;
+    transform: scale(1.03);
   }
   30% {
-    opacity: 0.55;
-    transform: scale(1.02);
+    opacity: 0.4;
+    transform: scale(1.01);
   }
   50% {
-    opacity: 0.8;
-    transform: scale(1.08);
+    opacity: 0.55;
+    transform: scale(1.05);
   }
 }
 
@@ -411,28 +412,28 @@
   border-radius: 50%;
   background: radial-gradient(
     circle at 35% 30%,
-    var(--orb-highlight-color) 0%,
-    var(--orb-core-color) 30%,
-    hsla(var(--orb-hue), var(--orb-saturation), 25%, 1) 70%,
-    hsla(var(--orb-hue), var(--orb-saturation), 15%, 1) 100%
+    hsla(var(--orb-hue), 85%, 40%, 1) 0%,
+    hsla(var(--orb-hue), 75%, 25%, 1) 35%,
+    hsla(var(--orb-hue), 60%, 15%, 1) 70%,
+    hsla(var(--orb-hue), 50%, 8%, 1) 100%
   );
   box-shadow:
-    0 0 60px var(--orb-glow-color),
-    0 0 120px hsla(var(--orb-hue), var(--orb-saturation), 50%, 0.3),
-    inset 0 0 60px hsla(0, 0%, 100%, 0.1),
-    inset -15px -15px 40px hsla(0, 0%, 0%, 0.4);
+    0 0 40px var(--orb-glow-color),
+    0 0 80px hsla(var(--orb-hue), var(--orb-saturation), 25%, 0.2),
+    inset 0 0 40px hsla(0, 0%, 100%, 0.05),
+    inset -20px -20px 50px hsla(0, 0%, 0%, 0.6);
 }
 
 .orb-highlight {
   position: absolute;
   top: 12%;
   left: 18%;
-  width: 25%;
-  height: 15%;
+  width: 22%;
+  height: 12%;
   border-radius: 50%;
   background: radial-gradient(
     ellipse,
-    hsla(0, 0%, 100%, 0.6) 0%,
+    hsla(0, 0%, 100%, 0.35) 0%,
     transparent 70%
   );
   transform: rotate(-25deg);
