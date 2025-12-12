@@ -2,7 +2,7 @@
 
 ## Overview
 
-LilHelper is a Progressive Web App (PWA) designed as a Christmas gift for seniors. It provides voice-based AI companionship through "Scout," a warm digital grandchild personality. The app features a dual-demographic model: Gen Z/Millennial gifters purchase and configure the service for their senior loved ones.
+LilHelper is a Progressive Web App (PWA) designed as a Christmas gift for seniors. It provides voice-based AI companionship through "Crystal," an all-knowing companion for tech and life guidance with a mystical, wise personality. The app features a dual-demographic model: Gen Z/Millennial gifters purchase and configure the service for their senior loved ones.
 
 **Core Value Proposition:**
 - For gifters: "Guilt Relief" - an easy way to provide companionship for elderly family members

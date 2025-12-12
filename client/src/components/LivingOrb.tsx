@@ -7,6 +7,7 @@ interface LivingOrbProps {
   state: OrbState;
   onTap: () => void;
   disabled?: boolean;
+  showHint?: boolean;
 }
 
 const stateToClass: Record<OrbState, string> = {
@@ -16,7 +17,7 @@ const stateToClass: Record<OrbState, string> = {
   error: "state-error",
 };
 
-export function LivingOrb({ state, onTap, disabled = false }: LivingOrbProps) {
+export function LivingOrb({ state, onTap, disabled = false, showHint = false }: LivingOrbProps) {
   const shouldReduceMotion = useReducedMotion();
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -117,38 +118,50 @@ export function LivingOrb({ state, onTap, disabled = false }: LivingOrbProps) {
               transition={{ delay: 0.3 }}
             >
               <span className="orb-error-text">
-                Just resting...
+                Just a moment...
               </span>
             </motion.div>
           )}
         </div>
       </motion.button>
 
-      <div className="orb-status-container">
+      {showHint && state === "idle" && (
         <motion.p
-          key={state}
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="orb-status-text"
-          data-testid="orb-status-text"
+          className="orb-hint-text"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1 }}
+          data-testid="orb-hint-text"
         >
-          {getStatusText(state)}
+          touch to speak
         </motion.p>
-      </div>
+      )}
+
+      {state !== "idle" && (
+        <div className="orb-status-container">
+          <motion.p
+            key={state}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="orb-status-text"
+            data-testid="orb-status-text"
+          >
+            {getStatusText(state)}
+          </motion.p>
+        </div>
+      )}
     </div>
   );
 }
 
 function getStatusText(state: OrbState): string {
   switch (state) {
-    case "idle":
-      return "Tap to talk";
     case "listening":
-      return "I'm listening...";
+      return "Listening...";
     case "speaking":
-      return "Scout is speaking";
+      return "Speaking";
     case "error":
-      return "Just a moment...";
+      return "One moment...";
     default:
       return "";
   }
@@ -157,14 +170,14 @@ function getStatusText(state: OrbState): string {
 function getAriaLabel(state: OrbState): string {
   switch (state) {
     case "idle":
-      return "Tap to start talking with Scout";
+      return "Touch to speak with Crystal";
     case "listening":
-      return "Scout is listening. Tap to stop.";
+      return "Crystal is listening. Touch to stop.";
     case "speaking":
-      return "Scout is speaking. Tap to interrupt.";
+      return "Crystal is speaking. Touch to interrupt.";
     case "error":
-      return "Connection paused. Scout is resting. Tap to try again.";
+      return "Connection paused. Crystal is resting. Touch to try again.";
     default:
-      return "Scout companion";
+      return "Crystal companion";
   }
 }

@@ -223,13 +223,13 @@ export function MagicOrb({ state, onTap, disabled = false }: MagicOrbProps) {
 function getStatusText(state: OrbState): string {
   switch (state) {
     case "idle":
-      return "Tap to talk";
+      return "";
     case "listening":
-      return "I'm listening...";
+      return "Listening...";
     case "speaking":
-      return "Scout is speaking";
+      return "Speaking";
     case "error":
-      return "Just a moment...";
+      return "One moment...";
     default:
       return "";
   }
@@ -238,14 +238,14 @@ function getStatusText(state: OrbState): string {
 function getAriaLabel(state: OrbState): string {
   switch (state) {
     case "idle":
-      return "Tap to start talking with Scout";
+      return "Touch to speak with Crystal";
     case "listening":
-      return "Scout is listening. Tap to stop.";
+      return "Crystal is listening. Touch to stop.";
     case "speaking":
-      return "Scout is speaking. Tap to interrupt.";
+      return "Crystal is speaking. Touch to interrupt.";
     case "error":
-      return "Connection paused. Scout is resting. Tap to try again.";
+      return "Connection paused. Crystal is resting. Touch to try again.";
     default:
-      return "Scout companion";
+      return "Crystal companion";
   }
 }

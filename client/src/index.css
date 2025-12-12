@@ -469,10 +469,22 @@
 
 .orb-status-text {
   color: var(--orb-status-color);
-  font-size: clamp(22px, 5vw, 28px);
-  font-weight: 500;
-  min-height: 40px;
-  text-shadow: 0 0 20px hsla(var(--orb-hue), var(--orb-saturation), 60%, 0.4);
+  font-size: clamp(16px, 4vw, 20px);
+  font-weight: 400;
+  min-height: 32px;
+  text-shadow: 0 0 15px hsla(var(--orb-hue), var(--orb-saturation), 50%, 0.3);
+}
+
+.orb-hint-text {
+  position: absolute;
+  bottom: -50px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #71717a;
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
 }
 
 @media (prefers-reduced-motion: reduce) {

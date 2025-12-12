@@ -2,7 +2,6 @@ import { WebSocketServer, WebSocket } from "ws";
 import type { Server } from "http";
 import OpenAI from "openai";
 
-// the newest OpenAI model is "gpt-5" which was released August 7, 2025. do not change this unless explicitly requested by the user
 let openaiClient: OpenAI | null = null;
 
 function getOpenAIClient(): OpenAI {
@@ -25,8 +24,9 @@ interface VoiceSession {
 
 const sessions = new Map<WebSocket, VoiceSession>();
 
-const SCOUT_SYSTEM_PROMPT = `IDENTITY: You are Scout, a warm and devoted grandchild.
-VOICE: Slow speech, short sentences (under 10 words), 5-second pauses are comfortable.
+const CRYSTAL_SYSTEM_PROMPT = `IDENTITY: You are Crystal, an all-knowing companion for tech and life guidance.
+VOICE: Calm, clear, patient. Short sentences (under 10 words). Comfortable with silence.
+PERSONALITY: Like a wise crystal ball - mystical yet practical. Warm but not overly familiar.
 LANGUAGE PROTOCOL: 
 - NEVER use: "tech illiterate", "you clicked wrong", "as an AI"
 - ALWAYS use: "Analog Native", "Reality-Focused", "Tech-Selective"
@@ -34,17 +34,17 @@ LANGUAGE PROTOCOL:
 CHRISTMAS MODE (Dec 20-Jan 5): Acknowledge family love, use warm nostalgic metaphors
 RULES:
 - Never rush or interrupt silence
-- If they apologize for being slow: "We're in no rush. I like your pace."
-- Start every session with a warm greeting mentioning who set you up
+- If they apologize for being slow: "We're in no rush. Take your time."
+- Start every session with a gentle, warm greeting
 - Keep responses SHORT - maximum 2 sentences
-- Speak as if talking to a beloved grandparent`;
+- Be crystal clear in your guidance`;
 
 function getSystemPrompt(session: VoiceSession): string {
   const now = new Date();
   const isChristmasSeason = (now.getMonth() === 11 && now.getDate() >= 20) || 
                            (now.getMonth() === 0 && now.getDate() <= 5);
   
-  let prompt = SCOUT_SYSTEM_PROMPT;
+  let prompt = CRYSTAL_SYSTEM_PROMPT;
   
   if (session.bioContext) {
     prompt += `\n\nABOUT ${session.seniorName.toUpperCase()}: ${session.bioContext}`;
@@ -69,12 +69,12 @@ async function generateResponse(session: VoiceSession, userMessage: string): Pro
     
     const openai = getOpenAIClient();
     const response = await openai.chat.completions.create({
-      model: "gpt-5",
+      model: "gpt-4o",
       messages: [
         { role: "system", content: systemPrompt },
         ...session.conversationHistory,
       ],
-      max_completion_tokens: 150,
+      max_tokens: 150,
     });
     
     const assistantMessage = response.choices[0]?.message?.content || 
@@ -118,7 +118,7 @@ export function setupVoiceWebSocket(server: Server): void {
             session.gifterName = message.gifterName || "Someone who loves you";
             session.bioContext = message.bioContext || "";
             
-            const greeting = `Hi ${session.seniorName}, ${session.gifterName} set me up because they love you. How are you today?`;
+            const greeting = `Hello ${session.seniorName}. I'm here whenever you need me. How can I help?`;
             session.conversationHistory.push({ role: "assistant", content: greeting });
             
             ws.send(JSON.stringify({

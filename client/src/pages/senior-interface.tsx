@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { LivingOrb } from "@/components/LivingOrb";
 import { useVoiceConnection } from "@/hooks/useVoiceConnection";
-import { motion, AnimatePresence } from "framer-motion";
-import { QrCode, Settings } from "lucide-react";
+import { motion } from "framer-motion";
+import { Button } from "@/components/ui/button";
 
 export default function SeniorInterface() {
   const [hasInteracted, setHasInteracted] = useState(false);
@@ -39,13 +39,9 @@ export default function SeniorInterface() {
     bioContext: seniorConfig?.bioContext,
   });
 
-  const handleWakeUp = () => {
-    setHasInteracted(true);
-  };
-
   const handleOrbTap = () => {
     if (!hasInteracted) {
-      handleWakeUp();
+      setHasInteracted(true);
     }
     toggleConnection();
   };
@@ -54,125 +50,65 @@ export default function SeniorInterface() {
     <div 
       className="fixed inset-0 flex flex-col overflow-hidden"
       style={{ 
-        background: "radial-gradient(ellipse at 50% 30%, #0a1f24 0%, #000000 60%, #000000 100%)",
-        paddingTop: "env(safe-area-inset-top, 16px)",
-        paddingBottom: "env(safe-area-inset-bottom, 16px)",
-        paddingLeft: "env(safe-area-inset-left, 16px)",
-        paddingRight: "env(safe-area-inset-right, 16px)",
+        background: "radial-gradient(ellipse at 50% 30%, #0a1f24 0%, #050a0c 50%, #000000 100%)",
+        paddingTop: "env(safe-area-inset-top, 0px)",
+        paddingBottom: "env(safe-area-inset-bottom, 0px)",
+        paddingLeft: "env(safe-area-inset-left, 0px)",
+        paddingRight: "env(safe-area-inset-right, 0px)",
       }}
       data-testid="senior-interface"
     >
-      <AnimatePresence>
-        {!hasInteracted && (
-          <motion.div
-            className="fixed inset-0 z-50 flex flex-col items-center justify-center"
-            style={{ 
-              background: "radial-gradient(ellipse at 50% 40%, #0a1f24 0%, #000000 70%)",
-              padding: "24px",
-              paddingTop: "env(safe-area-inset-top, 24px)",
-              paddingBottom: "env(safe-area-inset-bottom, 24px)",
-            }}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            data-testid="wake-overlay"
-          >
-            <motion.div
-              className="relative flex flex-col items-center"
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ delay: 0.2 }}
-            >
-              <LivingOrb 
-                state="idle" 
-                onTap={handleWakeUp}
-                disabled={false}
-              />
-              
-              <motion.p
-                className="mt-16 text-center max-w-xs"
-                style={{ 
-                  fontSize: "24px",
-                  color: "rgba(255, 255, 255, 0.7)",
-                }}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.5 }}
-              >
-                Tap the orb to start talking with Scout
-              </motion.p>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      <div className="flex-1 flex flex-col items-center justify-center px-6">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 1.2, ease: "easeOut" }}
+        >
+          <LivingOrb 
+            state={orbState} 
+            onTap={handleOrbTap}
+            disabled={false}
+            showHint={!hasInteracted && orbState === "idle"}
+          />
+        </motion.div>
 
-      <div 
-        className="flex justify-between items-center z-40"
-        style={{ 
-          minHeight: "64px",
-          padding: "8px",
+        <motion.p
+          className="mt-20 text-center max-w-xs"
+          style={{ 
+            fontSize: "14px",
+            color: "#a1a1aa",
+            letterSpacing: "0.02em",
+          }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.8, duration: 1 }}
+          data-testid="tagline"
+        >
+          Your all-knowing companion for tech & life
+        </motion.p>
+      </div>
+
+      <motion.div 
+        className="flex justify-center pb-8"
+        style={{
+          paddingBottom: "calc(env(safe-area-inset-bottom, 24px) + 24px)",
         }}
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 1.2, duration: 0.8 }}
       >
-        <button
-          className="flex items-center justify-center rounded-md focus:outline-none focus-visible:ring-4 focus-visible:ring-teal-400/50"
-          style={{ 
-            minWidth: "64px", 
-            minHeight: "64px",
-            width: "64px",
-            height: "64px",
-            color: "#0d9488",
-            backgroundColor: "transparent",
+        <Button
+          variant="outline"
+          className="px-8 py-2 text-base rounded-full border-teal-600/50 text-teal-400 hover:border-teal-500 hover:text-teal-300 bg-transparent"
+          style={{
+            fontSize: "16px",
+            minHeight: "44px",
           }}
-          data-testid="button-help-mirror"
-          aria-label="Get help from family"
+          data-testid="button-enter"
         >
-          <QrCode className="w-8 h-8" />
-        </button>
-        
-        <button
-          className="flex items-center justify-center rounded-md focus:outline-none focus-visible:ring-4 focus-visible:ring-teal-400/50"
-          style={{ 
-            minWidth: "64px", 
-            minHeight: "64px",
-            width: "64px",
-            height: "64px",
-            color: "#0d9488",
-            backgroundColor: "transparent",
-          }}
-          data-testid="button-settings"
-          aria-label="Settings"
-        >
-          <Settings className="w-8 h-8" />
-        </button>
-      </div>
-
-      <div className="flex-1 flex items-center justify-center">
-        <LivingOrb 
-          state={orbState} 
-          onTap={handleOrbTap}
-          disabled={!hasInteracted}
-        />
-      </div>
-
-      <div 
-        className="flex justify-center items-center"
-        style={{ minHeight: "80px" }}
-      >
-        {seniorConfig?.seniorName && seniorConfig.seniorName !== "Friend" && (
-          <motion.p
-            className="text-center px-4"
-            style={{ 
-              fontSize: "20px",
-              color: "rgba(255, 255, 255, 0.5)",
-            }}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            data-testid="text-welcome"
-          >
-            Hi {seniorConfig.seniorName}, Scout is here for you
-          </motion.p>
-        )}
-      </div>
+          Begin
+        </Button>
+      </motion.div>
     </div>
   );
 }
