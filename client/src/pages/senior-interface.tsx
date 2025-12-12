@@ -60,7 +60,7 @@ export default function SeniorInterface() {
       }}
       data-testid="senior-interface"
     >
-      <div className="flex-1 flex flex-col items-center justify-center px-6">
+      <div className="flex-1 flex flex-col items-center px-6" style={{ paddingTop: "15vh" }}>
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -75,13 +75,15 @@ export default function SeniorInterface() {
         </motion.div>
 
         <motion.p
-          className="mt-20 text-center max-w-xs"
+          className="text-center max-w-sm"
           style={{ 
-            fontSize: "14px",
-            color: "rgba(13, 148, 136, 0.6)",
-            letterSpacing: "0.03em",
+            marginTop: "48px",
+            fontSize: "20px",
+            color: "rgba(13, 148, 136, 0.7)",
+            letterSpacing: "0.02em",
             fontFamily: "'Poppins', sans-serif",
             fontWeight: 300,
+            lineHeight: 1.4,
           }}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -90,30 +92,33 @@ export default function SeniorInterface() {
         >
           Your Lil' Helper for Tech & Life
         </motion.p>
+
+        <motion.div 
+          className="flex justify-center"
+          style={{ marginTop: "36px" }}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1.2, duration: 0.8 }}
+        >
+          <Button
+            variant="outline"
+            className="px-10 rounded-full border-teal-600/40 text-teal-500 hover:border-teal-500 hover:text-teal-400 bg-transparent"
+            style={{
+              fontSize: "17px",
+              fontFamily: "'Poppins', sans-serif",
+              fontWeight: 500,
+              letterSpacing: "0.04em",
+              minHeight: "48px",
+            }}
+            onClick={() => setIsSignInOpen(true)}
+            data-testid="button-enter"
+          >
+            begin
+          </Button>
+        </motion.div>
       </div>
 
-      <motion.div 
-        className="flex justify-center pb-8"
-        style={{
-          paddingBottom: "calc(env(safe-area-inset-bottom, 24px) + 24px)",
-        }}
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 1.2, duration: 0.8 }}
-      >
-        <Button
-          variant="outline"
-          className="px-8 py-2 text-base rounded-full border-teal-600/50 text-teal-400 hover:border-teal-500 hover:text-teal-300 bg-transparent"
-          style={{
-            fontSize: "16px",
-            minHeight: "44px",
-          }}
-          onClick={() => setIsSignInOpen(true)}
-          data-testid="button-enter"
-        >
-          Begin
-        </Button>
-      </motion.div>
+      <div style={{ height: "80px", flexShrink: 0 }} />
 
       <SignInModal 
         isOpen={isSignInOpen} 
