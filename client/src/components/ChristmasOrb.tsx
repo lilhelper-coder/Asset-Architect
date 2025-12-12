@@ -1,4 +1,3 @@
-import { useState, useEffect } from "react";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { LivingOrb, type OrbState } from "./LivingOrb";
 import { Sparkles } from "lucide-react";
@@ -19,14 +18,7 @@ export function ChristmasOrb({
   scrollY 
 }: ChristmasOrbProps) {
   const shouldReduceMotion = useReducedMotion();
-  const [showChristmas, setShowChristmas] = useState(false);
-
-  useEffect(() => {
-    const shouldShow = scrollY > 100;
-    if (shouldShow !== showChristmas) {
-      setShowChristmas(shouldShow);
-    }
-  }, [scrollY, showChristmas]);
+  const showChristmas = true;
 
   return (
     <div className="relative" data-testid="christmas-orb-wrapper">

@@ -305,14 +305,17 @@ export function GhostTouchCanvas({ enabled = false, roomId, showCameraOverlay = 
                 ? "bg-teal-600 hover:bg-teal-700"
                 : "border-zinc-600 text-zinc-300 hover:bg-zinc-800"
             }`}
-            aria-label={cameraEnabled ? "Turn off camera" : "Turn on camera"}
+            aria-label={cameraEnabled ? t.turnOffCamera : t.turnOnCamera}
+            aria-pressed={cameraEnabled}
+            role="switch"
             data-testid="button-toggle-camera"
           >
             {cameraEnabled ? (
-              <Video className="w-6 h-6" />
+              <Video className="w-6 h-6" aria-hidden="true" />
             ) : (
-              <VideoOff className="w-6 h-6" />
+              <VideoOff className="w-6 h-6" aria-hidden="true" />
             )}
+            <span className="sr-only">{cameraEnabled ? t.cameraOn : t.cameraOff}</span>
           </Button>
           {cameraError && (
             <p className="mt-2 text-xs text-red-400 text-center max-w-20">

@@ -77,6 +77,10 @@ interface Translations {
   faq: string;
   helperGuiding: string;
   helperHighlighting: string;
+  cameraOn: string;
+  cameraOff: string;
+  turnOnCamera: string;
+  turnOffCamera: string;
 }
 
 const translations: Record<SupportedLanguage, Translations> = {
@@ -97,6 +101,10 @@ const translations: Record<SupportedLanguage, Translations> = {
     faq: "Frequently Asked Questions",
     helperGuiding: "Helper is guiding you",
     helperHighlighting: "Helper is highlighting screen",
+    cameraOn: "Camera on",
+    cameraOff: "Camera off",
+    turnOnCamera: "Turn on camera",
+    turnOffCamera: "Turn off camera",
   },
   es: {
     touchToSpeak: "toca para hablar",
@@ -115,6 +123,10 @@ const translations: Record<SupportedLanguage, Translations> = {
     faq: "Preguntas frecuentes",
     helperGuiding: "Tu ayudante te esta guiando",
     helperHighlighting: "Tu ayudante esta senalando la pantalla",
+    cameraOn: "Camara encendida",
+    cameraOff: "Camara apagada",
+    turnOnCamera: "Encender camara",
+    turnOffCamera: "Apagar camara",
   },
   fr: {
     touchToSpeak: "touchez pour parler",
@@ -133,6 +145,10 @@ const translations: Record<SupportedLanguage, Translations> = {
     faq: "Questions frequentes",
     helperGuiding: "Votre assistant vous guide",
     helperHighlighting: "Votre assistant montre l'ecran",
+    cameraOn: "Camera allumee",
+    cameraOff: "Camera eteinte",
+    turnOnCamera: "Allumer la camera",
+    turnOffCamera: "Eteindre la camera",
   },
   de: {
     touchToSpeak: "beruhren zum Sprechen",
@@ -151,6 +167,10 @@ const translations: Record<SupportedLanguage, Translations> = {
     faq: "Haufig gestellte Fragen",
     helperGuiding: "Ihr Helfer fuhrt Sie",
     helperHighlighting: "Ihr Helfer zeigt auf den Bildschirm",
+    cameraOn: "Kamera an",
+    cameraOff: "Kamera aus",
+    turnOnCamera: "Kamera einschalten",
+    turnOffCamera: "Kamera ausschalten",
   },
   ar: {
     touchToSpeak: "المس للتحدث",
@@ -169,6 +189,10 @@ const translations: Record<SupportedLanguage, Translations> = {
     faq: "الأسئلة الشائعة",
     helperGuiding: "المساعد يرشدك",
     helperHighlighting: "المساعد يشير إلى الشاشة",
+    cameraOn: "الكاميرا مفتوحة",
+    cameraOff: "الكاميرا مغلقة",
+    turnOnCamera: "تشغيل الكاميرا",
+    turnOffCamera: "إيقاف الكاميرا",
   },
 };
 
