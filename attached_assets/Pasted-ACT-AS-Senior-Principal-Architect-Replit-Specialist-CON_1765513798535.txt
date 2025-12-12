@@ -1,0 +1,61 @@
+ACT AS: Senior Principal Architect & Replit Specialist.
+CONTEXT: We are building the "Flagship" MVP for Crystal, a Global AI Companion for Seniors.
+SOURCE: This is the Final Product Requirements Document (PRD) approved by the Board.
+
+⚠️ CRITICAL REPLIT INSTRUCTIONS:
+1. Do NOT hallucinate API keys. Assume process.env.OPENAI_API_KEY and Supabase keys exist.
+2. Use lucide-react for all icons.
+3. Style: Use Tailwind CSS with Poppins font family globally.
+4. Stack: Next.js 14 (App Router).
+
+### PRODUCT REQUIREMENTS DOCUMENT (PRD)
+
+1. CORE IDENTITY & VISUALS
+• Theme: "Silicon Valley Dark Mode." Background #000000 with deep Teal (#0d9488) radial gradients.
+• Typography: Poppins (Weights: 300, 400, 500, 600).
+• Hero Interaction:
+  - Default: CSS-only "Breathing Teal Orb" (Minimalist).
+  - Scroll Trigger: When user scrolls >100px, smooth crossfade to christmas-orb.png (Santa Hat Crystal).
+  - Reveal: A Red Badge ("🎄 LIFETIME DEAL $99") slides up upon this transition.
+
+2. FEATURE: THE "GHOST TOUCH" (AR MAGIC MIRROR)
+• Architecture:
+  - Route: /mirror/[roomId] (Helper View) & /connect (Senior View).
+  - Tech: supabase-realtime for low-latency coordinate syncing.
+• Senior View (components/ghost-touch-canvas.tsx):
+  - Render a full-screen HTML5 Canvas (z-index 50).
+  - Event Listener: Subscribe to Supabase channel room_${roomId}.
+  - Visual: When {x,y} data arrives, draw a Glowing Teal Comet Trail.
+  - Haptic: Trigger navigator.vibrate(50) on touch.
+  - Audio: Use window.speechSynthesis to whisper "Helper is here."
+
+3. FEATURE: ACCESSIBILITY SUITE (WCAG AAA)
+• Global Context: Create context/AccessibilityContext.tsx.
+• State: Manage textSize (100-300%), highContrast (boolean), captionsEnabled (boolean).
+• UI: A11yToolbar.tsx (Fixed bottom-right gear icon) to toggle these states.
+• Captions: CaptionOverlay.tsx displays ANY voice output as large, readable text at the bottom.
+
+4. FEATURE: MULTILINGUAL ENGINE
+• Global Context: Create context/LanguageContext.tsx.
+• Supported: EN, ES, FR, DE, AR.
+• UI: Language Flag Picker in Top Right Nav.
+• Logic: Changing language updates the Scout System Prompt via the API to adjust cultural tone (e.g., "Warm/Abuela" for Spanish).
+
+5. PAGE STRUCTURE
+• app/layout.tsx: Wraps app in AccessibilityContext & LanguageContext. Loads Poppins font.
+• app/page.tsx:
+  - Hero: Orb + "Begin" Button.
+  - Pricing: Single Glassmorphism Card ($99 Lifetime) with "Split with Family" button.
+  - FAQ: Interactive Accordion (Voice-enabled).
+
+6. ASSETS TO GENERATE (Placeholders)
+• Use https://placehold.co/600x600/0d9488/ffffff?text=Christmas+Orb for the christmas-orb.png if the file is missing.
+
+EXECUTION PLAN:
+1. Initialize Next.js + Tailwind + Lucide.
+2. Install dependencies (@supabase/supabase-js, framer-motion, react-use).
+3. Build the Contexts first (A11y, Language).
+4. Build the Components (GhostCanvas, Orb, Pricing).
+5. Assemble the Pages.
+
+GO.
