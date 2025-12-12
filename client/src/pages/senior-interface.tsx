@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { MagicOrb } from "@/components/MagicOrb";
+import { LivingOrb } from "@/components/LivingOrb";
 import { useVoiceConnection } from "@/hooks/useVoiceConnection";
 import { motion, AnimatePresence } from "framer-motion";
 import { QrCode, Settings } from "lucide-react";
@@ -52,8 +52,9 @@ export default function SeniorInterface() {
 
   return (
     <div 
-      className="fixed inset-0 bg-black flex flex-col overflow-hidden"
+      className="fixed inset-0 flex flex-col overflow-hidden"
       style={{ 
+        background: "radial-gradient(ellipse at 50% 30%, #0a1f24 0%, #000000 60%, #000000 100%)",
         paddingTop: "env(safe-area-inset-top, 16px)",
         paddingBottom: "env(safe-area-inset-bottom, 16px)",
         paddingLeft: "env(safe-area-inset-left, 16px)",
@@ -64,8 +65,9 @@ export default function SeniorInterface() {
       <AnimatePresence>
         {!hasInteracted && (
           <motion.div
-            className="fixed inset-0 bg-black z-50 flex flex-col items-center justify-center"
+            className="fixed inset-0 z-50 flex flex-col items-center justify-center"
             style={{ 
+              background: "radial-gradient(ellipse at 50% 40%, #0a1f24 0%, #000000 70%)",
               padding: "24px",
               paddingTop: "env(safe-area-inset-top, 24px)",
               paddingBottom: "env(safe-area-inset-bottom, 24px)",
@@ -75,30 +77,31 @@ export default function SeniorInterface() {
             exit={{ opacity: 0 }}
             data-testid="wake-overlay"
           >
-            <motion.button
-              onClick={handleWakeUp}
-              className="w-full max-w-md rounded-md font-semibold text-white focus:outline-none focus-visible:ring-4 focus-visible:ring-teal-400/50"
-              style={{ 
-                fontSize: "32px",
-                minHeight: "80px",
-                height: "80px",
-                backgroundColor: "#0d9488",
-              }}
-              whileTap={{ scale: 0.98 }}
-              data-testid="button-wake"
-              aria-label="Tap to start talking with Scout"
+            <motion.div
+              className="relative flex flex-col items-center"
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ delay: 0.2 }}
             >
-              TAP TO START
-            </motion.button>
-            <p 
-              className="mt-8 text-center"
-              style={{ 
-                fontSize: "24px",
-                color: "rgba(255, 255, 255, 0.7)",
-              }}
-            >
-              This allows Scout to hear you
-            </p>
+              <LivingOrb 
+                state="idle" 
+                onTap={handleWakeUp}
+                disabled={false}
+              />
+              
+              <motion.p
+                className="mt-16 text-center max-w-xs"
+                style={{ 
+                  fontSize: "24px",
+                  color: "rgba(255, 255, 255, 0.7)",
+                }}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.5 }}
+              >
+                Tap the orb to start talking with Scout
+              </motion.p>
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
@@ -144,7 +147,7 @@ export default function SeniorInterface() {
       </div>
 
       <div className="flex-1 flex items-center justify-center">
-        <MagicOrb 
+        <LivingOrb 
           state={orbState} 
           onTap={handleOrbTap}
           disabled={!hasInteracted}

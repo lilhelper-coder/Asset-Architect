@@ -288,3 +288,200 @@
     inset: -1px;
   }
 }
+
+/* =============================================================================
+   LIVING ORB - Dynamic Color Infrastructure
+   ============================================================================= */
+
+.living-orb-container {
+  --orb-hue: 175;
+  --orb-saturation: 100%;
+  --orb-lightness: 45%;
+  --orb-core-color: hsl(var(--orb-hue), var(--orb-saturation), var(--orb-lightness));
+  --orb-glow-color: hsla(var(--orb-hue), var(--orb-saturation), 55%, 0.5);
+  --orb-ring-color: hsla(var(--orb-hue), 90%, 65%, 0.7);
+  --orb-highlight-color: hsla(var(--orb-hue), 100%, 85%, 0.4);
+  --orb-status-color: hsl(var(--orb-hue), 80%, 75%);
+  transition: --orb-hue 0.8s ease-out, --orb-saturation 0.8s ease-out;
+}
+
+.living-orb-container.state-idle {
+  --orb-hue: 175;
+  --orb-saturation: 100%;
+}
+
+.living-orb-container.state-listening {
+  --orb-hue: 175;
+  --orb-saturation: 100%;
+  --orb-lightness: 50%;
+}
+
+.living-orb-container.state-speaking {
+  --orb-hue: 155;
+  --orb-saturation: 100%;
+  --orb-lightness: 42%;
+}
+
+.living-orb-container.state-error {
+  --orb-hue: 38;
+  --orb-saturation: 92%;
+  --orb-lightness: 50%;
+}
+
+.living-orb-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  padding: 0;
+}
+
+.living-orb-stage {
+  position: relative;
+  width: clamp(280px, 70vw, 400px);
+  height: clamp(280px, 70vw, 400px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.orb-ambient-glow {
+  position: absolute;
+  width: 130%;
+  height: 130%;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    var(--orb-glow-color) 0%,
+    hsla(var(--orb-hue), var(--orb-saturation), 40%, 0.2) 40%,
+    transparent 70%
+  );
+  filter: blur(40px);
+  pointer-events: none;
+  animation: ambient-pulse 8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+@keyframes ambient-pulse {
+  0%, 100% {
+    opacity: 0.4;
+    transform: scale(0.95);
+  }
+  15% {
+    opacity: 0.7;
+    transform: scale(1.05);
+  }
+  30% {
+    opacity: 0.55;
+    transform: scale(1.02);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.08);
+  }
+}
+
+.orb-ring-layer {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.orb-ring-svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.orb-core {
+  position: relative;
+  width: 70%;
+  height: 70%;
+  border-radius: 50%;
+  z-index: 2;
+}
+
+.orb-core-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 35% 30%,
+    var(--orb-highlight-color) 0%,
+    var(--orb-core-color) 30%,
+    hsla(var(--orb-hue), var(--orb-saturation), 25%, 1) 70%,
+    hsla(var(--orb-hue), var(--orb-saturation), 15%, 1) 100%
+  );
+  box-shadow:
+    0 0 60px var(--orb-glow-color),
+    0 0 120px hsla(var(--orb-hue), var(--orb-saturation), 50%, 0.3),
+    inset 0 0 60px hsla(0, 0%, 100%, 0.1),
+    inset -15px -15px 40px hsla(0, 0%, 0%, 0.4);
+}
+
+.orb-highlight {
+  position: absolute;
+  top: 12%;
+  left: 18%;
+  width: 25%;
+  height: 15%;
+  border-radius: 50%;
+  background: radial-gradient(
+    ellipse,
+    hsla(0, 0%, 100%, 0.6) 0%,
+    transparent 70%
+  );
+  transform: rotate(-25deg);
+}
+
+.orb-error-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background-color: rgba(0, 0, 0, 0.4);
+  z-index: 10;
+}
+
+.orb-error-text {
+  color: rgba(255, 255, 255, 0.9);
+  text-align: center;
+  padding: 0 2rem;
+  font-weight: 500;
+  font-size: clamp(18px, 4vw, 24px);
+}
+
+.orb-status-container {
+  position: absolute;
+  bottom: -70px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  text-align: center;
+}
+
+.orb-status-text {
+  color: var(--orb-status-color);
+  font-size: clamp(22px, 5vw, 28px);
+  font-weight: 500;
+  min-height: 40px;
+  text-shadow: 0 0 20px hsla(var(--orb-hue), var(--orb-saturation), 60%, 0.4);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .orb-ambient-glow {
+    animation: none;
+    opacity: 0.5;
+    transform: scale(1);
+  }
+  
+  .orb-ring-layer {
+    animation: none !important;
+  }
+}

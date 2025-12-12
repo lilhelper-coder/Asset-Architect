@@ -38,13 +38,29 @@ Preferred communication style: Simple, everyday language.
 - **AI Integration:** OpenAI API for Scout personality responses
 - **Voice Recognition:** Web Speech API (SpeechRecognition) for user input
 - **State Machine:** Four states - IDLE, LISTENING, SPEAKING, ERROR
-- **Visual Feedback:** Animated teal orb with state-specific breathing animations
+- **Visual Feedback:** Living Orb component with generative graphics
+
+### Living Orb Component
+- **Resolution-independent:** CSS/SVG-based, crisp at any DPR
+- **Dynamic colors:** CSS variables (--orb-hue, --orb-saturation) for state-based color shifts
+- **Layered structure:**
+  - Ambient glow layer with 8s breathing animation
+  - 3 SVG energy ring layers rotating at different speeds (20s, 35s, 50s)
+  - Central core with radial gradient and specular highlight
+- **State classes:**
+  - state-idle: Teal (hue 175)
+  - state-listening: Bright teal (hue 175, higher lightness)
+  - state-speaking: Green-teal (hue 155)
+  - state-error: Amber (hue 38)
+- **Accessibility:** Respects prefers-reduced-motion media query
 
 ### Key Design Decisions
 1. **Single-viewport senior interface:** No scrolling required on main interface for senior usability
-2. **OLED optimization:** Pure black background saves battery on senior devices
-3. **48px minimum touch targets:** All interactive elements meet accessibility standards
+2. **OLED optimization:** Dark radial gradient background (#0a1f24 to #000000) saves battery on senior devices
+3. **64px touch targets:** Header buttons exceed 48px accessibility minimum
 4. **Gift pool model:** Buyer (gifter) is separate from user (senior), enabling group gifting
+5. **Generative orb graphics:** CSS/SVG-based for resolution independence across all device DPRs
+6. **iOS safe-area support:** viewport-fit=cover with env() padding for notch/home indicator
 
 ## External Dependencies
 

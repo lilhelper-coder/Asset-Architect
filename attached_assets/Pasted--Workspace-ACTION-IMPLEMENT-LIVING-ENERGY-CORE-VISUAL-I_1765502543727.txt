@@ -1,0 +1,71 @@
+@Workspace ACTION: IMPLEMENT "LIVING ENERGY CORE" VISUAL INTERFACE
+
+**ARCHITECTURAL DIRECTIVE:**
+We are abandoning static image assets for the main interface orb. Instead, we will build a high-performance, resolution-independent, generative visual component using React, CSS variables, and SVG filters.
+
+**GOAL:**
+Create a minimalist, glowing orb with fluid, wispy energy rings that look stunningly crisp on all device DPRs (device pixel ratios) and can dynamically shift color palettes based on UI state.
+
+---
+
+### STEP 1: DEFINE DYNAMIC COLOR INFRASTRUCTURE (CSS globals)
+
+In your global CSS file (e.g., `globals.css`), define the core hue as a variable. This is the "knob" we will turn with Javascript later to change states.
+
+```css
+:root {
+  /* Default Theme: "Safety Teal" */
+  --orb-hue: 175; /* Hue value for teal */
+  --orb-saturation: 100%;
+  --orb-lightness: 50%;
+  
+  /* Derived colors - THE AGENT MUST USE THESE */
+  --orb-core-color: hsl(var(--orb-hue), var(--orb-saturation), var(--orb-lightness));
+  --orb-glow-color: hsla(var(--orb-hue), var(--orb-saturation), 60%, 0.5);
+  --orb-ring-color: hsla(var(--orb-hue), 90%, 70%, 0.8);
+}
+
+/* Example State Classes (to be toggled by JS) */
+.state-thinking {
+  --orb-hue: 280; /* Purple */
+}
+
+.state-talking {
+  --orb-hue: 140; /* Green */
+}
+
+.state-offline {
+  --orb-hue: 0;
+  --orb-saturation: 0%; /* Grayscale */
+}
+```
+
+### STEP 2: BUILD THE COMPONENT STRUCTURE (`LivingOrb.tsx`)
+
+Create a new component representing the design in the reference image. It needs layers to create depth.
+
+Structure Requirements:
+1. Container: A centered div to hold everything.
+2. Central Core: A div with a steep radial gradient (bright center to dark edge) using the `--orb-core-color`.
+3. Energy Rings (The "Fluid" part):
+   - Use 3 separate layers of inline SVGs for the rings.
+   - Each SVG should contain a stroked circle or elliptical path.
+   - Crucial technique for "wispy" look: Apply heavy CSS `filter: blur()` and `opacity` to these SVG layers so they look like soft light, not hard lines. Use `mix-blend-mode: screen` or `plus-lighter` to make them glow against the black background.
+
+### STEP 3: ORCHESTRATE ORGANIC ANIMATION (Tailwind/CSS)
+
+We need movement that feels natural, not robotic.
+
+Animation Directives:
+1. Core Pulse: The central core should slowly breathe (scale up/down 5%) over 8 seconds.
+2. Ring Flow: The 3 SVG ring layers must rotate at different speeds and in different directions (e.g., Ring 1 rotates CW in 20s, Ring 2 rotates CCW in 35s, Ring 3 rotates CW in 50s).
+3. Fluidity Trick: To get the "wavy" fluid look, apply a subtle, slow CSS transform skew or morphing SVG path animation to the rings while they rotate.
+
+### STEP 4: IMPLEMENTATION & OPTIMIZATION CHECKLIST
+
+1. Mobile-First Sizing: Ensure the base component size is appropriate for mobile width (e.g., `w-[300px] h-[300px]`) and scales up on desktop breakpoints.
+2. Performance: Use only hardware-accelerated CSS properties for animation (`transform: rotate/scale`, `opacity`). DO NOT animate width/height or top/left.
+3. Integration: Replace the existing placeholder image on the Landing Page and Senior Dashboard with this new component.
+4. Test Color Shifting: Temporarily add buttons to the dev interface to toggle the `.state-thinking` and `.state-talking` classes on a parent element to verify the entire orb smoothly shifts color hue.
+
+EXECUTE.
