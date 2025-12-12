@@ -1,0 +1,60 @@
+VISUAL UPGRADE: Replace flat button with stunning 3D Magic Orb + Gemini's Organic Animation
+
+CONTEXT: The current "TAP TO START" button looks too plain. We need a breathtaking, living orb that serves as the centerpiece.
+
+ORB IMAGE: I will provide a high-quality turquoise/teal cosmic glass sphere image (from DALL-E). Please create an upload location for me to add it at /client/public/assets/magic-orb.png
+
+IMPLEMENTATION REQUIREMENTS:
+
+1. DUAL-LAYER HTML STRUCTURE (for depth):
+```html
+<div className="orb-stage">
+  <div className="orb-soul"></div>
+  <img src="/assets/magic-orb.png" alt="Scout Orb" className="hyper-orb" />
+</div>
+```
+
+2. GEMINI'S ORGANIC HEARTBEAT ANIMATION SYSTEM:
+- Main orb (hyper-orb): Ultra-slow 60s rotation + gentle 16s float
+- Background glow (orb-soul): 8s "lub-dub" heartbeat pulse
+- CRITICAL: Use organic timing, NOT mechanical sine waves
+- The pulse should feel ALIVE with distinctive inhale→hold→exhale rhythm
+
+3. TAILWIND CONFIG - ADD THESE KEYFRAMES:
+```typescript
+keyframes: {
+  shellMotion: {
+    '0%': { transform: 'rotate(0deg)' },
+    '100%': { transform: 'rotate(360deg)' }
+  },
+  gentleFloat: {
+    '0%, 100%': { transform: 'translateY(0)' },
+    '50%': { transform: 'translateY(-15px)' }
+  },
+  organicHeartbeat: {
+    '0%, 100%': { opacity: '0.3', transform: 'scale(0.95)' },
+    '15%': { opacity: '0.6', transform: 'scale(1.05)' }, // sharp inhale
+    '30%': { opacity: '0.5', transform: 'scale(1.02)' }, // brief hold  
+    '50%': { opacity: '0.7', transform: 'scale(1.1)' }   // slow exhale
+  }
+}
+animation: {
+  orbShell: 'shellMotion 60s linear infinite, gentleFloat 16s ease-in-out infinite',
+  orbSoul: 'organicHeartbeat 8s cubic-bezier(0.4, 0.0, 0.2, 1) infinite'
+}
+```
+
+4. STYLING REQUIREMENTS:
+- Orb stage: 320px (mobile) / 450px (desktop)
+- Background glow (soul): 90% width, teal/cyan radial gradient, blur(50px)
+- Main orb: drop-shadow for depth
+- Page background: radial-gradient from #0a1f24 to #000000
+
+5. REPLACE THE CURRENT:
+- Remove the flat teal "TAP TO START" button completely
+- Replace with this layered orb structure in the senior interface
+- Keep "This allows Scout to hear you" text below
+
+GOAL: The orb should look like a living, breathing crystal sphere - not a spinning marble. The heartbeat rhythm is what makes it unique and memorable.
+
+Please implement this and let me know when ready to upload the orb image.

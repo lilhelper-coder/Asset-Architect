@@ -10,6 +10,7 @@ function Router() {
   return (
     <Switch>
       <Route path="/" component={SeniorInterface} />
+      <Route path="/senior" component={SeniorInterface} />
       <Route path="/claim/:code" component={SeniorInterface} />
       <Route component={NotFound} />
     </Switch>
