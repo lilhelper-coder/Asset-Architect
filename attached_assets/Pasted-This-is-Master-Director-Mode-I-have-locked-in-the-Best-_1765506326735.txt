@@ -1,0 +1,113 @@
+This is **Master Director Mode**. I have locked in the **Best-in-Class Caption Engine** and the **Voice-Interactive FAQ**.
+
+This elevates the project from "Senior Friendly" to **"Universal Design Flagship."**
+
+Here is the **FINAL, EXPANDED MASTER BUILD PROMPT**.
+
+**INSTRUCTIONS:**
+1.  **Copy** the entire block below.
+2.  **Paste** it directly into the Replit Agent chat.
+3.  **Note:** I have consolidated the state management instructions so the Agent builds a global `AccessibilityContext` to handle the complex caption settings and voice syncing seamlessly.
+
+***
+
+### 🚀 **THE REPLIT MASTER BUILD PROMPT (v.ACCESSIBILITY MAX)**
+
+> **ACT AS:** Senior Full-Stack Engineer & Accessibility Specialist (CPACC Certified).
+> **PROJECT:** Crystal (Christmas Launch Edition).
+> **STRICT CONSTRAINT:** All code must meet **WCAG 2.1 AAA** standards.
+>
+> **MISSION:** Implement 7 critical upgrades with a robust "Accessibility First" architecture.
+>
+> **GLOBAL A11Y REQUIREMENTS:**
+> * **Semantic HTML:** Use `<main>`, `<section>`, `<button>`, `<nav>` strictly.
+> * **Focus Management:** Visible `focus-visible:ring-4 focus-visible:ring-white` on ALL interactive elements.
+> * **Font Scaling:** Use `rem` units. Support 300% zoom without breaking layout.
+> * **High Contrast:** Teal text on Black background must meet 7:1 contrast ratio.
+>
+> **CORE INFRASTRUCTURE: The `AccessibilityContext`**
+> * **Create:** `context/accessibility-context.tsx`.
+> * **State:** Manage global settings for:
+>     * `textSize` (100%, 150%, 200%, 300%).
+>     * `highContrast` (boolean).
+>     * `reducedMotion` (boolean).
+>     * **Captions:** `captionText` (string), `captionSize` (sm/md/lg/xl), `captionWeight` (300-900), `captionStyle` (sans/serif/mono), `captionBg` (solid/transparent).
+> * **Utility:** Export a `speak(text)` function that triggers `window.speechSynthesis` AND updates `captionText` simultaneously.
+>
+> **1. VISUAL UPGRADE: The "Snowglobe" Hero**
+> * **Action:** Update `app/page.tsx` Hero.
+> * **Component:** Replace CSS Orb with `<Image src="/snowglobe-hero.png" alt="Crystal Snowglobe with falling snow and a red scarf" />`.
+> * **Motion Safety:** Wrap animation in `useReducedMotion`. If true, disable floating.
+> * **Screen Reader:** Add hidden `<h1>`: "Crystal: The AI Companion for Seniors."
+>
+> **2. NEW FEATURE: The "Ghost Touch" AR Component**
+> * **Create File:** `components/ghost-touch-canvas.tsx`.
+> * **Tech:** HTML5 Canvas + Web Speech API + Vibration API.
+> * **Logic:**
+>     * Render full-screen canvas (z-index 50).
+>     * Subscribe to Supabase `touch_move`.
+>     * **Haptic:** Trigger `navigator.vibrate(30)` on coordinate receipt.
+>     * **Audio:** Use the `speak()` utility to announce "Helper is highlighting screen" (throttled).
+>     * **Visual:** Draw glowing Teal particle trail.
+>
+> **3. NEW ROUTE: The "Magic Mirror" Page**
+> * **Create File:** `app/mirror/[roomId]/page.tsx`.
+> * **UI:** Full-screen camera view with "Toggle Mic" and "End Session" buttons.
+> * **A11y:** Large touch targets (min 48px), `aria-label`s, full keyboard nav.
+>
+> **4. COMMERCE UPGRADE: The Christmas Offer**
+> * **Update:** `app/page.tsx` pricing.
+> * **Card:** "Limited Edition Lifetime" ($99).
+> * **Feature:** "🎁 Split with Family" Button (High contrast Modal, focus trapping).
+>
+> **5. SETTINGS: The Accessibility Toolbar**
+> * **Create Component:** `components/a11y-toolbar.tsx`.
+> * **UI:** Fixed-bottom-right gear icon. Opens menu to toggle global `AccessibilityContext` states (Text Size, High Contrast, Auto-Read).
+>
+> **6. NEW FEATURE: Innovative Caption System**
+> * **Create Component:** `components/caption-overlay.tsx`.
+> * **Logic:**
+>     * Listen to `captionText` from context. If present, display overlay.
+>     * **Customization:** Apply styles dynamically based on context (Size, Weight, Font, Background).
+>     * **Position:** Default bottom-center, allow drag-to-move.
+>     * **Design:** Rounded corners, subtle shadow, smooth fade-in.
+> * **Toolbar Update:** Add "Caption Settings" panel to the A11y Toolbar (sliders for size/weight, toggles for style).
+>
+> **7. NEW FEATURE: Interactive FAQ System**
+> * **Create Component:** `components/interactive-faq.tsx`.
+> * **UI:** Accordion style. Icon: Small Crystal Orb next to each question.
+> * **Interaction:** On Click -> Call `speak(answer)`.
+> * **Visual:** The Orb icon pulses while speaking.
+> * **Captions:** The answer text MUST appear in the `CaptionOverlay` simultaneously.
+> * **Content:**
+>     * "How do I use accessibility features?"
+>     * "How do I customize captions?"
+>     * "What is Ghost Touch?"
+>     * "How do I share with family?"
+>
+> **DEPENDENCIES:**
+> * `@supabase/supabase-js`
+> * `simple-peer`
+> * `framer-motion`
+> * `lucide-react`
+>
+> **EXECUTION ORDER:**
+> 1.  Install dependencies.
+> 2.  Build `AccessibilityContext` (The backbone).
+> 3.  Build `CaptionOverlay` & `A11yToolbar`.
+> 4.  Build `GhostTouchCanvas` & `InteractiveFAQ` (using the context).
+> 5.  Assemble `Home` and `Mirror` routes.
+>
+> **GO.**
+
+***
+
+### 👣 **NEXT STEPS**
+
+1.  **Execute:** Run this prompt in Replit.
+2.  **Asset Prep:** While it builds, ensure you have the `snowglobe-hero.png` ready to upload.
+3.  **Voice Check:** The `speak()` utility uses the browser's default voice.
+    * *Next Iteration:* We might want to use ElevenLabs API for a "High Quality" voice instead of the robotic browser voice.
+    * **Decision:** For MVP/Accessibility, browser voice is faster and zero-latency. We stick with it for the next 24 hours.
+
+**Ready to build?**
