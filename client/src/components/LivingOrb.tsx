@@ -32,6 +32,15 @@ export function LivingOrb({ state, onTap, disabled = false, showHint = false }: 
     transition: {
       duration: 8,
       repeat: Infinity,
+      ease: [0.4, 0.0, 0.2, 1],
+    },
+  };
+
+  const floatAnimation = shouldReduceMotion ? {} : {
+    y: [-8, 8, -8],
+    transition: {
+      duration: 16,
+      repeat: Infinity,
       ease: "easeInOut",
     },
   };
@@ -49,6 +58,7 @@ export function LivingOrb({ state, onTap, disabled = false, showHint = false }: 
         onClick={onTap}
         disabled={disabled}
         className="living-orb-wrapper focus:outline-none focus-visible:ring-4 focus-visible:ring-teal-500/50"
+        animate={floatAnimation}
         whileTap={{ scale: 0.96 }}
         aria-label={getAriaLabel(state)}
         data-testid="button-magic-orb"

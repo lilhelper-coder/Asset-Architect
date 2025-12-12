@@ -88,48 +88,22 @@ export default function SeniorInterface() {
           />
         </motion.div>
 
-        <motion.p
-          className="text-center max-w-sm"
-          style={{ 
-            marginTop: "48px",
-            fontSize: "20px",
-            color: "rgba(13, 148, 136, 0.7)",
-            letterSpacing: "0.02em",
-            fontFamily: "'Poppins', sans-serif",
-            fontWeight: 300,
-            lineHeight: 1.4,
+        <motion.button
+          className="absolute top-6 right-6 text-zinc-500/50 hover:text-zinc-400 transition-colors"
+          style={{
+            fontSize: "14px",
+            fontFamily: "Inter, system-ui, sans-serif",
+            fontWeight: 400,
           }}
+          onClick={() => setIsSignInOpen(true)}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 0.8, duration: 1 }}
-          data-testid="tagline"
+          transition={{ delay: 1.5, duration: 0.8 }}
+          aria-label="Sign in or sign up"
+          data-testid="button-enter"
         >
-          Your Lil' Helper for Tech & Life
-        </motion.p>
-
-        <motion.div 
-          className="flex justify-center"
-          style={{ marginTop: "36px" }}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1.2, duration: 0.8 }}
-        >
-          <Button
-            variant="outline"
-            className="px-10 rounded-full border-teal-600/40 text-teal-500 hover:border-teal-500 hover:text-teal-400 bg-transparent"
-            style={{
-              fontSize: "17px",
-              fontFamily: "'Poppins', sans-serif",
-              fontWeight: 500,
-              letterSpacing: "0.04em",
-              minHeight: "48px",
-            }}
-            onClick={() => setIsSignInOpen(true)}
-            data-testid="button-enter"
-          >
-            Begin
-          </Button>
-        </motion.div>
+          Login / Signup
+        </motion.button>
 
         <motion.button
           className="absolute bottom-8 left-1/2 -translate-x-1/2 text-zinc-500 hover:text-teal-500 transition-colors p-4"
