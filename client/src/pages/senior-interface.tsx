@@ -113,7 +113,7 @@ export default function SeniorInterface() {
             onClick={() => setIsSignInOpen(true)}
             data-testid="button-enter"
           >
-            begin
+            Begin
           </Button>
         </motion.div>
       </div>
