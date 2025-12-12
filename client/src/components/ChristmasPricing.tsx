@@ -64,21 +64,34 @@ export function ChristmasPricing() {
         <motion.div
           className="inline-flex items-center gap-2 px-5 py-2 rounded-full font-medium mb-4"
           style={{
-            fontSize: "clamp(24px, 3.5vw, 28px)",
-            background: "linear-gradient(135deg, rgba(220, 38, 38, 0.3) 0%, rgba(185, 28, 28, 0.2) 100%)",
-            border: "1px solid rgba(220, 38, 38, 0.4)",
-            boxShadow: "0 0 20px rgba(220, 38, 38, 0.2), inset 0 1px 1px rgba(255,255,255,0.1)",
+            fontSize: "clamp(22px, 3.5vw, 26px)",
+            fontFamily: "'Poppins', system-ui, sans-serif",
+            background: "linear-gradient(135deg, rgba(20, 184, 166, 0.2) 0%, rgba(13, 148, 136, 0.15) 100%)",
+            border: "1px solid rgba(94, 234, 212, 0.3)",
+            boxShadow: "0 0 20px rgba(20, 184, 166, 0.15), inset 0 1px 1px rgba(255,255,255,0.05)",
           }}
-          animate={{ scale: [1, 1.02, 1] }}
-          transition={{ duration: 2, repeat: Infinity }}
+          animate={{ scale: [1, 1.01, 1] }}
+          transition={{ duration: 3, repeat: Infinity }}
         >
-          <Sparkles className="w-6 h-6 text-red-400" />
-          <span className="text-red-300">{t.limitedHolidayOffer}</span>
+          <Sparkles className="w-5 h-5" style={{ color: "rgb(94, 234, 212)" }} />
+          <span style={{ color: "rgb(94, 234, 212)" }}>{t.limitedHolidayOffer}</span>
         </motion.div>
-        <h2 className="font-bold text-white mb-2" style={{ fontSize: "clamp(30px, 5vw, 40px)" }}>
+        <h2 
+          className="font-semibold text-white mb-2" 
+          style={{ 
+            fontSize: "clamp(28px, 5vw, 38px)",
+            fontFamily: "'Poppins', system-ui, sans-serif",
+          }}
+        >
           {t.giveTheGift}
         </h2>
-        <p className="text-zinc-300" style={{ fontSize: "clamp(24px, 4vw, 28px)" }}>
+        <p 
+          className="text-zinc-300" 
+          style={{ 
+            fontSize: "clamp(22px, 4vw, 26px)",
+            fontFamily: "'Poppins', system-ui, sans-serif",
+          }}
+        >
           {t.alwaysThere}
         </p>
       </div>

@@ -35,7 +35,14 @@ export function LanguagePicker() {
               onClick={() => setIsOpen(false)}
             />
             <motion.div
-              className="absolute right-0 top-full mt-2 z-50 min-w-[180px] rounded-lg bg-zinc-900 border border-zinc-800 shadow-xl overflow-hidden"
+              className="absolute right-0 top-full mt-2 z-50 min-w-[200px] rounded-xl overflow-hidden"
+              style={{
+                background: "rgba(15, 23, 28, 0.95)",
+                backdropFilter: "blur(20px)",
+                WebkitBackdropFilter: "blur(20px)",
+                border: "1px solid rgba(94, 234, 212, 0.15)",
+                boxShadow: "0 8px 32px rgba(0, 0, 0, 0.4)",
+              }}
               initial={{ opacity: 0, y: -10, scale: 0.95 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -10, scale: 0.95 }}
@@ -44,34 +51,46 @@ export function LanguagePicker() {
               aria-label="Language selection"
               data-testid="language-picker-menu"
             >
-              {languageOptions.map((lang) => (
+              {languageOptions.map((lang, index) => (
                 <button
                   key={lang.code}
                   onClick={() => {
                     setLanguage(lang.code as SupportedLanguage);
                     setIsOpen(false);
                   }}
-                  className={`w-full flex items-center gap-3 px-4 py-3 text-left transition-colors ${
-                    language === lang.code
-                      ? "bg-teal-600/20 text-teal-400"
-                      : "text-zinc-300 hover:bg-zinc-800"
-                  }`}
+                  className="w-full flex items-center gap-3 px-4 py-3 text-left transition-all"
+                  style={{
+                    fontFamily: "'Poppins', system-ui, sans-serif",
+                    borderTop: index > 0 ? "1px solid rgba(94, 234, 212, 0.08)" : "none",
+                    background: language === lang.code ? "rgba(94, 234, 212, 0.1)" : "transparent",
+                    color: language === lang.code ? "rgb(94, 234, 212)" : "rgba(255, 255, 255, 0.8)",
+                  }}
+                  onMouseEnter={(e) => {
+                    if (language !== lang.code) {
+                      e.currentTarget.style.background = "rgba(94, 234, 212, 0.05)";
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (language !== lang.code) {
+                      e.currentTarget.style.background = "transparent";
+                    }
+                  }}
                   role="menuitem"
                   data-testid={`button-language-${lang.code}`}
                 >
-                  <span className="text-lg" aria-hidden="true">
-                    {getFlagEmoji(lang.flag)}
+                  <span 
+                    className="text-xs font-medium uppercase tracking-wider opacity-60"
+                    style={{ minWidth: "24px" }}
+                  >
+                    {lang.code}
                   </span>
                   <span className="flex-1">
                     <span className="block text-sm font-medium">
                       {lang.nativeName}
                     </span>
-                    <span className="block text-xs text-zinc-500">
-                      {lang.name}
-                    </span>
                   </span>
                   {language === lang.code && (
-                    <Check className="w-4 h-4 text-teal-500" />
+                    <Check className="w-4 h-4" style={{ color: "rgb(94, 234, 212)" }} />
                   )}
                 </button>
               ))}
@@ -81,15 +100,4 @@ export function LanguagePicker() {
       </AnimatePresence>
     </div>
   );
-}
-
-function getFlagEmoji(countryCode: string): string {
-  const flags: Record<string, string> = {
-    US: "\u{1F1FA}\u{1F1F8}",
-    ES: "\u{1F1EA}\u{1F1F8}",
-    FR: "\u{1F1EB}\u{1F1F7}",
-    DE: "\u{1F1E9}\u{1F1EA}",
-    SA: "\u{1F1F8}\u{1F1E6}",
-  };
-  return flags[countryCode] || "\u{1F310}";
 }
