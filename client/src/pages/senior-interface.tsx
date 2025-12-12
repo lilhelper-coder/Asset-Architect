@@ -1,16 +1,20 @@
-import { useState, useEffect } from "react";
-import { LivingOrb } from "@/components/LivingOrb";
+import { useState, useEffect, useRef } from "react";
+import { ChristmasOrb } from "@/components/ChristmasOrb";
 import { useVoiceConnection } from "@/hooks/useVoiceConnection";
 import { motion } from "framer-motion";
-import { Button } from "@/components/ui/button";
 import { SignInModal } from "@/components/SignInModal";
 import { InteractiveFAQ } from "@/components/InteractiveFAQ";
 import { ChristmasPricing } from "@/components/ChristmasPricing";
+import { LanguagePicker } from "@/components/LanguagePicker";
 import { ChevronDown } from "lucide-react";
+import { useLanguage } from "@/context/language-context";
 
 export default function SeniorInterface() {
   const [hasInteracted, setHasInteracted] = useState(false);
   const [isSignInOpen, setIsSignInOpen] = useState(false);
+  const [scrollY, setScrollY] = useState(0);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const { t } = useLanguage();
   const [seniorConfig, setSeniorConfig] = useState<{
     seniorName: string;
     gifterName: string;
@@ -38,6 +42,18 @@ export default function SeniorInterface() {
     }
   }, []);
 
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const handleScroll = () => {
+      setScrollY(container.scrollTop);
+    };
+
+    container.addEventListener("scroll", handleScroll, { passive: true });
+    return () => container.removeEventListener("scroll", handleScroll);
+  }, []);
+
   const { orbState, toggleConnection } = useVoiceConnection({
     seniorName: seniorConfig?.seniorName,
     gifterName: seniorConfig?.gifterName,
@@ -58,6 +74,7 @@ export default function SeniorInterface() {
 
   return (
     <div 
+      ref={containerRef}
       className="min-h-screen overflow-y-auto"
       style={{ 
         background: "radial-gradient(ellipse at 50% 30%, #0a1f24 0%, #050a0c 50%, #000000 100%)",
@@ -72,38 +89,48 @@ export default function SeniorInterface() {
 
       <section 
         className="min-h-screen flex flex-col items-center px-6 relative"
-        style={{ paddingTop: "15vh" }}
+        style={{ paddingTop: "18vh" }}
         aria-label="Crystal Voice Assistant"
       >
+        <div className="absolute top-6 right-6 flex items-center gap-3 z-20">
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1.5, duration: 0.8 }}
+          >
+            <LanguagePicker />
+          </motion.div>
+          <motion.button
+            className="text-zinc-500/50 hover:text-zinc-400 transition-colors"
+            style={{
+              fontSize: "14px",
+              fontFamily: "Inter, system-ui, sans-serif",
+              fontWeight: 400,
+            }}
+            onClick={() => setIsSignInOpen(true)}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1.5, duration: 0.8 }}
+            aria-label="Sign in or sign up"
+            data-testid="button-enter"
+          >
+            {t.loginSignup}
+          </motion.button>
+        </div>
+
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 1.2, ease: "easeOut" }}
         >
-          <LivingOrb 
+          <ChristmasOrb 
             state={orbState} 
             onTap={handleOrbTap}
             disabled={false}
             showHint={!hasInteracted && orbState === "idle"}
+            scrollY={scrollY}
           />
         </motion.div>
-
-        <motion.button
-          className="absolute top-6 right-6 text-zinc-500/50 hover:text-zinc-400 transition-colors"
-          style={{
-            fontSize: "14px",
-            fontFamily: "Inter, system-ui, sans-serif",
-            fontWeight: 400,
-          }}
-          onClick={() => setIsSignInOpen(true)}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.5, duration: 0.8 }}
-          aria-label="Sign in or sign up"
-          data-testid="button-enter"
-        >
-          Login / Signup
-        </motion.button>
 
         <motion.button
           className="absolute bottom-8 left-1/2 -translate-x-1/2 text-zinc-500 hover:text-teal-500 transition-colors p-4"
