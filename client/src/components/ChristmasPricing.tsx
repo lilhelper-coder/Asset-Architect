@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Gift, Users, Check, X, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { useLanguage } from "@/context/language-context";
 
 interface ContributorInfo {
   name: string;
@@ -15,6 +16,7 @@ export function ChristmasPricing() {
   const [contributors, setContributors] = useState<ContributorInfo[]>([
     { name: "", email: "", amount: "" },
   ]);
+  const { t } = useLanguage();
 
   const addContributor = () => {
     if (contributors.length < 5) {
@@ -60,63 +62,113 @@ export function ChristmasPricing() {
     >
       <div className="text-center mb-8">
         <motion.div
-          className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-red-600/20 text-red-400 text-sm font-medium mb-4"
+          className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-sm font-medium mb-4"
+          style={{
+            background: "linear-gradient(135deg, rgba(220, 38, 38, 0.3) 0%, rgba(185, 28, 28, 0.2) 100%)",
+            border: "1px solid rgba(220, 38, 38, 0.4)",
+            boxShadow: "0 0 20px rgba(220, 38, 38, 0.2), inset 0 1px 1px rgba(255,255,255,0.1)",
+          }}
           animate={{ scale: [1, 1.02, 1] }}
           transition={{ duration: 2, repeat: Infinity }}
         >
-          <Sparkles className="w-4 h-4" />
-          Limited Holiday Offer
+          <Sparkles className="w-4 h-4 text-red-400" />
+          <span className="text-red-300">{t.limitedHolidayOffer}</span>
         </motion.div>
         <h2 className="text-3xl font-bold text-white mb-2">
-          Give the Gift of Crystal
+          {t.giveTheGift}
         </h2>
         <p className="text-zinc-400">
-          A companion that's always there for your loved one
+          {t.alwaysThere}
         </p>
       </div>
 
-      <div className="rounded-2xl bg-gradient-to-b from-zinc-900 to-zinc-900/50 border border-zinc-800 p-6 mb-6">
-        <div className="flex items-center justify-between mb-6">
+      <div 
+        className="rounded-2xl p-6 mb-6 relative overflow-visible"
+        style={{
+          background: "linear-gradient(135deg, rgba(20, 30, 35, 0.9) 0%, rgba(10, 20, 25, 0.95) 100%)",
+          backdropFilter: "blur(20px)",
+          WebkitBackdropFilter: "blur(20px)",
+          border: "1px solid rgba(45, 212, 191, 0.15)",
+          boxShadow: `
+            0 0 40px rgba(20, 184, 166, 0.08),
+            0 4px 30px rgba(0, 0, 0, 0.5),
+            inset 0 1px 1px rgba(255, 255, 255, 0.05)
+          `,
+        }}
+      >
+        <div 
+          className="absolute inset-0 rounded-2xl pointer-events-none"
+          style={{
+            background: "radial-gradient(ellipse at 50% 0%, rgba(45, 212, 191, 0.08) 0%, transparent 60%)",
+          }}
+        />
+
+        <div className="flex items-center justify-between gap-4 mb-6 relative z-10">
           <div>
-            <h3 className="text-xl font-semibold text-white">Lifetime Edition</h3>
-            <p className="text-sm text-zinc-400">One-time purchase</p>
+            <h3 className="text-xl font-semibold text-white">{t.lifetimeEdition}</h3>
+            <p className="text-sm text-zinc-400">{t.oneTimePurchase}</p>
           </div>
           <div className="text-right">
-            <span className="text-3xl font-bold text-white">$99</span>
+            <div className="flex items-baseline gap-1">
+              <span className="text-4xl font-bold text-white">$99</span>
+            </div>
             <p className="text-xs text-zinc-500 line-through">$199</p>
           </div>
         </div>
 
-        <ul className="space-y-3 mb-6">
+        <ul className="space-y-3 mb-6 relative z-10">
           {features.map((feature, index) => (
-            <li
+            <motion.li
               key={index}
               className="flex items-center gap-3 text-sm text-zinc-300"
+              initial={{ opacity: 0, x: -10 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: index * 0.05 }}
             >
-              <Check className="w-4 h-4 text-teal-500 flex-shrink-0" />
+              <div 
+                className="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0"
+                style={{
+                  background: "linear-gradient(135deg, rgba(20, 184, 166, 0.3) 0%, rgba(20, 184, 166, 0.1) 100%)",
+                  border: "1px solid rgba(20, 184, 166, 0.4)",
+                }}
+              >
+                <Check className="w-3 h-3 text-teal-400" />
+              </div>
               {feature}
-            </li>
+            </motion.li>
           ))}
         </ul>
 
-        <div className="space-y-3">
+        <div className="space-y-3 relative z-10">
           <Button
             onClick={handleSinglePurchase}
-            className="w-full min-h-14 text-lg bg-teal-600 hover:bg-teal-700"
+            className="w-full min-h-14 text-lg font-semibold"
+            style={{
+              background: "linear-gradient(135deg, rgb(13, 148, 136) 0%, rgb(15, 118, 110) 100%)",
+              boxShadow: "0 4px 20px rgba(20, 184, 166, 0.3), inset 0 1px 1px rgba(255,255,255,0.1)",
+              border: "1px solid rgba(45, 212, 191, 0.3)",
+            }}
             data-testid="button-single-purchase"
           >
             <Gift className="w-5 h-5 mr-2" />
-            Purchase as Gift
+            {t.purchaseAsGift}
           </Button>
 
           <Button
             variant="outline"
             onClick={() => setShowFamilySplit(!showFamilySplit)}
-            className="w-full min-h-12 border-zinc-700 text-zinc-300 hover:bg-zinc-800"
+            className="w-full min-h-12"
+            style={{
+              background: "rgba(30, 40, 45, 0.5)",
+              backdropFilter: "blur(10px)",
+              WebkitBackdropFilter: "blur(10px)",
+              border: "1px solid rgba(100, 110, 120, 0.3)",
+              color: "rgb(200, 210, 220)",
+            }}
             data-testid="button-family-split"
           >
             <Users className="w-5 h-5 mr-2" />
-            Split with Family
+            {t.splitWithFamily}
           </Button>
         </div>
       </div>
@@ -130,12 +182,19 @@ export function ChristmasPricing() {
             className="overflow-hidden"
           >
             <div
-              className="rounded-2xl bg-zinc-900/80 border border-zinc-800 p-6"
+              className="rounded-2xl p-6"
+              style={{
+                background: "linear-gradient(135deg, rgba(20, 30, 35, 0.95) 0%, rgba(10, 20, 25, 0.98) 100%)",
+                backdropFilter: "blur(20px)",
+                WebkitBackdropFilter: "blur(20px)",
+                border: "1px solid rgba(100, 110, 120, 0.2)",
+                boxShadow: "0 4px 30px rgba(0, 0, 0, 0.4)",
+              }}
               role="dialog"
               aria-label="Split payment with family"
               data-testid="family-split-modal"
             >
-              <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center justify-between gap-2 mb-4">
                 <h3 className="text-lg font-semibold text-white">
                   Split Payment
                 </h3>
@@ -158,16 +217,20 @@ export function ChristmasPricing() {
                 {contributors.map((contributor, index) => (
                   <div
                     key={index}
-                    className="p-3 rounded-lg bg-zinc-800/50 space-y-2"
+                    className="p-3 rounded-lg space-y-2"
+                    style={{
+                      background: "rgba(30, 40, 45, 0.6)",
+                      border: "1px solid rgba(80, 90, 100, 0.2)",
+                    }}
                   >
-                    <div className="flex items-center justify-between">
+                    <div className="flex items-center justify-between gap-2">
                       <span className="text-xs text-zinc-500">
                         Contributor {index + 1}
                       </span>
                       {contributors.length > 1 && (
                         <button
                           onClick={() => removeContributor(index)}
-                          className="text-zinc-500 hover:text-red-400"
+                          className="text-zinc-500 hover:text-red-400 min-w-10 min-h-10 flex items-center justify-center"
                           aria-label={`Remove contributor ${index + 1}`}
                         >
                           <X className="w-4 h-4" />
@@ -179,7 +242,11 @@ export function ChristmasPricing() {
                         placeholder="Name"
                         value={contributor.name}
                         onChange={(e) => updateContributor(index, "name", e.target.value)}
-                        className="bg-zinc-900 border-zinc-700"
+                        className="min-h-11"
+                        style={{
+                          background: "rgba(20, 30, 35, 0.8)",
+                          border: "1px solid rgba(80, 90, 100, 0.3)",
+                        }}
                         data-testid={`input-contributor-name-${index}`}
                       />
                       <Input
@@ -187,7 +254,11 @@ export function ChristmasPricing() {
                         type="number"
                         value={contributor.amount}
                         onChange={(e) => updateContributor(index, "amount", e.target.value)}
-                        className="bg-zinc-900 border-zinc-700"
+                        className="min-h-11"
+                        style={{
+                          background: "rgba(20, 30, 35, 0.8)",
+                          border: "1px solid rgba(80, 90, 100, 0.3)",
+                        }}
                         data-testid={`input-contributor-amount-${index}`}
                       />
                     </div>
@@ -196,7 +267,11 @@ export function ChristmasPricing() {
                       type="email"
                       value={contributor.email}
                       onChange={(e) => updateContributor(index, "email", e.target.value)}
-                      className="bg-zinc-900 border-zinc-700"
+                      className="min-h-11"
+                      style={{
+                        background: "rgba(20, 30, 35, 0.8)",
+                        border: "1px solid rgba(80, 90, 100, 0.3)",
+                      }}
                       data-testid={`input-contributor-email-${index}`}
                     />
                   </div>
@@ -207,7 +282,12 @@ export function ChristmasPricing() {
                 <Button
                   variant="outline"
                   onClick={addContributor}
-                  className="w-full mb-4 border-dashed border-zinc-700 text-zinc-400"
+                  className="w-full min-h-11 mb-4 border-dashed"
+                  style={{
+                    background: "transparent",
+                    borderColor: "rgba(100, 110, 120, 0.4)",
+                    color: "rgb(160, 170, 180)",
+                  }}
                   data-testid="button-add-contributor"
                 >
                   + Add Another Contributor
@@ -216,7 +296,12 @@ export function ChristmasPricing() {
 
               <Button
                 onClick={handleFamilySplit}
-                className="w-full min-h-12 bg-teal-600 hover:bg-teal-700"
+                className="w-full min-h-12"
+                style={{
+                  background: "linear-gradient(135deg, rgb(13, 148, 136) 0%, rgb(15, 118, 110) 100%)",
+                  boxShadow: "0 4px 20px rgba(20, 184, 166, 0.25)",
+                  border: "1px solid rgba(45, 212, 191, 0.3)",
+                }}
                 data-testid="button-send-invites"
               >
                 Send Invites
