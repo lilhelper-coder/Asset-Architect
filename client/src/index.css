@@ -540,3 +540,75 @@
     animation: none !important;
   }
 }
+
+/* =============================================================================
+   ACCESSIBILITY - High Contrast Mode
+   ============================================================================= */
+
+.high-contrast {
+  --foreground: 0 0% 100%;
+  --background: 0 0% 0%;
+  --border: 0 0% 40%;
+  --card: 0 0% 5%;
+  --card-foreground: 0 0% 100%;
+  --primary: 175 100% 50%;
+  --primary-foreground: 0 0% 0%;
+  --muted: 0 0% 15%;
+  --muted-foreground: 0 0% 85%;
+}
+
+.high-contrast * {
+  border-color: hsl(0 0% 60%) !important;
+}
+
+.high-contrast .text-zinc-400,
+.high-contrast .text-zinc-500,
+.high-contrast .text-zinc-600 {
+  color: hsl(0 0% 80%) !important;
+}
+
+.high-contrast .text-teal-500,
+.high-contrast .text-teal-600 {
+  color: hsl(175 100% 60%) !important;
+}
+
+.high-contrast .bg-teal-600 {
+  background-color: hsl(175 100% 45%) !important;
+}
+
+/* =============================================================================
+   ACCESSIBILITY - Reduce Motion Mode
+   ============================================================================= */
+
+.reduce-motion,
+.reduce-motion * {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+}
+
+.reduce-motion .orb-ambient-glow {
+  animation: none;
+}
+
+.reduce-motion .orb-ring-layer {
+  animation: none !important;
+}
+
+/* =============================================================================
+   FOCUS VISIBLE - Enhanced Accessibility
+   ============================================================================= */
+
+*:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(20, 184, 166, 0.5);
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(20, 184, 166, 0.5);
+}
