@@ -61,33 +61,41 @@ export function LanguagePicker() {
                   className="w-full flex items-center gap-3 px-4 py-3 text-left transition-all"
                   style={{
                     fontFamily: "'Poppins', system-ui, sans-serif",
+                    fontSize: "15px",
+                    fontWeight: 400,
                     borderTop: index > 0 ? "1px solid rgba(94, 234, 212, 0.08)" : "none",
                     background: language === lang.code ? "rgba(94, 234, 212, 0.1)" : "transparent",
-                    color: language === lang.code ? "rgb(94, 234, 212)" : "rgba(255, 255, 255, 0.8)",
+                    color: language === lang.code ? "rgb(94, 234, 212)" : "rgba(94, 234, 212, 0.7)",
                   }}
                   onMouseEnter={(e) => {
                     if (language !== lang.code) {
                       e.currentTarget.style.background = "rgba(94, 234, 212, 0.05)";
+                      e.currentTarget.style.color = "rgb(94, 234, 212)";
                     }
                   }}
                   onMouseLeave={(e) => {
                     if (language !== lang.code) {
                       e.currentTarget.style.background = "transparent";
+                      e.currentTarget.style.color = "rgba(94, 234, 212, 0.7)";
                     }
                   }}
                   role="menuitem"
                   data-testid={`button-language-${lang.code}`}
                 >
                   <span 
-                    className="text-xs font-medium uppercase tracking-wider opacity-60"
-                    style={{ minWidth: "24px" }}
+                    style={{ 
+                      minWidth: "24px",
+                      fontSize: "12px",
+                      fontWeight: 500,
+                      textTransform: "uppercase",
+                      letterSpacing: "0.05em",
+                      opacity: 0.7,
+                    }}
                   >
                     {lang.code}
                   </span>
                   <span className="flex-1">
-                    <span className="block text-sm font-medium">
-                      {lang.nativeName}
-                    </span>
+                    {lang.nativeName}
                   </span>
                   {language === lang.code && (
                     <Check className="w-4 h-4" style={{ color: "rgb(94, 234, 212)" }} />

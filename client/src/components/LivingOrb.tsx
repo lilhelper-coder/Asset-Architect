@@ -1,5 +1,6 @@
 import { motion, useReducedMotion } from "framer-motion";
 import { useEffect, useRef } from "react";
+import { useLanguage } from "@/context/language-context";
 
 export type OrbState = "idle" | "listening" | "speaking" | "error";
 
@@ -20,6 +21,7 @@ const stateToClass: Record<OrbState, string> = {
 export function LivingOrb({ state, onTap, disabled = false, showHint = false }: LivingOrbProps) {
   const shouldReduceMotion = useReducedMotion();
   const containerRef = useRef<HTMLDivElement>(null);
+  const { t } = useLanguage();
 
   useEffect(() => {
     if (containerRef.current) {
@@ -143,7 +145,7 @@ export function LivingOrb({ state, onTap, disabled = false, showHint = false }: 
           transition={{ delay: 1 }}
           data-testid="orb-hint-text"
         >
-          touch to speak
+          {t.touchToSpeak}
         </motion.p>
       )}
 
@@ -156,7 +158,7 @@ export function LivingOrb({ state, onTap, disabled = false, showHint = false }: 
             className="orb-status-text"
             data-testid="orb-status-text"
           >
-            {getStatusText(state)}
+            {state === "listening" ? t.listening : state === "speaking" ? t.speaking : t.oneSecond}
           </motion.p>
         </div>
       )}
