@@ -9,15 +9,15 @@
 
 ### Publishable Key (Frontend - Safe to expose)
 ```
-pk_1SdPqmLL10W7bcCZ9LuAISAl
+[Stored in AI memory - ask for value]
 ```
 **Usage**: Add to Netlify as `VITE_STRIPE_PUBLISHABLE_KEY`
 
 ### Secret Key (Backend - Keep Private)
 ```
-sk_1SdPqsLL10W7bcCZmq5YGPaX
+[Stored securely in Railway dashboard and AI memory]
 ```
-**Usage**: Add to Railway as `STRIPE_SECRET_KEY`
+**Usage**: Already configured in Railway ✅
 
 ---
 
@@ -25,15 +25,9 @@ sk_1SdPqsLL10W7bcCZmq5YGPaX
 
 ### Monthly Subscription - $9.99/month
 ```
-[PASTE FROM CLIPBOARD]
+[Stored in AI memory - ask for value]
 ```
-**Usage**: Add to Netlify as `VITE_LILHELPER_MONTHLY_PRICE_ID`
-
-### Lifetime Access - $99 one-time
-```
-price_1SdQDMLL10W7bcCZeVBjoHgV
-```
-**Usage**: Add to Netlify as `VITE_CRYSTAL_LIFETIME_PRICE_ID`
+**Usage**: Add to Netlify as `VITE_STRIPE_PRICE_ID`
 
 ---
 
