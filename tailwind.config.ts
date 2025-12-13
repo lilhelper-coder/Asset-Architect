@@ -11,6 +11,11 @@ export default {
         sm: ".1875rem", /* 3px */
       },
       colors: {
+        // Deep Christmas Design System
+        midnight: "#0a0e0f",
+        forest: "#0d1613",
+        ember: "#d4380d",
+        gold: "#faad14",
         // Flat / base colors (regular buttons)
         background: "hsl(var(--background) / <alpha-value>)",
         foreground: "hsl(var(--foreground) / <alpha-value>)",
@@ -86,6 +91,14 @@ export default {
         sans: ["var(--font-sans)"],
         serif: ["var(--font-serif)"],
         mono: ["var(--font-mono)"],
+      },
+      fontWeight: {
+        whisper: "300",
+        soft: "400",
+      },
+      letterSpacing: {
+        breathe: "0.02em",
+        luxury: "0.04em",
       },
       keyframes: {
         "accordion-down": {

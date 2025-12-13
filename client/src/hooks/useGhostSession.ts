@@ -15,6 +15,7 @@ interface UseGhostSessionOptions {
   role: 'senior' | 'helper';
   onTranscriptUpdate?: (transcript: string) => void;
   onViewChange?: (view: string) => void;
+  onWhisperReceived?: (text: string) => void;
 }
 
 interface UseGhostSessionReturn {
@@ -44,6 +45,7 @@ export function useGhostSession({
   role,
   onTranscriptUpdate,
   onViewChange,
+  onWhisperReceived,
 }: UseGhostSessionOptions): UseGhostSessionReturn {
   const [session, setSession] = useState<GhostSession | null>(null);
   const [isConnected, setIsConnected] = useState(false);
@@ -133,6 +135,48 @@ export function useGhostSession({
           }
         }
       )
+      .on('broadcast', { event: 'WHISPER_MSG' }, (payload) => {
+        // Whisper received - play chime and speak
+        if (role === 'senior' && payload.payload?.text) {
+          const text = payload.payload.text as string;
+
+          // Play soft chime
+          try {
+            const chime = new Audio('https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3');
+            chime.volume = 0.3;
+            chime.play().catch(() => {
+              // Fallback if audio fails
+              console.log('Chime play failed');
+            });
+          } catch (e) {
+            console.log('Chime error:', e);
+          }
+
+          // Speak the whisper
+          if ('speechSynthesis' in window) {
+            window.speechSynthesis.cancel(); // Stop current speech
+            const utterance = new SpeechSynthesisUtterance(text);
+            
+            // Select best voice
+            const voices = window.speechSynthesis.getVoices();
+            const preferredVoice = voices.find(v => v.name.includes('Google') && v.lang.includes('en')) ||
+                                   voices.find(v => v.name.includes('Samantha')) ||
+                                   voices.find(v => v.lang.startsWith('en'));
+            if (preferredVoice) {
+              utterance.voice = preferredVoice;
+            }
+
+            utterance.rate = 0.9;
+            utterance.pitch = 1.1;
+            window.speechSynthesis.speak(utterance);
+          }
+
+          // Trigger callback
+          if (onWhisperReceived) {
+            onWhisperReceived(text);
+          }
+        }
+      })
       .subscribe((status) => {
         if (status === 'SUBSCRIBED') {
           setIsConnected(true);
@@ -147,7 +191,7 @@ export function useGhostSession({
     return () => {
       realtimeChannel.unsubscribe();
     };
-  }, [roomId, role, onTranscriptUpdate, onViewChange]);
+  }, [roomId, role, onTranscriptUpdate, onViewChange, onWhisperReceived]);
 
   // Update transcript (called by Senior)
   const updateTranscript = useCallback(

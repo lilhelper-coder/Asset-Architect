@@ -139,25 +139,22 @@ export default function Dashboard() {
 
           {/* Right Column */}
           <div className="space-y-6">
-            {/* Ghost Mode QR Code Card */}
+            {/* Whisper Link QR Code Card */}
             {user?.id && (
               <Card className="p-6">
                 <div className="flex items-center gap-2 mb-4">
-                  <QrCode className="w-5 h-5 text-teal-600" />
-                  <h3 className="text-lg font-semibold">Ghost Mode (Family Link)</h3>
+                  <QrCode className="w-5 h-5 text-gold" />
+                  <h3 className="text-lg font-whisper tracking-breathe">Whisper Link</h3>
                 </div>
                 <div className="bg-white p-4 rounded-lg inline-block">
                   <QRCode
-                    value={`${window.location.origin}/ghost/${user.id}`}
+                    value={`${window.location.origin}/whisper/${user.id}`}
                     size={200}
                     level="M"
                   />
                 </div>
-                <p className="text-sm text-muted-foreground mt-4">
-                  <strong>Scan this with your phone</strong> to join this session and help in real-time
-                </p>
-                <p className="text-xs text-muted-foreground mt-2">
-                  Family members can see your conversation and send messages to help you
+                <p className="text-sm text-muted-foreground mt-4 font-light tracking-breathe">
+                  Scan to send a Whisper. Be there instantly.
                 </p>
               </Card>
             )}

@@ -55,21 +55,21 @@ export function LivingOrb({ state, onTap, disabled = false, showHint = false }: 
     },
   } : {};
 
-  // Glow effect for listening state - Christmas colors (Red/Gold/White)
+  // Glow effect for listening state - Deep Christmas colors (Gold/Ember)
   const getGlowStyle = () => {
     switch (state) {
       case "listening":
         return {
-          filter: "drop-shadow(0 0 25px rgba(220, 38, 38, 0.6)) drop-shadow(0 0 45px rgba(234, 179, 8, 0.4)) drop-shadow(0 0 60px rgba(255, 255, 255, 0.2))",
+          filter: "drop-shadow(0 0 30px rgba(250, 173, 20, 0.6)) drop-shadow(0 0 60px rgba(212, 56, 13, 0.4))",
           transform: "scale(1.08)",
         };
       case "speaking":
         return {
-          filter: "drop-shadow(0 0 20px rgba(220, 38, 38, 0.5)) drop-shadow(0 0 40px rgba(234, 179, 8, 0.3))",
+          filter: "drop-shadow(0 0 25px rgba(250, 173, 20, 0.5)) drop-shadow(0 0 50px rgba(212, 56, 13, 0.3))",
         };
       default:
         return {
-          filter: "drop-shadow(0 0 15px rgba(220, 38, 38, 0.3)) drop-shadow(0 0 30px rgba(234, 179, 8, 0.2))",
+          filter: "drop-shadow(0 0 20px rgba(250, 173, 20, 0.3)) drop-shadow(0 0 40px rgba(212, 56, 13, 0.2))",
         };
     }
   };
@@ -78,13 +78,13 @@ export function LivingOrb({ state, onTap, disabled = false, showHint = false }: 
   const glowBreatheAnimation = shouldReduceMotion ? {} : {
     filter: state === "idle" 
       ? [
-          "drop-shadow(0 0 15px rgba(220, 38, 38, 0.3)) drop-shadow(0 0 30px rgba(234, 179, 8, 0.2))",
-          "drop-shadow(0 0 20px rgba(220, 38, 38, 0.5)) drop-shadow(0 0 40px rgba(234, 179, 8, 0.3))",
-          "drop-shadow(0 0 15px rgba(220, 38, 38, 0.3)) drop-shadow(0 0 30px rgba(234, 179, 8, 0.2))",
+          "drop-shadow(0 0 20px rgba(250, 173, 20, 0.3)) drop-shadow(0 0 40px rgba(212, 56, 13, 0.2))",
+          "drop-shadow(0 0 30px rgba(250, 173, 20, 0.4)) drop-shadow(0 0 60px rgba(212, 56, 13, 0.3))",
+          "drop-shadow(0 0 20px rgba(250, 173, 20, 0.3)) drop-shadow(0 0 40px rgba(212, 56, 13, 0.2))",
         ]
       : undefined,
     transition: {
-      duration: 4,
+      duration: 5,
       repeat: Infinity,
       ease: "easeInOut",
     },

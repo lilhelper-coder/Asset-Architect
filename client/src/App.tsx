@@ -102,6 +102,7 @@ function Router() {
         <Route path="/claim/:code" component={SeniorInterface} />
         <Route path="/mirror" component={MirrorPage} />
         <Route path="/ghost/:userId" component={HelperPage} />
+        <Route path="/whisper/:userId" component={HelperPage} />
         <Route path="/dashboard" component={Dashboard} />
         <Route path="/dashboard/:section" component={Dashboard} />
         <Route component={NotFound} />
