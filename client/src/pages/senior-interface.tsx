@@ -118,15 +118,15 @@ export default function SeniorInterface() {
 
         {/* Hero Headline */}
         <motion.div
-          className="text-center max-w-3xl mb-12"
+          className="text-center max-w-3xl mb-12 mt-16"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6, duration: 1 }}
         >
           <h2 
-            className="text-6xl md:text-7xl font-thin tracking-tight mb-8"
+            className="text-4xl md:text-5xl font-light tracking-tight mb-6 text-transparent bg-clip-text"
             style={{
-              background: "linear-gradient(to bottom, #99f6e4 0%, #22d3ee 100%)",
+              backgroundImage: "linear-gradient(to bottom, #ffffff 0%, rgba(255,255,255,0.5) 100%)",
               WebkitBackgroundClip: "text",
               WebkitTextFillColor: "transparent",
               backgroundClip: "text",
@@ -135,10 +135,19 @@ export default function SeniorInterface() {
             Give the Gift of Connection
           </h2>
           <p 
-            className="text-xl font-light tracking-wide mb-12"
-            style={{ color: "rgba(153, 246, 228, 0.6)" }}
+            className="text-lg font-light tracking-wide mb-3"
+            style={{ color: "rgba(153, 246, 228, 0.8)" }}
           >
-            No apps. No setup. Just presence.
+            Be there. Even when you're not.
+          </p>
+          <p 
+            className="text-xs font-light uppercase mb-12"
+            style={{
+              color: "rgba(34, 211, 238, 0.6)",
+              letterSpacing: "0.3em",
+            }}
+          >
+            AI Companion • Family Connected • Zero Setup
           </p>
 
           {/* Instant Access QR + Link */}
@@ -146,30 +155,88 @@ export default function SeniorInterface() {
         </motion.div>
       </section>
 
-      {/* Whisper Teaser - Minimal */}
-      <section className="py-24 px-6">
+      {/* Dual Core Features - Floating Icons */}
+      <section className="py-32 px-6">
         <motion.div
-          className="max-w-2xl mx-auto text-center"
+          className="max-w-4xl mx-auto"
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
           viewport={{ once: true }}
         >
-          <p 
-            className="text-2xl md:text-3xl font-light tracking-tight mb-4"
-            style={{ color: "rgba(153, 246, 228, 1)" }}
-          >
-            Whisper in her ear from 3,000 miles away.
-          </p>
-          <p 
-            className="text-sm font-light uppercase"
-            style={{
-              color: "rgba(153, 246, 228, 0.4)",
-              letterSpacing: "0.2em",
-            }}
-          >
-            Real-time touch • Voice connection • No apps
-          </p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
+            {/* AI Listening */}
+            <div className="text-center">
+              <div 
+                className="inline-block mb-4"
+                style={{
+                  filter: "drop-shadow(0 0 15px rgba(34, 211, 238, 0.4))",
+                }}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="48"
+                  height="48"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="text-cyan-400"
+                >
+                  <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/>
+                  <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+                  <line x1="12" x2="12" y1="19" y2="22"/>
+                </svg>
+              </div>
+              <p 
+                className="text-lg font-light"
+                style={{ color: "rgba(153, 246, 228, 0.6)" }}
+              >
+                Always Listening
+              </p>
+            </div>
+
+            {/* Human Touch */}
+            <div className="text-center">
+              <div 
+                className="inline-block mb-4"
+                style={{
+                  filter: "drop-shadow(0 0 15px rgba(34, 211, 238, 0.4))",
+                }}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="48"
+                  height="48"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="text-cyan-400"
+                >
+                  <path d="M2 12C2 6.5 6.5 2 12 2a10 10 0 0 1 8 4"/>
+                  <path d="M5 19.5C5.5 18 6 15 6 12c0-.7.12-1.37.34-2"/>
+                  <path d="M17.29 21.02c.12-.6.43-2.3.5-3.02"/>
+                  <path d="M12 10a2 2 0 0 0-2 2c0 1.02-.1 2.51-.26 4"/>
+                  <path d="M8.65 22c.21-.66.45-1.32.57-2"/>
+                  <path d="M14 13.12c0 2.38 0 6.38-1 8.88"/>
+                  <path d="M2 16h.01"/>
+                  <path d="M21.8 16c.2-2 .131-5.354 0-6"/>
+                  <path d="M9 6.8a6 6 0 0 1 9 5.2c0 .47 0 1.17-.02 2"/>
+                </svg>
+              </div>
+              <p 
+                className="text-lg font-light"
+                style={{ color: "rgba(153, 246, 228, 0.6)" }}
+              >
+                Human Touch
+              </p>
+            </div>
+          </div>
         </motion.div>
       </section>
 
