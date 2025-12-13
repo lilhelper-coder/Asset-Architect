@@ -106,24 +106,24 @@ export default function SeniorInterface() {
       {/* Hero Section */}
       <section 
         className="flex flex-col items-center px-6 relative"
-        style={{ minHeight: "100vh", paddingTop: "12vh" }}
+        style={{ minHeight: "100vh", paddingTop: "20vh" }}
         aria-label="LilHelper Voice Assistant"
       >
         {/* Top Right Sign In */}
         <motion.button
-          className="absolute top-6 right-6 z-20 transition-colors font-light tracking-luxury"
+          className="absolute top-6 right-6 z-20 transition-all font-light tracking-wide"
           style={{
-            fontSize: "14px",
+            fontSize: "13px",
             fontWeight: "300",
-            color: "rgba(34, 211, 238, 0.7)",
-            letterSpacing: "0.02em",
+            color: "rgba(113, 113, 122, 0.8)", // zinc-500
+            letterSpacing: "0.05em",
           }}
           onClick={() => setIsSignInOpen(true)}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1.5, duration: 0.8 }}
-          onMouseEnter={(e) => e.currentTarget.style.color = "rgba(34, 211, 238, 1)"}
-          onMouseLeave={(e) => e.currentTarget.style.color = "rgba(34, 211, 238, 0.7)"}
+          onMouseEnter={(e) => e.currentTarget.style.color = "rgba(228, 228, 231, 1)"} // zinc-200
+          onMouseLeave={(e) => e.currentTarget.style.color = "rgba(113, 113, 122, 0.8)"}
           aria-label="Sign in"
         >
           Sign In
@@ -134,7 +134,7 @@ export default function SeniorInterface() {
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 1.2, ease: "easeOut" }}
-          className="mb-12"
+          className="mb-16"
         >
           <ChristmasOrb 
             state={orbState} 
@@ -153,9 +153,9 @@ export default function SeniorInterface() {
           transition={{ delay: 0.6, duration: 1 }}
         >
           <h2 
-            className="text-6xl md:text-7xl font-medium tracking-tight mb-6 text-transparent bg-clip-text"
+            className="text-6xl md:text-7xl font-thin tracking-tight mb-8 text-transparent bg-clip-text"
             style={{
-              backgroundImage: "linear-gradient(to bottom, #ffffff 0%, rgba(255,255,255,0.6) 100%)",
+              backgroundImage: "linear-gradient(to bottom right, #fafafa 0%, #71717a 100%)", // zinc-50 to zinc-500
               WebkitBackgroundClip: "text",
               WebkitTextFillColor: "transparent",
               backgroundClip: "text",
@@ -163,18 +163,23 @@ export default function SeniorInterface() {
           >
             Give the Gift of Connection
           </h2>
-          <p className="text-xl text-zinc-500 font-light tracking-wide mb-10">
+          <p className="text-xl text-zinc-500 font-light tracking-wide mb-12">
             No apps. No setup. Just presence.
           </p>
 
-          {/* Glass Pill CTA */}
+          {/* Glass Pill CTA - Hairline Style */}
           <Button
             onClick={handleFounderCTA}
-            className="backdrop-blur-xl bg-white/5 border border-white/20 hover:bg-white/10 text-white rounded-full px-10 py-4 font-light tracking-luxury transition-all duration-300"
+            className="backdrop-blur-xl bg-white/5 text-zinc-400 hover:text-zinc-200 rounded-full px-10 py-4 font-light tracking-wide transition-all duration-300"
+            style={{
+              border: "0.5px solid rgba(255, 255, 255, 0.2)",
+            }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.boxShadow = "0 0 30px rgba(34, 211, 238, 0.3)";
+              e.currentTarget.style.borderColor = "rgba(34, 211, 238, 0.3)";
+              e.currentTarget.style.boxShadow = "0 0 20px rgba(34, 211, 238, 0.15)";
             }}
             onMouseLeave={(e) => {
+              e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.2)";
               e.currentTarget.style.boxShadow = "0 0 0 rgba(34, 211, 238, 0)";
             }}
           >
@@ -196,23 +201,24 @@ export default function SeniorInterface() {
           viewport={{ once: true }}
         >
           <div 
-            className="backdrop-blur-xl border border-white/10 rounded-3xl p-12"
+            className="backdrop-blur-2xl rounded-3xl p-12"
             style={{
-              background: "rgba(255, 255, 255, 0.03)",
+              background: "rgba(0, 0, 0, 0.4)",
+              border: "0.5px solid rgba(255, 255, 255, 0.1)",
             }}
           >
-            <h3 className="text-3xl font-light tracking-luxury text-white text-center mb-8">
+            <h3 className="text-3xl font-thin tracking-tight text-zinc-200 text-center mb-8">
               Pair Your Phone
             </h3>
 
             {userId ? (
               <>
                 <div 
-                  className="p-6 rounded-2xl mx-auto w-fit border"
+                  className="p-6 rounded-2xl mx-auto w-fit"
                   style={{
                     background: "#000000",
-                    borderColor: "rgba(34, 211, 238, 0.3)",
-                    boxShadow: "0 0 30px rgba(34, 211, 238, 0.15)",
+                    border: "0.5px solid rgba(34, 211, 238, 0.3)",
+                    boxShadow: "0 0 30px rgba(34, 211, 238, 0.1)",
                   }}
                 >
                   <img 
@@ -230,19 +236,35 @@ export default function SeniorInterface() {
                     await navigator.clipboard.writeText(url);
                     alert('Link copied! Send it to your family.');
                   }}
-                  className="mt-8 w-full backdrop-blur-md bg-white/5 border border-white/10 hover:bg-white/10 text-white rounded-full px-6 py-3 font-light tracking-luxury transition-all duration-300"
+                  className="mt-8 w-full backdrop-blur-md rounded-full px-6 py-3 font-light tracking-wide transition-all duration-300 text-zinc-400 hover:text-zinc-200"
+                  style={{
+                    background: "rgba(255, 255, 255, 0.05)",
+                    border: "0.5px solid rgba(255, 255, 255, 0.1)",
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.borderColor = "rgba(34, 211, 238, 0.3)";
+                    e.currentTarget.style.boxShadow = "0 0 15px rgba(34, 211, 238, 0.1)";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.1)";
+                    e.currentTarget.style.boxShadow = "0 0 0 rgba(34, 211, 238, 0)";
+                  }}
                 >
                   Copy Link 🔗
                 </button>
               </>
             ) : (
               <div className="text-center">
-                <p className="text-slate-400 font-light mb-6">
+                <p className="text-zinc-500 font-light mb-6">
                   Sign in to get your personal pairing link
                 </p>
                 <Button
                   onClick={() => setIsSignInOpen(true)}
-                  className="backdrop-blur-md bg-white/5 border border-white/10 hover:bg-white/10 text-white rounded-full px-8 py-3 font-light tracking-luxury transition-all duration-300"
+                  className="backdrop-blur-md rounded-full px-8 py-3 font-light tracking-wide transition-all duration-300 text-zinc-400 hover:text-zinc-200"
+                  style={{
+                    background: "rgba(255, 255, 255, 0.05)",
+                    border: "0.5px solid rgba(255, 255, 255, 0.1)",
+                  }}
                 >
                   Sign In
                 </Button>
@@ -261,19 +283,19 @@ export default function SeniorInterface() {
           transition={{ duration: 0.8 }}
           viewport={{ once: true }}
         >
-          <p className="text-2xl md:text-3xl font-light tracking-luxury text-white mb-4">
+          <p className="text-2xl md:text-3xl font-light tracking-tight text-zinc-300 mb-4">
             Whisper in her ear from 3,000 miles away.
           </p>
-          <p className="text-sm text-slate-500 font-light tracking-luxury">
-            Real-time touch. Voice connection. No apps required.
+          <p className="text-sm text-zinc-600 font-light tracking-widest uppercase">
+            Real-time touch • Voice connection • No apps
           </p>
         </motion.div>
       </section>
 
       {/* Footer */}
       <footer className="py-12 text-center">
-        <p className="text-xs font-light tracking-luxury text-slate-600">
-          Made with love for families.
+        <p className="text-xs font-light tracking-widest text-zinc-700 uppercase">
+          Made with love for families
         </p>
       </footer>
 

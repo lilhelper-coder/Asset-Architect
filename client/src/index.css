@@ -1,13 +1,13 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* PURE VOID - DEEP SPACE BLACK */
+/* DARK GLASS - ANTI-GLARE AESTHETIC */
 html, body, #root {
   background-color: #050505 !important;
-  color: #ffffff;
+  color: #e4e4e7; /* zinc-200 - Easy on eyes */
 }
 
 .bg-void {
@@ -16,14 +16,21 @@ html, body, #root {
 
 body {
   font-family: 'Inter', sans-serif;
-  font-weight: 300;
+  font-weight: 300; /* Light by default */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  letter-spacing: 0.01em; /* Subtle breathability */
+}
+
+/* High-End Typography Defaults */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 300; /* Light headings */
+  letter-spacing: -0.02em; /* Tight tracking for size */
 }
 
 ::selection {
-  background: rgba(34, 211, 238, 0.3);
-  color: white;
+  background: rgba(34, 211, 238, 0.2);
+  color: #e4e4e7;
 }
 
 /* LIGHT MODE */

@@ -42,6 +42,7 @@ export default {
         sans: ["'Inter'", "sans-serif"],
       },
       fontWeight: {
+        thin: "200",
         light: "300",
         normal: "400",
         medium: "500",
