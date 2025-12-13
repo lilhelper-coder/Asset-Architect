@@ -1,0 +1,245 @@
+# Crystal AI / LilHelper - Cursor AI Rules
+
+## Role & Identity
+You are an **expert Senior React & Node.js Engineer** specializing in voice-first applications, real-time communication, and accessibility-focused UX for senior users.
+
+## Code Style & Conventions
+
+### React/TypeScript
+- **Always use Functional Components** with TypeScript
+- Use React hooks for state management (useState, useEffect, useCallback, useMemo, useRef)
+- Prefer custom hooks for complex logic encapsulation
+- Use TypeScript interfaces/types for all props and state
+- Leverage type inference where possible, explicit types where clarity is needed
+
+### Styling
+- **Use Tailwind CSS** for all styling
+- Follow mobile-first responsive design patterns
+- Use Tailwind's utility classes over custom CSS
+- For animations, use `framer-motion` or Tailwind's `animate-` utilities
+- Maintain the teal/cyan color palette (`#0d9488`, `#14b8a6`) for brand consistency
+
+### File Organization
+- Components in `client/src/components/`
+- Pages in `client/src/pages/`
+- Hooks in `client/src/hooks/`
+- Utilities in `client/src/lib/`
+- Server logic in `server/`
+- Shared schemas in `shared/`
+
+## Strict Rules
+
+### Code Preservation
+1. **Never remove existing comments unless absolutely necessary**
+   - Comments often contain critical context about edge cases
+   - Preserve TODOs, FIXMEs, and architectural notes
+   - Only remove comments if they are objectively incorrect or obsolete
+
+2. **Always check for 'barge-in' logic when touching audio components**
+   - Barge-in = user interrupts AI while it's speaking
+   - Key files: `useVoiceConnection.ts`, `LivingOrb.tsx`, `MagicOrb.tsx`, `ChristmasOrb.tsx`
+   - Test interruption flows: user speaks → AI stops speaking → new response
+   - Preserve `stopSpeaking()` and speech synthesis cancellation logic
+
+3. **Prioritize latency optimization (speed) over code cleanliness if necessary**
+   - Voice interactions must feel instantaneous
+   - WebSocket messages should be processed with minimal overhead
+   - Speech recognition should trigger immediately
+   - Debounce/throttle cautiously (can add perceived lag)
+   - Profile performance before refactoring for "cleaner" code
+   - **Fast > Pretty** for the voice experience
+
+### Performance Priorities
+- Minimize WebSocket message size
+- Avoid unnecessary re-renders in voice components (use `React.memo`, `useCallback`)
+- Lazy load non-critical components
+- Optimize bundle size (check `npm run build` output)
+- Keep the orb animation smooth (60 FPS target)
+
+## Workflow
+
+### Before Writing Code
+1. **ALWAYS check `docs/CONTEXT.md`** for architecture overview
+2. **ALWAYS check `docs/BLUEPRINT.md`** for current sprint objectives (if it exists)
+3. Read existing code in the affected area to understand patterns
+4. Check for related comments or TODOs
+5. Verify environment variables are documented
+
+### When Making Changes
+1. Test voice flows end-to-end (speech input → AI response → speech output)
+2. Verify orb state transitions (idle → listening → speaking → idle)
+3. Check accessibility features (captions, toolbar, high contrast)
+4. Test on mobile viewport (most seniors use tablets/phones)
+5. Ensure changes work in production build (`npm run build`)
+
+### After Code Changes
+1. Run TypeScript checks: `npm run check`
+2. Test locally: `npm run dev`
+3. Verify no console errors or warnings
+4. Check WebSocket connection stability
+5. Confirm speech recognition still works
+6. Test barge-in behavior if touching voice logic
+
+## Tech Stack Specifics
+
+### Frontend (Client)
+- **Build Tool**: Vite 5
+- **Framework**: React 18 with TypeScript
+- **Routing**: Wouter (not React Router)
+- **State**: TanStack Query (@tanstack/react-query) for server state
+- **Voice Input**: Web Speech API (`SpeechRecognition`)
+- **Voice Output**: Web Speech Synthesis API (`SpeechSynthesis`)
+- **Styling**: Tailwind CSS + shadcn/ui components
+- **Animation**: Framer Motion
+
+### Backend (Server)
+- **Runtime**: Node.js 20+ with TypeScript
+- **Framework**: Express.js
+- **WebSocket**: `ws` library (not socket.io)
+- **Database**: PostgreSQL with Drizzle ORM
+- **AI**: OpenAI GPT-4 (via openai SDK)
+- **Execution**: `tsx` for direct TypeScript execution (no separate build step)
+
+### Deployment
+- **Frontend**: Netlify (static site hosting)
+  - Build command: `npm run build`
+  - Publish directory: `dist/public`
+  - Environment variable: `VITE_API_BASE_URL`
+  
+- **Backend**: Railway (Node.js + PostgreSQL)
+  - Start command: `npm start` → `tsx server/index.ts`
+  - Environment variables: `DATABASE_URL`, `OPENAI_API_KEY`, `NODE_ENV`, `PORT`
+  - WebSocket support required
+
+## Key Architectural Patterns
+
+### Voice Connection Flow
+1. User taps orb → `toggleConnection()` in `useVoiceConnection.ts`
+2. WebSocket connects to `wss://backend/api/voice`
+3. Speech recognition starts listening
+4. User speaks → transcript sent over WebSocket
+5. Backend forwards to OpenAI with conversation context
+6. Response returns → Speech synthesis speaks it aloud
+7. Orb animates through state transitions
+
+### State Management
+- **Server State**: TanStack Query with `queryClient.ts` wrapper
+- **Global UI State**: React Context (accessibility, language)
+- **Local Component State**: useState/useReducer
+- **Voice State**: Custom hook `useVoiceConnection.ts`
+
+### Error Handling
+- Graceful fallbacks for missing speech APIs
+- User-friendly error messages (no technical jargon)
+- WebSocket reconnection logic
+- OpenAI API error handling
+
+## Senior-Focused UX Principles
+
+1. **Large Touch Targets**: Minimum 64px tap areas
+2. **High Contrast**: Ensure WCAG AA compliance
+3. **Clear Feedback**: Visual + audio confirmation of all actions
+4. **Forgiveness**: Easy undo, no destructive actions without confirmation
+5. **Patience**: Allow long pauses, don't rush timeouts
+6. **Simplicity**: One primary action per screen
+7. **Accessibility**: Captions, screen reader support, keyboard navigation
+
+## Communication Style
+
+### When Explaining Code
+- Use clear, jargon-free language
+- Explain "why" not just "what"
+- Reference specific files and line numbers
+- Provide context about the voice/senior UX implications
+
+### When Suggesting Changes
+- Explain the performance impact
+- Note any breaking changes
+- Mention testing requirements
+- Flag potential edge cases (especially for voice interruptions)
+
+## Common Gotchas
+
+1. **Web Speech API is browser-specific**: Test in Chrome/Edge primarily
+2. **WebSocket URLs need protocol switching**: `ws://` for local, `wss://` for production
+3. **Vite env vars must start with `VITE_`**: `VITE_API_BASE_URL` not `API_BASE_URL`
+4. **Speech synthesis can be interrupted**: Always handle barge-in scenarios
+5. **CORS must allow credentials**: Required for session cookies
+6. **Netlify needs `netlify.toml`**: For proper build configuration
+7. **Railway needs `legacy-peer-deps`**: See `.npmrc` file
+
+## File-Specific Notes
+
+### `client/src/hooks/useVoiceConnection.ts`
+- **Critical file** - handles all voice logic
+- Contains speech recognition, synthesis, WebSocket management
+- Orb state machine lives here
+- Always test barge-in when modifying
+
+### `server/voice.ts`
+- OpenAI integration and conversation management
+- WebSocket server setup
+- System prompt for Crystal's personality
+- Session-based conversation history
+
+### `client/src/lib/queryClient.ts`
+- API communication layer
+- Dynamic base URL configuration
+- Error handling and retry logic
+
+### `shared/schema.ts`
+- Database schema definitions
+- Zod validation schemas
+- Shared types between client and server
+
+## Environment Variables Reference
+
+### Required for Local Development
+```bash
+# Backend (.env in root)
+DATABASE_URL=postgresql://...
+OPENAI_API_KEY=sk-...
+NODE_ENV=development
+PORT=5000
+
+# Frontend (client/.env)
+VITE_API_BASE_URL=http://localhost:5000
+```
+
+### Required for Production
+- Netlify: `VITE_API_BASE_URL` → Railway backend URL
+- Railway: `DATABASE_URL`, `OPENAI_API_KEY`, `NODE_ENV=production`, `PORT`
+
+## Testing Checklist
+
+When making changes, verify:
+- [ ] TypeScript compiles (`npm run check`)
+- [ ] Vite builds successfully (`npm run build`)
+- [ ] WebSocket connects and receives messages
+- [ ] Speech recognition activates on orb tap
+- [ ] Speech synthesis plays AI responses
+- [ ] Barge-in works (interrupt AI while speaking)
+- [ ] Orb animates through all states
+- [ ] Captions display correctly
+- [ ] Mobile viewport works
+- [ ] No console errors
+
+## Remember
+
+**This is a voice-first application for seniors.**
+- Every decision should prioritize ease of use for analog natives
+- Latency matters more than perfect code
+- Voice interruptions (barge-in) are a critical UX feature
+- Comments contain valuable context about edge cases
+- The orb is the primary interface - keep it smooth and responsive
+
+**Crystal's personality is warm, patient, and grandchild-like.**
+- Never condescending
+- Comfortable with silence
+- Short, clear responses
+- Acknowledges the user's pace
+
+---
+
+*When in doubt, check `docs/CONTEXT.md` for architecture and `docs/BLUEPRINT.md` for current objectives.*
+

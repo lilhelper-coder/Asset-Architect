@@ -305,6 +305,15 @@
   --orb-status-color: hsl(var(--orb-hue), 55%, 48%);
   --orb-edge-color: hsla(var(--orb-deep-hue), 45%, 12%, 0.9);
   transition: --orb-hue 0.8s ease-out, --orb-saturation 0.8s ease-out;
+  
+  /* GLASSMORPHISM EFFECT */
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  border-radius: 50%;
+  padding: 2rem;
 }
 
 .living-orb-container.state-idle {

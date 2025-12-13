@@ -1,18 +1,38 @@
 import { WebSocketServer, WebSocket } from "ws";
 import type { Server } from "http";
-import OpenAI from "openai";
+import { GoogleGenerativeAI, HarmCategory, HarmBlockThreshold } from "@google/generative-ai";
 
-let openaiClient: OpenAI | null = null;
+let genAI: GoogleGenerativeAI | null = null;
 
-function getOpenAIClient(): OpenAI {
-  if (!openaiClient) {
-    if (!process.env.OPENAI_API_KEY) {
-      throw new Error("OPENAI_API_KEY environment variable is not set");
+function getGeminiClient(): GoogleGenerativeAI {
+  if (!genAI) {
+    if (!process.env.GEMINI_API_KEY) {
+      throw new Error("GEMINI_API_KEY environment variable is not set");
     }
-    openaiClient = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+    genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
   }
-  return openaiClient;
+  return genAI;
 }
+
+// Safety settings to prevent blocking health/wellness topics
+const safetySettings = [
+  {
+    category: HarmCategory.HARM_CATEGORY_HARASSMENT,
+    threshold: HarmBlockThreshold.BLOCK_ONLY_HIGH,
+  },
+  {
+    category: HarmCategory.HARM_CATEGORY_HATE_SPEECH,
+    threshold: HarmBlockThreshold.BLOCK_ONLY_HIGH,
+  },
+  {
+    category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT,
+    threshold: HarmBlockThreshold.BLOCK_ONLY_HIGH,
+  },
+  {
+    category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT,
+    threshold: HarmBlockThreshold.BLOCK_ONLY_HIGH,
+  },
+];
 
 interface VoiceSession {
   ws: WebSocket;
@@ -63,28 +83,33 @@ async function generateResponse(session: VoiceSession, userMessage: string): Pro
     
     session.conversationHistory.push({ role: "user", content: userMessage });
     
+    // Keep only last 10 messages for context
     if (session.conversationHistory.length > 10) {
       session.conversationHistory = session.conversationHistory.slice(-10);
     }
     
-    const openai = getOpenAIClient();
-    const response = await openai.chat.completions.create({
-      model: "gpt-4o",
-      messages: [
-        { role: "system", content: systemPrompt },
-        ...session.conversationHistory,
-      ],
-      max_tokens: 150,
+    const genAI = getGeminiClient();
+    const model = genAI.getGenerativeModel({ 
+      model: "gemini-1.5-flash",
+      safetySettings,
     });
     
-    const assistantMessage = response.choices[0]?.message?.content || 
-      "I'm here with you. Take your time.";
+    // Build conversation history for Gemini
+    const conversationText = session.conversationHistory.map(msg => 
+      `${msg.role === "user" ? "User" : "Assistant"}: ${msg.content}`
+    ).join("\n");
+    
+    const prompt = `${systemPrompt}\n\nConversation:\n${conversationText}\n\nAssistant:`;
+    
+    const result = await model.generateContent(prompt);
+    const response = result.response;
+    const assistantMessage = response.text() || "I'm here with you. Take your time.";
     
     session.conversationHistory.push({ role: "assistant", content: assistantMessage });
     
     return assistantMessage;
   } catch (error) {
-    console.error("OpenAI API error:", error);
+    console.error("Gemini API error:", error);
     return "I'm just resting for a moment. We're in no rush.";
   }
 }

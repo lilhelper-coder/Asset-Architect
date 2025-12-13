@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X } from "lucide-react";
-import { SiGoogle, SiFacebook, SiApple } from "react-icons/si";
+import { X, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { supabase, isSupabaseAvailable } from "@/lib/supabase";
+import { useToast } from "@/hooks/use-toast";
 
 interface SignInModalProps {
   isOpen: boolean;
@@ -12,15 +13,58 @@ interface SignInModalProps {
 
 export function SignInModal({ isOpen, onClose }: SignInModalProps) {
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [emailSent, setEmailSent] = useState(false);
+  const { toast } = useToast();
 
-  const handleSocialLogin = (provider: string) => {
-    console.log(`Login with ${provider}`);
-  };
-
-  const handleEmailLogin = (e: React.FormEvent) => {
+  const handleMagicLinkLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Email login:", email);
+    
+    if (!isSupabaseAvailable() || !supabase) {
+      toast({
+        title: "Authentication unavailable",
+        description: "Please contact support.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (!email) {
+      toast({
+        title: "Email required",
+        description: "Please enter your email address.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsLoading(true);
+
+    try {
+      const { error } = await supabase.auth.signInWithOtp({
+        email,
+        options: {
+          emailRedirectTo: window.location.origin,
+        },
+      });
+
+      if (error) throw error;
+
+      setEmailSent(true);
+      toast({
+        title: "Check your email! 📧",
+        description: "We sent you a magic link to log in.",
+      });
+    } catch (error) {
+      console.error("Magic link error:", error);
+      toast({
+        title: "Something went wrong",
+        description: "Please try again or contact support.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -61,88 +105,66 @@ export function SignInModal({ isOpen, onClose }: SignInModalProps) {
               </button>
 
               <h2 
-                className="text-center text-xl font-medium text-gray-800 mb-6"
+                className="text-center text-xl font-medium text-gray-800 mb-2"
                 style={{ fontFamily: "'Poppins', sans-serif" }}
               >
-                Sign in
+                {emailSent ? "Check your email!" : "Sign in to Crystal"}
               </h2>
 
-              <div className="space-y-3">
-                <button
-                  onClick={() => handleSocialLogin("google")}
-                  className="w-full flex items-center justify-center gap-3 px-4 py-3 rounded-lg border border-gray-200 bg-white hover:bg-gray-50 transition-colors"
-                  data-testid="button-google-login"
-                >
-                  <SiGoogle className="w-5 h-5 text-gray-700" />
-                  <span className="text-gray-700 font-medium">Continue with Google</span>
-                </button>
+              {emailSent ? (
+                <div className="text-center space-y-4 py-6">
+                  <Mail className="w-16 h-16 mx-auto text-teal-600" />
+                  <p className="text-gray-600">
+                    We sent a magic link to <strong>{email}</strong>
+                  </p>
+                  <p className="text-sm text-gray-500">
+                    Click the link in your email to log in. You can close this window.
+                  </p>
+                  <Button
+                    onClick={() => setEmailSent(false)}
+                    variant="outline"
+                    className="mt-4"
+                  >
+                    Try different email
+                  </Button>
+                </div>
+              ) : (
+                <>
+                  <p className="text-center text-sm text-gray-600 mb-6">
+                    We'll email you a magic link to log in
+                  </p>
 
-                <button
-                  onClick={() => handleSocialLogin("facebook")}
-                  className="w-full flex items-center justify-center gap-3 px-4 py-3 rounded-lg border border-gray-200 bg-white hover:bg-gray-50 transition-colors"
-                  data-testid="button-facebook-login"
-                >
-                  <SiFacebook className="w-5 h-5 text-[#1877F2]" />
-                  <span className="text-gray-700 font-medium">Continue with Facebook</span>
-                </button>
+                  <form onSubmit={handleMagicLinkLogin} className="space-y-4">
+                    <Input
+                      type="email"
+                      placeholder="Your email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-teal-500 focus:ring-teal-500"
+                      data-testid="input-email"
+                      disabled={isLoading}
+                      required
+                    />
 
-                <button
-                  onClick={() => handleSocialLogin("apple")}
-                  className="w-full flex items-center justify-center gap-3 px-4 py-3 rounded-lg border border-gray-200 bg-white hover:bg-gray-50 transition-colors"
-                  data-testid="button-apple-login"
-                >
-                  <SiApple className="w-5 h-5 text-black" />
-                  <span className="text-gray-700 font-medium">Continue with Apple</span>
-                </button>
-              </div>
+                    <Button
+                      type="submit"
+                      className="w-full py-3 rounded-lg text-white font-medium"
+                      style={{ 
+                        backgroundColor: "#0d9488",
+                        minHeight: "48px",
+                      }}
+                      data-testid="button-login"
+                      disabled={isLoading}
+                    >
+                      {isLoading ? "Sending magic link..." : "Send magic link"}
+                    </Button>
+                  </form>
 
-              <div className="flex items-center gap-4 my-6">
-                <div className="flex-1 h-px bg-gray-200" />
-                <span className="text-sm text-gray-400 font-medium">OR</span>
-                <div className="flex-1 h-px bg-gray-200" />
-              </div>
-
-              <form onSubmit={handleEmailLogin} className="space-y-4">
-                <Input
-                  type="email"
-                  placeholder="Your email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-teal-500 focus:ring-teal-500"
-                  data-testid="input-email"
-                />
-
-                <Input
-                  type="password"
-                  placeholder="Your password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-teal-500 focus:ring-teal-500"
-                  data-testid="input-password"
-                />
-
-                <Button
-                  type="submit"
-                  className="w-full py-3 rounded-lg text-white font-medium"
-                  style={{ 
-                    backgroundColor: "#0d9488",
-                    minHeight: "48px",
-                  }}
-                  data-testid="button-login"
-                >
-                  Login
-                </Button>
-              </form>
-
-              <p className="text-center text-sm text-gray-500 mt-6">
-                Don't have an account?{" "}
-                <button 
-                  className="text-teal-600 hover:text-teal-700 font-medium"
-                  data-testid="link-register"
-                >
-                  Register
-                </button>
-              </p>
+                  <p className="text-center text-xs text-gray-500 mt-6">
+                    By continuing, you agree to Crystal's Terms of Service and Privacy Policy
+                  </p>
+                </>
+              )}
             </motion.div>
           </motion.div>
         </>

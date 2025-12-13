@@ -71,10 +71,98 @@ export function useVoiceConnection(options: VoiceConnectionOptions = {}) {
   const reconnectTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const isCleaningUpRef = useRef(false);
   const optionsRef = useRef(options);
+  const fillerAudioRef = useRef<HTMLAudioElement | null>(null);
+  const fillerSpeechRef = useRef<SpeechSynthesisUtterance | null>(null);
+  const fillerSounds = useRef<string[]>([
+    '/assets/sounds/thinking_1.mp3',
+    '/assets/sounds/thinking_2.mp3',
+    '/assets/sounds/thinking_3.mp3',
+  ]);
+  const audioAvailableRef = useRef<boolean | null>(null); // null = not tested yet
   
   useEffect(() => {
     optionsRef.current = options;
   }, [options]);
+
+  const stopFillerAudio = useCallback(() => {
+    // Stop audio file if playing
+    if (fillerAudioRef.current) {
+      fillerAudioRef.current.pause();
+      fillerAudioRef.current.currentTime = 0;
+    }
+    
+    // Stop speech synthesis fallback if playing
+    if (fillerSpeechRef.current && "speechSynthesis" in window) {
+      window.speechSynthesis.cancel();
+      fillerSpeechRef.current = null;
+    }
+  }, []);
+
+  const playFillerAudioFallback = useCallback(() => {
+    // Fallback: Use speech synthesis with a very short utterance
+    if ("speechSynthesis" in window) {
+      try {
+        const utterance = new SpeechSynthesisUtterance("Hmm");
+        utterance.rate = 1.5; // Faster
+        utterance.pitch = 1.0;
+        utterance.volume = 0.3; // Quiet
+        
+        fillerSpeechRef.current = utterance;
+        window.speechSynthesis.speak(utterance);
+        
+        console.log("Using speech synthesis fallback for filler audio");
+      } catch (err) {
+        console.log("Filler audio fallback also failed:", err);
+      }
+    }
+  }, []);
+
+  const playFillerAudio = useCallback(() => {
+    try {
+      // Stop any existing filler audio
+      stopFillerAudio();
+      
+      // If we've already determined audio files are unavailable, use fallback
+      if (audioAvailableRef.current === false) {
+        playFillerAudioFallback();
+        return;
+      }
+      
+      // Randomly select a thinking sound
+      const randomSound = fillerSounds.current[Math.floor(Math.random() * fillerSounds.current.length)];
+      
+      // Create or reuse audio element
+      if (!fillerAudioRef.current) {
+        fillerAudioRef.current = new Audio();
+        
+        // Set up error handler to detect missing files
+        fillerAudioRef.current.addEventListener('error', () => {
+          console.log("Audio files not found, falling back to speech synthesis");
+          audioAvailableRef.current = false;
+          playFillerAudioFallback();
+        });
+      }
+      
+      fillerAudioRef.current.src = randomSound;
+      fillerAudioRef.current.volume = 0.4;
+      fillerAudioRef.current.loop = true; // Loop until response arrives
+      
+      // Try to play, but catch errors gracefully
+      const playPromise = fillerAudioRef.current.play();
+      
+      if (playPromise !== undefined) {
+        playPromise.catch((err) => {
+          console.log("Audio playback failed, using fallback:", err);
+          audioAvailableRef.current = false;
+          playFillerAudioFallback();
+        });
+      }
+    } catch (err) {
+      console.log("Filler audio error, using fallback:", err);
+      audioAvailableRef.current = false;
+      playFillerAudioFallback();
+    }
+  }, [stopFillerAudio, playFillerAudioFallback]);
 
   const stopListening = useCallback(() => {
     if (recognitionRef.current) {
@@ -105,6 +193,7 @@ export function useVoiceConnection(options: VoiceConnectionOptions = {}) {
     }
     
     stopListening();
+    stopFillerAudio();
     
     if (recognitionRef.current) {
       recognitionRef.current.onresult = null;
@@ -130,7 +219,7 @@ export function useVoiceConnection(options: VoiceConnectionOptions = {}) {
     }
     
     isCleaningUpRef.current = false;
-  }, [stopListening]);
+  }, [stopListening, stopFillerAudio]);
 
   const speakText = useCallback((text: string, isErrorMessage = false) => {
     if ("speechSynthesis" in window) {
@@ -240,6 +329,9 @@ export function useVoiceConnection(options: VoiceConnectionOptions = {}) {
           const data = JSON.parse(event.data);
           
           if (data.type === "transcript") {
+            // Stop filler audio immediately when response arrives
+            stopFillerAudio();
+            
             setState((prev) => ({
               ...prev,
               transcript: [...prev.transcript, { role: data.role, text: data.text }],
@@ -256,6 +348,7 @@ export function useVoiceConnection(options: VoiceConnectionOptions = {}) {
             setState((prev) => ({ ...prev, orbState: "listening" }));
             startListeningInternal();
           } else if (data.type === "error") {
+            stopFillerAudio();
             handleError(data.message || "Let's try a different path.");
           }
         } catch (e) {
@@ -283,6 +376,9 @@ export function useVoiceConnection(options: VoiceConnectionOptions = {}) {
         const transcript = event.results[0][0].transcript;
         
         if (transcript && wsRef.current?.readyState === WebSocket.OPEN) {
+          // CRITICAL: Play filler audio immediately BEFORE sending request
+          playFillerAudio();
+          
           setState((prev) => ({
             ...prev,
             transcript: [...prev.transcript, { role: "user", text: transcript }],
