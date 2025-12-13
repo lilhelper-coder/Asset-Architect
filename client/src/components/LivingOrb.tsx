@@ -104,23 +104,38 @@ export function LivingOrb({ state, onTap, disabled = false, showHint = false }: 
         aria-label={getAriaLabel(state)}
         data-testid="button-magic-orb"
       >
-        {/* Containment Field Ring */}
+        {/* Breathing Data Ring */}
         <motion.div
-          className="absolute inset-0 rounded-full border border-cyan-500/20"
+          className="absolute rounded-full"
           style={{
             width: '340px',
             height: '340px',
+            border: '1px solid rgba(34, 211, 238, 0.3)',
             transform: 'translate(-50%, -50%)',
             left: '50%',
             top: '50%',
           }}
           animate={{
             rotate: 360,
+            opacity: [0.3, 0.5, 0.3],
+            scale: [1, 1.02, 1],
           }}
           transition={{
-            duration: 40,
-            repeat: Infinity,
-            ease: "linear",
+            rotate: {
+              duration: 30,
+              repeat: Infinity,
+              ease: "linear",
+            },
+            opacity: {
+              duration: 3,
+              repeat: Infinity,
+              ease: "easeInOut",
+            },
+            scale: {
+              duration: 3,
+              repeat: Infinity,
+              ease: "easeInOut",
+            },
           }}
         />
 

@@ -92,7 +92,7 @@ export default function SeniorInterface() {
       ref={containerRef}
       className="min-h-screen overflow-y-auto"
       style={{ 
-        background: "#020408",
+        background: "#000000",
         paddingTop: "env(safe-area-inset-top, 0px)",
         paddingBottom: "env(safe-area-inset-bottom, 0px)",
         paddingLeft: "env(safe-area-inset-left, 0px)",
@@ -136,12 +136,9 @@ export default function SeniorInterface() {
           transition={{ delay: 0.3, duration: 1 }}
         >
           <h2 
-            className="text-5xl md:text-7xl font-light tracking-luxury mb-6"
+            className="text-5xl md:text-7xl font-light tracking-luxury mb-6 text-white"
             style={{
-              background: "linear-gradient(135deg, #22d3ee 0%, #0891b2 100%)",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-              backgroundClip: "text",
+              textShadow: "0 0 40px rgba(34, 211, 238, 0.3)",
             }}
           >
             Give the Gift of Connection
@@ -150,31 +147,22 @@ export default function SeniorInterface() {
             No apps. No setup. Just presence.
           </p>
 
-          {/* CTA Button - Inner Light Style */}
-          <motion.div
-            whileHover={{ scale: 1.02 }}
-            transition={{ duration: 0.3 }}
+          {/* Glass Pill Button */}
+          <Button
+            onClick={handleFounderCTA}
+            className="backdrop-blur-md bg-white/5 border border-white/10 hover:bg-white/10 text-white rounded-full px-8 py-3 font-light tracking-luxury transition-all duration-300"
+            style={{
+              boxShadow: "0 0 0 rgba(34, 211, 238, 0.2)",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.boxShadow = "0 0 30px rgba(34, 211, 238, 0.3)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.boxShadow = "0 0 0 rgba(34, 211, 238, 0.2)";
+            }}
           >
-            <Button
-              onClick={handleFounderCTA}
-              className="text-base px-12 py-7 font-light tracking-luxury rounded-full transition-all duration-300 border"
-              style={{
-                background: "rgba(255, 255, 255, 0.05)",
-                borderColor: "rgba(255, 255, 255, 0.1)",
-                boxShadow: "0 0 20px rgba(34, 211, 238, 0.2)",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.background = "rgba(255, 255, 255, 0.1)";
-                e.currentTarget.style.boxShadow = "0 0 30px rgba(34, 211, 238, 0.4)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background = "rgba(255, 255, 255, 0.05)";
-                e.currentTarget.style.boxShadow = "0 0 20px rgba(34, 211, 238, 0.2)";
-              }}
-            >
-              <span className="relative z-10 text-white">Gift Founder's Access - $49</span>
-            </Button>
-          </motion.div>
+            Gift Founder's Access - $49
+          </Button>
         </motion.div>
       </section>
 

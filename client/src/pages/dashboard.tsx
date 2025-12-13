@@ -139,13 +139,12 @@ export default function Dashboard() {
 
           {/* Right Column */}
           <div className="space-y-6">
-            {/* Pair Your Phone - Glass Hardware Card */}
+            {/* Pair Your Phone - Glass Card with Copy Link */}
             {user?.id && (
               <Card 
-                className="p-6 backdrop-blur-2xl border border-white/[0.08]"
+                className="p-6 backdrop-blur-xl border border-white/10"
                 style={{
-                  background: "rgba(255, 255, 255, 0.02)",
-                  boxShadow: "0 8px 32px 0 rgba(0, 0, 0, 0.36)",
+                  background: "rgba(255, 255, 255, 0.05)",
                 }}
               >
                 <div className="flex items-center gap-2 mb-4">
@@ -156,21 +155,33 @@ export default function Dashboard() {
                   Scan to enable Touch & Whisper
                 </p>
                 <div 
-                  className="p-4 rounded-lg inline-block backdrop-blur-xl border border-cyan-500/20"
+                  className="p-4 rounded-lg inline-block backdrop-blur-xl border"
                   style={{
-                    background: "rgba(34, 211, 238, 0.03)",
+                    background: "#000000",
+                    borderColor: "rgba(34, 211, 238, 0.3)",
                     boxShadow: "0 0 20px rgba(34, 211, 238, 0.1)",
                   }}
                 >
                   <img 
-                    src={`https://api.qrserver.com/v1/create-qr-code/?size=200x200&color=22d3ee&bgcolor=020408&data=${encodeURIComponent(`${window.location.origin}/whisper/${user.id}`)}`}
+                    src={`https://api.qrserver.com/v1/create-qr-code/?size=200x200&format=svg&color=22d3ee&bgcolor=000000&data=${encodeURIComponent(`${window.location.origin}/whisper/${user.id}`)}`}
                     alt="Scan to Pair"
                     className="rounded-lg"
-                    style={{ mixBlendMode: 'screen' }}
                     width="200"
                     height="200"
                   />
                 </div>
+                <button
+                  onClick={async () => {
+                    const url = `${window.location.origin}/whisper/${user.id}`;
+                    await navigator.clipboard.writeText(url);
+                    // Show toast (assuming you have toast system)
+                    const event = new CustomEvent('show-toast', { detail: { message: 'Link copied!' } });
+                    window.dispatchEvent(event);
+                  }}
+                  className="mt-4 w-full backdrop-blur-md bg-white/5 border border-white/10 hover:bg-white/10 text-white rounded-full px-4 py-2 font-light tracking-luxury transition-all duration-300 text-sm"
+                >
+                  Copy Link 🔗
+                </button>
               </Card>
             )}
 

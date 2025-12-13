@@ -89,21 +89,21 @@ export function GhostTouchCanvas({ x, y, lastActive }: GhostTouchCanvasProps) {
               }}
             />
 
-            {/* Core Liquid Light */}
+            {/* Core Liquid Light - Massive Blur */}
             <motion.div
               className="absolute bg-cyan-400"
               style={{
-                width: '8px',
-                height: '8px',
+                width: '12px',
+                height: '12px',
                 transform: 'translate(-50%, -50%)',
                 borderRadius: '50%',
+                filter: 'blur(8px)',
+                mixBlendMode: 'screen',
                 boxShadow: `
                   0 0 10px #22d3ee,
                   0 0 20px #22d3ee,
-                  0 0 40px rgba(34, 211, 238, 0.4),
-                  inset 0 0 8px rgba(255, 255, 255, 0.8)
+                  0 0 40px rgba(34, 211, 238, 0.4)
                 `,
-                filter: 'blur(1px)',
               }}
               animate={{
                 scale: [1, 1.3, 1],
