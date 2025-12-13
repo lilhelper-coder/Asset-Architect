@@ -139,24 +139,34 @@ export default function Dashboard() {
 
           {/* Right Column */}
           <div className="space-y-6">
-            {/* Pair Your Phone - QR Code Card */}
+            {/* Pair Your Phone - Glass Hardware Card */}
             {user?.id && (
-              <Card className="p-6 border-teal-500/20" style={{
-                background: "rgba(20, 184, 166, 0.05)",
-                backdropFilter: "blur(12px)",
-              }}>
+              <Card 
+                className="p-6 backdrop-blur-2xl border border-white/[0.08]"
+                style={{
+                  background: "rgba(255, 255, 255, 0.02)",
+                  boxShadow: "0 8px 32px 0 rgba(0, 0, 0, 0.36)",
+                }}
+              >
                 <div className="flex items-center gap-2 mb-4">
-                  <QrCode className="w-5 h-5 text-teal-500" />
-                  <h3 className="text-lg font-light tracking-breathe text-white">Pair Your Phone</h3>
+                  <QrCode className="w-5 h-5 text-cyan-400" />
+                  <h3 className="text-lg font-light tracking-luxury text-white">Pair Your Phone</h3>
                 </div>
-                <p className="text-sm text-slate-400 font-light tracking-breathe mb-4">
+                <p className="text-sm text-slate-400 font-light tracking-luxury mb-4">
                   Scan to enable Touch & Whisper
                 </p>
-                <div className="bg-midnight p-4 rounded-lg inline-block border border-teal-500/30">
+                <div 
+                  className="p-4 rounded-lg inline-block backdrop-blur-xl border border-cyan-500/20"
+                  style={{
+                    background: "rgba(34, 211, 238, 0.03)",
+                    boxShadow: "0 0 20px rgba(34, 211, 238, 0.1)",
+                  }}
+                >
                   <img 
-                    src={`https://api.qrserver.com/v1/create-qr-code/?size=200x200&color=14b8a6&bgcolor=020617&data=${encodeURIComponent(`${window.location.origin}/whisper/${user.id}`)}`}
+                    src={`https://api.qrserver.com/v1/create-qr-code/?size=200x200&color=22d3ee&bgcolor=020408&data=${encodeURIComponent(`${window.location.origin}/whisper/${user.id}`)}`}
                     alt="Scan to Pair"
-                    className="rounded-lg mix-blend-screen"
+                    className="rounded-lg"
+                    style={{ mixBlendMode: 'screen' }}
                     width="200"
                     height="200"
                   />

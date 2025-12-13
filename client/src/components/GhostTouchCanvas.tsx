@@ -11,12 +11,10 @@ export function GhostTouchCanvas({ x, y, lastActive }: GhostTouchCanvasProps) {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
-    // Check if touch is recent (within 2 seconds)
     const now = Date.now();
     const isActive = (now - lastActive) < 2000;
     setIsVisible(isActive);
 
-    // Set up interval to check expiry
     const interval = setInterval(() => {
       const currentTime = Date.now();
       const stillActive = (currentTime - lastActive) < 2000;
@@ -26,7 +24,6 @@ export function GhostTouchCanvas({ x, y, lastActive }: GhostTouchCanvasProps) {
     return () => clearInterval(interval);
   }, [lastActive]);
 
-  // Convert normalized coordinates to screen percentages
   const left = `${x * 100}%`;
   const top = `${y * 100}%`;
 
@@ -43,105 +40,120 @@ export function GhostTouchCanvas({ x, y, lastActive }: GhostTouchCanvasProps) {
               left,
               top,
               transform: 'translate(-50%, -50%)',
+              mixBlendMode: 'screen',
             }}
             initial={{ opacity: 0, scale: 0 }}
             animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.8 }}
+            exit={{ opacity: 0, scale: 0.5 }}
             transition={{ 
-              duration: 0.15,
-              ease: "easeOut"
+              duration: 0.2,
+              ease: [0.16, 1, 0.3, 1],
             }}
           >
-            {/* Outer Cyber Glow Ring */}
-            <div 
-              className="absolute inset-0"
-              style={{
-                width: '80px',
-                height: '80px',
-                transform: 'translate(-50%, -50%)',
-                borderRadius: '50%',
-                background: 'radial-gradient(circle, rgba(45, 212, 191, 0.4) 0%, rgba(34, 211, 238, 0.2) 50%, transparent 70%)',
-                boxShadow: `
-                  0 0 40px rgba(45, 212, 191, 0.6),
-                  0 0 60px rgba(34, 211, 238, 0.4),
-                  0 0 80px rgba(20, 184, 166, 0.3)
-                `,
-                animation: 'pulse 1.5s ease-in-out infinite',
-              }}
-            />
-
-            {/* Middle Glow */}
+            {/* Outer Plasma Aura */}
             <div 
               className="absolute"
               style={{
-                width: '40px',
-                height: '40px',
+                width: '120px',
+                height: '120px',
                 transform: 'translate(-50%, -50%)',
                 borderRadius: '50%',
-                background: 'radial-gradient(circle, rgba(45, 212, 191, 0.8) 0%, rgba(34, 211, 238, 0.4) 70%, transparent 100%)',
-                filter: 'blur(8px)',
+                background: 'radial-gradient(circle, rgba(34, 211, 238, 0.3) 0%, rgba(6, 182, 212, 0.1) 50%, transparent 70%)',
+                filter: 'blur(20px)',
+                animation: 'pulse-plasma 2s ease-in-out infinite',
               }}
             />
 
-            {/* Main Dot - Glowing Teal Spark */}
-            <motion.div
-              className="absolute bg-teal-400"
+            {/* Middle Energy Ring */}
+            <motion.div 
+              className="absolute"
               style={{
-                width: '20px',
-                height: '20px',
+                width: '60px',
+                height: '60px',
                 transform: 'translate(-50%, -50%)',
                 borderRadius: '50%',
-                filter: 'blur(4px)',
+                border: '1px solid rgba(34, 211, 238, 0.4)',
                 boxShadow: `
-                  0 0 20px rgba(45, 212, 191, 1),
-                  0 0 30px rgba(34, 211, 238, 0.8),
-                  inset 0 0 10px rgba(255, 255, 255, 0.5)
+                  0 0 20px rgba(34, 211, 238, 0.4),
+                  inset 0 0 20px rgba(34, 211, 238, 0.2)
                 `,
               }}
               animate={{
                 scale: [1, 1.2, 1],
+                opacity: [0.6, 0.8, 0.6],
               }}
               transition={{
-                duration: 1,
+                duration: 1.5,
                 repeat: Infinity,
                 ease: "easeInOut",
               }}
             />
 
-            {/* Trail Effect - Expanding Ring */}
+            {/* Core Liquid Light */}
             <motion.div
-              className="absolute border-2 border-teal-500/50"
+              className="absolute bg-cyan-400"
               style={{
-                width: '30px',
-                height: '30px',
+                width: '8px',
+                height: '8px',
                 transform: 'translate(-50%, -50%)',
                 borderRadius: '50%',
-                background: 'transparent',
+                boxShadow: `
+                  0 0 10px #22d3ee,
+                  0 0 20px #22d3ee,
+                  0 0 40px rgba(34, 211, 238, 0.4),
+                  inset 0 0 8px rgba(255, 255, 255, 0.8)
+                `,
+                filter: 'blur(1px)',
               }}
-              initial={{ scale: 0.5, opacity: 0 }}
-              animate={{ 
-                scale: 1.5, 
-                opacity: 0,
+              animate={{
+                scale: [1, 1.3, 1],
               }}
               transition={{
                 duration: 0.8,
                 repeat: Infinity,
-                ease: "easeOut",
+                ease: "easeInOut",
               }}
             />
+
+            {/* Trail Rings (screen blend) */}
+            {[0, 1, 2].map((i) => (
+              <motion.div
+                key={i}
+                className="absolute"
+                style={{
+                  width: '40px',
+                  height: '40px',
+                  transform: 'translate(-50%, -50%)',
+                  borderRadius: '50%',
+                  border: '2px solid rgba(34, 211, 238, 0.6)',
+                  mixBlendMode: 'screen',
+                }}
+                initial={{ scale: 0.3, opacity: 0 }}
+                animate={{ 
+                  scale: 2, 
+                  opacity: 0,
+                }}
+                transition={{
+                  duration: 1.2,
+                  repeat: Infinity,
+                  delay: i * 0.4,
+                  ease: "easeOut",
+                }}
+              />
+            ))}
           </motion.div>
         )}
       </AnimatePresence>
 
-      {/* CSS Animation for Pulse */}
+      {/* CSS Animation for Plasma Pulse */}
       <style>{`
-        @keyframes pulse {
+        @keyframes pulse-plasma {
           0%, 100% {
             transform: translate(-50%, -50%) scale(1);
-            opacity: 1;
+            opacity: 0.6;
           }
           50% {
-            transform: translate(-50%, -50%) scale(1.1);
+            transform: translate(-50%, -50%) scale(1.15);
             opacity: 0.8;
           }
         }

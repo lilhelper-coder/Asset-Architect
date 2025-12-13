@@ -98,20 +98,39 @@ export function LivingOrb({ state, onTap, disabled = false, showHint = false }: 
       <motion.button
         onClick={onTap}
         disabled={disabled}
-        className="relative focus:outline-none focus-visible:ring-4 focus-visible:ring-teal-500/50 rounded-full"
+        className="relative focus:outline-none focus-visible:ring-4 focus-visible:ring-cyan-500/50 rounded-full"
         animate={floatAnimation}
         whileTap={{ scale: 0.96 }}
         aria-label={getAriaLabel(state)}
         data-testid="button-magic-orb"
       >
+        {/* Containment Field Ring */}
+        <motion.div
+          className="absolute inset-0 rounded-full border border-cyan-500/20"
+          style={{
+            width: '340px',
+            height: '340px',
+            transform: 'translate(-50%, -50%)',
+            left: '50%',
+            top: '50%',
+          }}
+          animate={{
+            rotate: 360,
+          }}
+          transition={{
+            duration: 40,
+            repeat: Infinity,
+            ease: "linear",
+          }}
+        />
+
         {/* Glassmorphism container */}
         <div 
-          className="relative p-8 rounded-full"
+          className="relative p-8 rounded-full backdrop-blur-xl"
           style={{
-            background: "rgba(20, 184, 166, 0.05)",
-            backdropFilter: "blur(12px)",
-            border: "1px solid rgba(20, 184, 166, 0.2)",
-            boxShadow: "0 8px 32px 0 rgba(6, 182, 212, 0.3)",
+            background: "rgba(255, 255, 255, 0.02)",
+            border: "1px solid rgba(34, 211, 238, 0.15)",
+            boxShadow: "0 8px 32px 0 rgba(0, 0, 0, 0.36), 0 0 20px rgba(34, 211, 238, 0.1)",
           }}
         >
           {/* Christmas Orb Image */}
