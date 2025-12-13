@@ -148,41 +148,64 @@ export function LivingOrb({ state, onTap, disabled = false, showHint = false }: 
             boxShadow: "0 8px 32px 0 rgba(0, 0, 0, 0.36), 0 0 20px rgba(34, 211, 238, 0.1)",
           }}
         >
-          {/* Christmas Orb Image */}
-          <motion.img
-            src="/christmas-orb.png"
-            alt="Crystal"
-            className="w-64 h-64 rounded-full object-cover"
+          {/* Pure CSS Glass Sphere - High-End ChatGPT Style */}
+          <motion.div
+            className="w-[300px] h-[300px] rounded-full relative overflow-hidden"
             animate={{
               ...breatheAnimation,
               ...thinkingAnimation,
               ...(state === "idle" ? glowBreatheAnimation : {}),
             }}
-            style={state !== "idle" ? getGlowStyle() : undefined}
-          />
+            style={{
+              background: "#000000",
+              ...(state !== "idle" ? getGlowStyle() : {}),
+            }}
+          >
+            {/* Layer 1: Deep Ocean Gradient */}
+            <div 
+              className="absolute inset-0 rounded-full"
+              style={{
+                background: "radial-gradient(circle at 30% 30%, rgba(34,211,238,0.2) 0%, transparent 60%)",
+              }}
+            />
 
-          {/* Subtle rose center pulse for Christmas heartbeat */}
-          {state === "idle" && (
-            <motion.div
-              className="absolute inset-0 flex items-center justify-center pointer-events-none"
-              animate={{
-                opacity: [0.3, 0.6, 0.3],
+            {/* Layer 2: Secondary Depth Gradient */}
+            <div 
+              className="absolute inset-0 rounded-full"
+              style={{
+                background: "radial-gradient(circle at 70% 70%, rgba(20,184,166,0.15) 0%, transparent 50%)",
               }}
-              transition={{
-                duration: 2,
-                repeat: Infinity,
-                ease: "easeInOut",
+            />
+
+            {/* Layer 3: Glass Surface (Inner Glow) */}
+            <div 
+              className="absolute inset-0 rounded-full"
+              style={{
+                boxShadow: "inset 0 0 20px rgba(255,255,255,0.1), inset 10px 10px 20px rgba(255,255,255,0.05)",
               }}
-            >
-              <div 
-                className="w-8 h-8 rounded-full"
-                style={{
-                  background: "radial-gradient(circle, rgba(244, 63, 94, 0.5) 0%, transparent 70%)",
-                  filter: "blur(6px)",
-                }}
-              />
-            </motion.div>
-          )}
+            />
+
+            {/* Layer 4: Edge Glow */}
+            <div 
+              className="absolute inset-0 rounded-full"
+              style={{
+                boxShadow: "0 0 50px rgba(34,211,238,0.3), 0 0 100px rgba(20,184,166,0.2)",
+              }}
+            />
+
+            {/* Highlight Reflection (Top Left) */}
+            <div 
+              className="absolute rounded-full"
+              style={{
+                top: "15%",
+                left: "20%",
+                width: "80px",
+                height: "80px",
+                background: "radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 70%)",
+                filter: "blur(10px)",
+              }}
+            />
+          </motion.div>
 
           {/* Error overlay */}
           {state === "error" && (

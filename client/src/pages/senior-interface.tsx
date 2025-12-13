@@ -93,7 +93,7 @@ export default function SeniorInterface() {
       ref={containerRef}
       className="min-h-screen overflow-y-auto"
       style={{ 
-        background: "#000000",
+        background: "#050505",
         paddingTop: "env(safe-area-inset-top, 0px)",
         paddingBottom: "env(safe-area-inset-bottom, 0px)",
         paddingLeft: "env(safe-area-inset-left, 0px)",
@@ -153,14 +153,17 @@ export default function SeniorInterface() {
           transition={{ delay: 0.6, duration: 1 }}
         >
           <h2 
-            className="text-5xl md:text-7xl font-light tracking-luxury mb-6 text-white"
+            className="text-6xl md:text-7xl font-medium tracking-tight mb-6 text-transparent bg-clip-text"
             style={{
-              textShadow: "0 0 40px rgba(34, 211, 238, 0.3)",
+              backgroundImage: "linear-gradient(to bottom, #ffffff 0%, rgba(255,255,255,0.6) 100%)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              backgroundClip: "text",
             }}
           >
             Give the Gift of Connection
           </h2>
-          <p className="text-lg md:text-xl text-slate-400 font-light tracking-luxury mb-10">
+          <p className="text-xl text-zinc-500 font-light tracking-wide mb-10">
             No apps. No setup. Just presence.
           </p>
 

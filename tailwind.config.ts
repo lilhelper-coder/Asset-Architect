@@ -44,6 +44,7 @@ export default {
       fontWeight: {
         light: "300",
         normal: "400",
+        medium: "500",
       },
       letterSpacing: {
         luxury: "0.02em",
