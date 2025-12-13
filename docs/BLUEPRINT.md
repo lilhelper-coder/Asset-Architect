@@ -80,6 +80,8 @@
 - **[AD-018]**: Environment variables for dynamic API URL (`VITE_API_BASE_URL`)
 - **[AD-019]**: `legacy-peer-deps=true` in `.npmrc` to bypass peer dependency conflicts
 - **[AD-020]**: Direct TypeScript execution on Railway via `tsx` (no compilation step)
+- **[AD-040]**: **NEW - Stripe payment integration** with publishable key `pk_1SdPqmLL10W7bcCZ9LuAISAl`
+- **[AD-041]**: **NEW - Direct Stripe payment link** at `https://buy.stripe.com/6oUfZgDU5L9ixa3izgA801`
 
 ### UX & Accessibility
 - **[AD-021]**: Orb state machine: idle → listening → speaking → idle
