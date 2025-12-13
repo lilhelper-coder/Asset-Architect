@@ -55,23 +55,39 @@ export function LivingOrb({ state, onTap, disabled = false, showHint = false }: 
     },
   } : {};
 
-  // Glow effect for listening state
+  // Glow effect for listening state - Christmas colors (Red/Gold/White)
   const getGlowStyle = () => {
     switch (state) {
       case "listening":
         return {
-          filter: "drop-shadow(0 0 30px rgba(94, 234, 212, 0.8)) drop-shadow(0 0 60px rgba(94, 234, 212, 0.5))",
+          filter: "drop-shadow(0 0 25px rgba(220, 38, 38, 0.6)) drop-shadow(0 0 45px rgba(234, 179, 8, 0.4)) drop-shadow(0 0 60px rgba(255, 255, 255, 0.2))",
           transform: "scale(1.08)",
         };
       case "speaking":
         return {
-          filter: "drop-shadow(0 0 20px rgba(94, 234, 212, 0.6))",
+          filter: "drop-shadow(0 0 20px rgba(220, 38, 38, 0.5)) drop-shadow(0 0 40px rgba(234, 179, 8, 0.3))",
         };
       default:
         return {
-          filter: "drop-shadow(0 0 15px rgba(94, 234, 212, 0.3))",
+          filter: "drop-shadow(0 0 15px rgba(220, 38, 38, 0.3)) drop-shadow(0 0 30px rgba(234, 179, 8, 0.2))",
         };
     }
+  };
+
+  // Breathing glow animation
+  const glowBreatheAnimation = shouldReduceMotion ? {} : {
+    filter: state === "idle" 
+      ? [
+          "drop-shadow(0 0 15px rgba(220, 38, 38, 0.3)) drop-shadow(0 0 30px rgba(234, 179, 8, 0.2))",
+          "drop-shadow(0 0 20px rgba(220, 38, 38, 0.5)) drop-shadow(0 0 40px rgba(234, 179, 8, 0.3))",
+          "drop-shadow(0 0 15px rgba(220, 38, 38, 0.3)) drop-shadow(0 0 30px rgba(234, 179, 8, 0.2))",
+        ]
+      : undefined,
+    transition: {
+      duration: 4,
+      repeat: Infinity,
+      ease: "easeInOut",
+    },
   };
 
   return (
@@ -106,8 +122,9 @@ export function LivingOrb({ state, onTap, disabled = false, showHint = false }: 
             animate={{
               ...breatheAnimation,
               ...thinkingAnimation,
+              ...(state === "idle" ? glowBreatheAnimation : {}),
             }}
-            style={getGlowStyle()}
+            style={state !== "idle" ? getGlowStyle() : undefined}
           />
 
           {/* Error overlay */}
@@ -129,7 +146,7 @@ export function LivingOrb({ state, onTap, disabled = false, showHint = false }: 
       {/* Hint text for idle state */}
       {showHint && state === "idle" && (
         <motion.p
-          className="mt-6 text-teal-300 text-lg text-center font-medium"
+          className="mt-8 text-gray-400 text-base font-light tracking-wide text-center"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1 }}
@@ -141,12 +158,12 @@ export function LivingOrb({ state, onTap, disabled = false, showHint = false }: 
 
       {/* Status text */}
       {state !== "idle" && (
-        <div className="mt-6">
+        <div className="mt-8">
           <motion.p
             key={state}
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="text-teal-300 text-xl text-center font-semibold"
+            className="text-gray-300 text-lg font-light tracking-wide text-center"
             data-testid="orb-status-text"
           >
             {state === "listening" ? t.listening : state === "speaking" ? t.speaking : t.oneSecond}

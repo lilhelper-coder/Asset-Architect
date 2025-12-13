@@ -84,7 +84,7 @@ export default function SeniorInterface() {
       ref={containerRef}
       className="min-h-screen overflow-y-auto"
       style={{ 
-        background: "radial-gradient(ellipse at 50% 30%, #0a1f24 0%, #050a0c 50%, #000000 100%)",
+        background: "linear-gradient(180deg, #0a0a0a 0%, #1a1a1a 50%, #000000 100%)",
         paddingTop: "env(safe-area-inset-top, 0px)",
         paddingBottom: "env(safe-area-inset-bottom, 0px)",
         paddingLeft: "env(safe-area-inset-left, 0px)",
@@ -157,15 +157,15 @@ export default function SeniorInterface() {
 
         {/* Hero Headline */}
         <motion.div
-          className="text-center mt-8 max-w-3xl"
+          className="text-center mt-12 max-w-3xl"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6, duration: 1 }}
         >
           <h1 
-            className="text-4xl md:text-6xl font-bold mb-4"
+            className="text-5xl md:text-7xl font-thin tracking-wide mb-8"
             style={{
-              background: "linear-gradient(135deg, #5eead4 0%, #fbbf24 100%)",
+              background: "linear-gradient(135deg, #dc2626 0%, #eab308 50%, #ffffff 100%)",
               WebkitBackgroundClip: "text",
               WebkitTextFillColor: "transparent",
               backgroundClip: "text",
@@ -173,30 +173,31 @@ export default function SeniorInterface() {
           >
             Give the Gift of Connection
           </h1>
-          <p className="text-lg md:text-xl text-zinc-300 mb-8 px-4">
-            Don't give another gadget. Give a companion. Join the Founder's Club for exclusive early access to the first AI designed for family.
+          <p className="text-lg md:text-xl text-gray-400 font-light tracking-wide mb-12 px-4 leading-relaxed">
+            Don't give another gadget. Give a companion.
           </p>
 
           {/* Primary CTA Button */}
           <motion.div
-            animate={{ 
-              scale: [1, 1.03, 1],
-            }}
-            transition={{ 
-              duration: 2, 
-              repeat: Infinity,
-              ease: "easeInOut"
-            }}
+            whileHover={{ scale: 1.02 }}
+            transition={{ duration: 0.2 }}
           >
             <Button
               onClick={handleFounderCTA}
-              className="text-lg px-8 py-6 font-semibold shadow-2xl"
+              className="text-base px-10 py-7 font-light tracking-wide relative overflow-hidden group"
               style={{
-                background: "linear-gradient(135deg, #0d9488 0%, #fbbf24 100%)",
-                border: "2px solid rgba(251, 191, 36, 0.3)",
+                background: "linear-gradient(135deg, #dc2626 0%, #eab308 100%)",
+                border: "1px solid rgba(234, 179, 8, 0.4)",
               }}
             >
-              Get Founder's Access - $49 (Holiday Special)
+              <span className="relative z-10">Get Founder's Access - $49</span>
+              {/* Subtle shine effect on hover */}
+              <div 
+                className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                style={{
+                  background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent)",
+                }}
+              />
             </Button>
           </motion.div>
         </motion.div>
@@ -221,57 +222,58 @@ export default function SeniorInterface() {
 
       <section 
         id="content-section"
-        className="py-16"
+        className="py-32"
         style={{ 
-          background: "linear-gradient(to bottom, transparent, rgba(0,0,0,0.5))" 
+          background: "linear-gradient(to bottom, transparent, rgba(0,0,0,0.8))" 
         }}
       >
         {/* Ghost Mode Teaser Section */}
         <motion.div
-          className="max-w-4xl mx-auto px-6 mb-16"
+          className="max-w-4xl mx-auto px-6 mb-32"
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
           viewport={{ once: true }}
         >
           <div 
-            className="relative rounded-3xl p-8 md:p-12 overflow-hidden"
+            className="relative rounded-3xl p-12 md:p-16 overflow-hidden"
             style={{
-              background: "rgba(13, 148, 136, 0.1)",
+              background: "rgba(220, 38, 38, 0.05)",
               backdropFilter: "blur(20px)",
-              border: "1px solid rgba(94, 234, 212, 0.2)",
-              boxShadow: "0 8px 32px 0 rgba(13, 148, 136, 0.3)",
+              border: "1px solid rgba(220, 38, 38, 0.1)",
+              boxShadow: "0 8px 32px 0 rgba(220, 38, 38, 0.2)",
             }}
           >
-            <div className="relative z-10">
-              <div className="flex items-center gap-3 mb-4">
-                <QrCode className="w-8 h-8 text-teal-400" />
-                <h2 className="text-3xl md:text-4xl font-bold text-white">
-                  Introducing Ghost Mode
+            <div className="relative z-10 text-center">
+              <div className="flex items-center justify-center gap-4 mb-8">
+                <QrCode className="w-10 h-10 text-red-400" />
+                <h2 className="text-4xl md:text-5xl font-thin tracking-wider text-white">
+                  Ghost Mode
                 </h2>
               </div>
               
-              <p className="text-lg text-zinc-300 mb-6 leading-relaxed">
-                Pop in from anywhere. Scan a QR code and type to speak through Crystal. Be there, even when you can't.
-              </p>
-
-              <div className="flex flex-wrap gap-4 items-center">
-                <div className="flex items-center gap-2 text-teal-300">
-                  <MessageCircle className="w-5 h-5" />
-                  <span className="text-sm font-medium">Real-time family connection</span>
+              {/* Ultra-short bullet points */}
+              <div className="flex flex-col md:flex-row gap-8 justify-center items-center mt-12">
+                <div className="flex flex-col items-center gap-2">
+                  <QrCode className="w-6 h-6 text-gray-400" />
+                  <span className="text-sm font-light tracking-wide text-gray-400">Scan to join</span>
                 </div>
-                <div className="flex items-center gap-2 text-teal-300">
-                  <Sparkles className="w-5 h-5" />
-                  <span className="text-sm font-medium">No app install required</span>
+                <div className="flex flex-col items-center gap-2">
+                  <MessageCircle className="w-6 h-6 text-gray-400" />
+                  <span className="text-sm font-light tracking-wide text-gray-400">Type to speak</span>
+                </div>
+                <div className="flex flex-col items-center gap-2">
+                  <Sparkles className="w-6 h-6 text-gray-400" />
+                  <span className="text-sm font-light tracking-wide text-gray-400">Be there instantly</span>
                 </div>
               </div>
             </div>
 
             {/* Decorative gradient overlay */}
             <div 
-              className="absolute inset-0 opacity-20"
+              className="absolute inset-0 opacity-10"
               style={{
-                background: "radial-gradient(circle at top right, #5eead4 0%, transparent 50%)",
+                background: "radial-gradient(circle at top right, #dc2626 0%, transparent 50%)",
               }}
             />
           </div>
