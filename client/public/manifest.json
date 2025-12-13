@@ -1,24 +1,25 @@
 {
   "name": "LilHelper",
   "short_name": "LilHelper",
-  "description": "Your digital grandchild companion - the perfect Christmas gift for seniors",
+  "description": "Voice connection for families. No apps required.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#000000",
-  "theme_color": "#0d9488",
+  "background_color": "#050505",
+  "theme_color": "#050505",
   "orientation": "portrait",
   "icons": [
     {
-      "src": "/favicon.svg",
+      "src": "/orb-icon.svg",
       "sizes": "512x512",
       "type": "image/svg+xml",
       "purpose": "any maskable"
     },
     {
-      "src": "/favicon.svg",
+      "src": "/orb-icon.svg",
       "sizes": "512x512",
       "type": "image/svg+xml",
       "purpose": "any maskable"
     }
   ]
 }
+
