@@ -1,5 +1,4 @@
 import { motion, useReducedMotion } from "framer-motion";
-import { useEffect, useRef } from "react";
 import { useLanguage } from "@/context/language-context";
 
 export type OrbState = "idle" | "listening" | "speaking" | "error";
@@ -11,125 +10,115 @@ interface LivingOrbProps {
   showHint?: boolean;
 }
 
-const stateToClass: Record<OrbState, string> = {
-  idle: "state-idle",
-  listening: "state-listening",
-  speaking: "state-speaking",
-  error: "state-error",
-};
-
 export function LivingOrb({ state, onTap, disabled = false, showHint = false }: LivingOrbProps) {
   const shouldReduceMotion = useReducedMotion();
-  const containerRef = useRef<HTMLDivElement>(null);
   const { t } = useLanguage();
 
-  useEffect(() => {
-    if (containerRef.current) {
-      containerRef.current.className = `living-orb-container ${stateToClass[state]}`;
+  // Animation variants based on state
+  const getAnimationDuration = () => {
+    switch (state) {
+      case "speaking":
+        return 1; // Fast breathing when speaking
+      case "listening":
+        return 2; // Medium breathing when listening
+      case "idle":
+      default:
+        return 3; // Slow breathing when idle
     }
-  }, [state]);
+  };
 
-  const coreAnimation = shouldReduceMotion ? {} : {
+  const breatheAnimation = shouldReduceMotion ? {} : {
     scale: [1, 1.05, 1],
     transition: {
-      duration: 8,
+      duration: getAnimationDuration(),
       repeat: Infinity,
-      ease: [0.4, 0.0, 0.2, 1],
+      ease: "easeInOut",
     },
   };
 
   const floatAnimation = shouldReduceMotion ? {} : {
     y: [-8, 8, -8],
     transition: {
-      duration: 16,
+      duration: 6,
       repeat: Infinity,
       ease: "easeInOut",
     },
   };
 
-  const ringDurations = [20, 35, 50];
-  const ringDirections = [1, -1, 1];
+  // Opacity pulse for thinking/processing
+  const thinkingAnimation = state === "error" ? {
+    opacity: [0.8, 1, 0.8],
+    transition: {
+      duration: 2,
+      repeat: Infinity,
+      ease: "easeInOut",
+    },
+  } : {};
+
+  // Glow effect for listening state
+  const getGlowStyle = () => {
+    switch (state) {
+      case "listening":
+        return {
+          filter: "drop-shadow(0 0 30px rgba(94, 234, 212, 0.8)) drop-shadow(0 0 60px rgba(94, 234, 212, 0.5))",
+          transform: "scale(1.08)",
+        };
+      case "speaking":
+        return {
+          filter: "drop-shadow(0 0 20px rgba(94, 234, 212, 0.6))",
+        };
+      default:
+        return {
+          filter: "drop-shadow(0 0 15px rgba(94, 234, 212, 0.3))",
+        };
+    }
+  };
 
   return (
     <div 
-      ref={containerRef}
-      className={`living-orb-container ${stateToClass[state]}`}
+      className="flex flex-col items-center justify-center"
       data-testid="magic-orb-container"
     >
       <motion.button
         onClick={onTap}
         disabled={disabled}
-        className="living-orb-wrapper focus:outline-none focus-visible:ring-4 focus-visible:ring-teal-500/50"
+        className="relative focus:outline-none focus-visible:ring-4 focus-visible:ring-teal-500/50 rounded-full"
         animate={floatAnimation}
         whileTap={{ scale: 0.96 }}
         aria-label={getAriaLabel(state)}
         data-testid="button-magic-orb"
       >
-        <div className="living-orb-stage">
-          <div className="orb-ambient-glow" />
+        {/* Glassmorphism container */}
+        <div 
+          className="relative p-8 rounded-full"
+          style={{
+            background: "rgba(255, 255, 255, 0.05)",
+            backdropFilter: "blur(12px)",
+            border: "1px solid rgba(255, 255, 255, 0.1)",
+            boxShadow: "0 8px 32px 0 rgba(31, 38, 135, 0.37)",
+          }}
+        >
+          {/* Christmas Orb Image */}
+          <motion.img
+            src="/christmas-orb.png"
+            alt="Crystal"
+            className="w-64 h-64 rounded-full object-cover"
+            animate={{
+              ...breatheAnimation,
+              ...thinkingAnimation,
+            }}
+            style={getGlowStyle()}
+          />
 
-          {[0, 1, 2].map((index) => (
-            <motion.div
-              key={index}
-              className="orb-ring-layer"
-              animate={shouldReduceMotion ? {} : {
-                rotate: 360 * ringDirections[index],
-              }}
-              transition={{
-                duration: ringDurations[index],
-                repeat: Infinity,
-                ease: "linear",
-              }}
-              style={{
-                opacity: 0.6 - index * 0.1,
-              }}
-            >
-              <svg
-                viewBox="0 0 200 200"
-                className="orb-ring-svg"
-                style={{
-                  transform: `skewX(${index * 5}deg) skewY(${index * 3}deg)`,
-                }}
-              >
-                <defs>
-                  <filter id={`blur-ring-${index}`}>
-                    <feGaussianBlur in="SourceGraphic" stdDeviation={4 + index * 2} />
-                  </filter>
-                </defs>
-                <ellipse
-                  cx="100"
-                  cy="100"
-                  rx={85 - index * 8}
-                  ry={75 - index * 5}
-                  fill="none"
-                  stroke="var(--orb-ring-color)"
-                  strokeWidth={3 - index * 0.5}
-                  filter={`url(#blur-ring-${index})`}
-                  style={{
-                    mixBlendMode: "screen",
-                  }}
-                />
-              </svg>
-            </motion.div>
-          ))}
-
-          <motion.div 
-            className="orb-core"
-            animate={coreAnimation}
-          >
-            <div className="orb-core-inner">
-              <div className="orb-highlight" />
-            </div>
-          </motion.div>
-
+          {/* Error overlay */}
           {state === "error" && (
             <motion.div
-              className="orb-error-overlay"
+              className="absolute inset-0 flex items-center justify-center bg-black/30 rounded-full backdrop-blur-sm"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.3 }}
             >
-              <span className="orb-error-text">
+              <span className="text-white text-lg font-medium">
                 Just a moment...
               </span>
             </motion.div>
@@ -137,9 +126,10 @@ export function LivingOrb({ state, onTap, disabled = false, showHint = false }: 
         </div>
       </motion.button>
 
+      {/* Hint text for idle state */}
       {showHint && state === "idle" && (
         <motion.p
-          className="orb-hint-text"
+          className="mt-6 text-teal-300 text-lg text-center font-medium"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1 }}
@@ -149,13 +139,14 @@ export function LivingOrb({ state, onTap, disabled = false, showHint = false }: 
         </motion.p>
       )}
 
+      {/* Status text */}
       {state !== "idle" && (
-        <div className="orb-status-container">
+        <div className="mt-6">
           <motion.p
             key={state}
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="orb-status-text"
+            className="text-teal-300 text-xl text-center font-semibold"
             data-testid="orb-status-text"
           >
             {state === "listening" ? t.listening : state === "speaking" ? t.speaking : t.oneSecond}
@@ -164,19 +155,6 @@ export function LivingOrb({ state, onTap, disabled = false, showHint = false }: 
       )}
     </div>
   );
-}
-
-function getStatusText(state: OrbState): string {
-  switch (state) {
-    case "listening":
-      return "Listening...";
-    case "speaking":
-      return "Speaking";
-    case "error":
-      return "One moment...";
-    default:
-      return "";
-  }
 }
 
 function getAriaLabel(state: OrbState): string {
