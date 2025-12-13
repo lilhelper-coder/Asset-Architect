@@ -55,21 +55,21 @@ export function LivingOrb({ state, onTap, disabled = false, showHint = false }: 
     },
   } : {};
 
-  // Glow effect for listening state - Deep Christmas colors (Gold/Ember)
+  // Glow effect - High-End Teal/Cyan with subtle red center
   const getGlowStyle = () => {
     switch (state) {
       case "listening":
         return {
-          filter: "drop-shadow(0 0 30px rgba(250, 173, 20, 0.6)) drop-shadow(0 0 60px rgba(212, 56, 13, 0.4))",
+          filter: "drop-shadow(0 0 30px rgba(20, 184, 166, 0.8)) drop-shadow(0 0 60px rgba(6, 182, 212, 0.5))",
           transform: "scale(1.08)",
         };
       case "speaking":
         return {
-          filter: "drop-shadow(0 0 25px rgba(250, 173, 20, 0.5)) drop-shadow(0 0 50px rgba(212, 56, 13, 0.3))",
+          filter: "drop-shadow(0 0 25px rgba(20, 184, 166, 0.6)) drop-shadow(0 0 50px rgba(6, 182, 212, 0.4))",
         };
       default:
         return {
-          filter: "drop-shadow(0 0 20px rgba(250, 173, 20, 0.3)) drop-shadow(0 0 40px rgba(212, 56, 13, 0.2))",
+          filter: "drop-shadow(0 0 20px rgba(20, 184, 166, 0.4)) drop-shadow(0 0 40px rgba(6, 182, 212, 0.3)) drop-shadow(0 0 10px rgba(190, 18, 60, 0.2))",
         };
     }
   };
@@ -78,9 +78,9 @@ export function LivingOrb({ state, onTap, disabled = false, showHint = false }: 
   const glowBreatheAnimation = shouldReduceMotion ? {} : {
     filter: state === "idle" 
       ? [
-          "drop-shadow(0 0 20px rgba(250, 173, 20, 0.3)) drop-shadow(0 0 40px rgba(212, 56, 13, 0.2))",
-          "drop-shadow(0 0 30px rgba(250, 173, 20, 0.4)) drop-shadow(0 0 60px rgba(212, 56, 13, 0.3))",
-          "drop-shadow(0 0 20px rgba(250, 173, 20, 0.3)) drop-shadow(0 0 40px rgba(212, 56, 13, 0.2))",
+          "drop-shadow(0 0 20px rgba(20, 184, 166, 0.4)) drop-shadow(0 0 40px rgba(6, 182, 212, 0.3)) drop-shadow(0 0 10px rgba(190, 18, 60, 0.2))",
+          "drop-shadow(0 0 30px rgba(20, 184, 166, 0.6)) drop-shadow(0 0 60px rgba(6, 182, 212, 0.4)) drop-shadow(0 0 15px rgba(190, 18, 60, 0.3))",
+          "drop-shadow(0 0 20px rgba(20, 184, 166, 0.4)) drop-shadow(0 0 40px rgba(6, 182, 212, 0.3)) drop-shadow(0 0 10px rgba(190, 18, 60, 0.2))",
         ]
       : undefined,
     transition: {
@@ -108,10 +108,10 @@ export function LivingOrb({ state, onTap, disabled = false, showHint = false }: 
         <div 
           className="relative p-8 rounded-full"
           style={{
-            background: "rgba(255, 255, 255, 0.05)",
+            background: "rgba(20, 184, 166, 0.05)",
             backdropFilter: "blur(12px)",
-            border: "1px solid rgba(255, 255, 255, 0.1)",
-            boxShadow: "0 8px 32px 0 rgba(31, 38, 135, 0.37)",
+            border: "1px solid rgba(20, 184, 166, 0.2)",
+            boxShadow: "0 8px 32px 0 rgba(6, 182, 212, 0.3)",
           }}
         >
           {/* Christmas Orb Image */}
@@ -126,6 +126,29 @@ export function LivingOrb({ state, onTap, disabled = false, showHint = false }: 
             }}
             style={state !== "idle" ? getGlowStyle() : undefined}
           />
+
+          {/* Subtle rose center pulse for Christmas heartbeat */}
+          {state === "idle" && (
+            <motion.div
+              className="absolute inset-0 flex items-center justify-center pointer-events-none"
+              animate={{
+                opacity: [0.3, 0.6, 0.3],
+              }}
+              transition={{
+                duration: 2,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
+            >
+              <div 
+                className="w-8 h-8 rounded-full"
+                style={{
+                  background: "radial-gradient(circle, rgba(244, 63, 94, 0.5) 0%, transparent 70%)",
+                  filter: "blur(6px)",
+                }}
+              />
+            </motion.div>
+          )}
 
           {/* Error overlay */}
           {state === "error" && (
@@ -146,7 +169,7 @@ export function LivingOrb({ state, onTap, disabled = false, showHint = false }: 
       {/* Hint text for idle state */}
       {showHint && state === "idle" && (
         <motion.p
-          className="mt-8 text-gray-400 text-base font-light tracking-wide text-center"
+          className="mt-8 text-slate-400 text-base font-light tracking-wide text-center"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1 }}
@@ -163,7 +186,7 @@ export function LivingOrb({ state, onTap, disabled = false, showHint = false }: 
             key={state}
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="text-gray-300 text-lg font-light tracking-wide text-center"
+            className="text-slate-300 text-lg font-light tracking-wide text-center"
             data-testid="orb-status-text"
           >
             {state === "listening" ? t.listening : state === "speaking" ? t.speaking : t.oneSecond}

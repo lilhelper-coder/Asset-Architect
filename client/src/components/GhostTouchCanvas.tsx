@@ -52,7 +52,7 @@ export function GhostTouchCanvas({ x, y, lastActive }: GhostTouchCanvasProps) {
               ease: "easeOut"
             }}
           >
-            {/* Outer Glow Ring */}
+            {/* Outer Cyber Glow Ring */}
             <div 
               className="absolute inset-0"
               style={{
@@ -60,11 +60,11 @@ export function GhostTouchCanvas({ x, y, lastActive }: GhostTouchCanvasProps) {
                 height: '80px',
                 transform: 'translate(-50%, -50%)',
                 borderRadius: '50%',
-                background: 'radial-gradient(circle, rgba(250, 173, 20, 0.4) 0%, rgba(212, 56, 13, 0.2) 50%, transparent 70%)',
+                background: 'radial-gradient(circle, rgba(45, 212, 191, 0.4) 0%, rgba(34, 211, 238, 0.2) 50%, transparent 70%)',
                 boxShadow: `
-                  0 0 40px rgba(250, 173, 20, 0.6),
-                  0 0 60px rgba(212, 56, 13, 0.4),
-                  0 0 80px rgba(250, 173, 20, 0.3)
+                  0 0 40px rgba(45, 212, 191, 0.6),
+                  0 0 60px rgba(34, 211, 238, 0.4),
+                  0 0 80px rgba(20, 184, 166, 0.3)
                 `,
                 animation: 'pulse 1.5s ease-in-out infinite',
               }}
@@ -78,14 +78,14 @@ export function GhostTouchCanvas({ x, y, lastActive }: GhostTouchCanvasProps) {
                 height: '40px',
                 transform: 'translate(-50%, -50%)',
                 borderRadius: '50%',
-                background: 'radial-gradient(circle, rgba(250, 173, 20, 0.8) 0%, rgba(212, 56, 13, 0.4) 70%, transparent 100%)',
+                background: 'radial-gradient(circle, rgba(45, 212, 191, 0.8) 0%, rgba(34, 211, 238, 0.4) 70%, transparent 100%)',
                 filter: 'blur(8px)',
               }}
             />
 
-            {/* Main Dot - Glowing Gold Fingerprint */}
+            {/* Main Dot - Glowing Teal Spark */}
             <motion.div
-              className="absolute bg-gold"
+              className="absolute bg-teal-400"
               style={{
                 width: '20px',
                 height: '20px',
@@ -93,8 +93,8 @@ export function GhostTouchCanvas({ x, y, lastActive }: GhostTouchCanvasProps) {
                 borderRadius: '50%',
                 filter: 'blur(4px)',
                 boxShadow: `
-                  0 0 20px rgba(250, 173, 20, 1),
-                  0 0 30px rgba(212, 56, 13, 0.8),
+                  0 0 20px rgba(45, 212, 191, 1),
+                  0 0 30px rgba(34, 211, 238, 0.8),
                   inset 0 0 10px rgba(255, 255, 255, 0.5)
                 `,
               }}
@@ -108,15 +108,14 @@ export function GhostTouchCanvas({ x, y, lastActive }: GhostTouchCanvasProps) {
               }}
             />
 
-            {/* Trail Effect */}
+            {/* Trail Effect - Expanding Ring */}
             <motion.div
-              className="absolute"
+              className="absolute border-2 border-teal-500/50"
               style={{
                 width: '30px',
                 height: '30px',
                 transform: 'translate(-50%, -50%)',
                 borderRadius: '50%',
-                border: '2px solid rgba(250, 173, 20, 0.6)',
                 background: 'transparent',
               }}
               initial={{ scale: 0.5, opacity: 0 }}

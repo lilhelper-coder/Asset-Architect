@@ -92,7 +92,7 @@ export default function SeniorInterface() {
       ref={containerRef}
       className="min-h-screen overflow-y-auto"
       style={{ 
-        background: "linear-gradient(180deg, #0a0e0f 0%, #0d1613 100%)",
+        background: "linear-gradient(to bottom, #0f172a, #020617)",
         paddingTop: "env(safe-area-inset-top, 0px)",
         paddingBottom: "env(safe-area-inset-bottom, 0px)",
         paddingLeft: "env(safe-area-inset-left, 0px)",
@@ -113,14 +113,14 @@ export default function SeniorInterface() {
           className="absolute top-6 right-6 z-20 transition-colors font-light tracking-breathe"
           style={{
             fontSize: "14px",
-            color: "rgba(250, 173, 20, 0.7)",
+            color: "rgba(20, 184, 166, 0.7)",
           }}
           onClick={() => setIsSignInOpen(true)}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1.5, duration: 0.8 }}
-          onMouseEnter={(e) => e.currentTarget.style.color = "rgba(250, 173, 20, 1)"}
-          onMouseLeave={(e) => e.currentTarget.style.color = "rgba(250, 173, 20, 0.7)"}
+          onMouseEnter={(e) => e.currentTarget.style.color = "rgba(20, 184, 166, 1)"}
+          onMouseLeave={(e) => e.currentTarget.style.color = "rgba(20, 184, 166, 0.7)"}
           aria-label="Sign in"
         >
           Sign In
@@ -136,7 +136,7 @@ export default function SeniorInterface() {
           <h2 
             className="text-5xl md:text-7xl font-whisper tracking-luxury mb-6"
             style={{
-              background: "linear-gradient(135deg, #faad14 0%, #d4380d 100%)",
+              background: "linear-gradient(135deg, #14b8a6 0%, #06b6d4 100%)",
               WebkitBackgroundClip: "text",
               WebkitTextFillColor: "transparent",
               backgroundClip: "text",
@@ -144,7 +144,7 @@ export default function SeniorInterface() {
           >
             Give the Gift of Connection
           </h2>
-          <p className="text-lg md:text-xl text-gray-400 font-light tracking-breathe mb-10">
+          <p className="text-lg md:text-xl text-slate-400 font-light tracking-breathe mb-10">
             No apps. No setup. Just presence.
           </p>
 
@@ -157,8 +157,8 @@ export default function SeniorInterface() {
               onClick={handleFounderCTA}
               className="text-base px-12 py-7 font-soft tracking-breathe relative overflow-hidden group"
               style={{
-                background: "linear-gradient(135deg, #faad14 0%, #d4380d 100%)",
-                border: "1px solid rgba(212, 56, 13, 0.4)",
+                background: "linear-gradient(135deg, #14b8a6 0%, #06b6d4 100%)",
+                border: "1px solid rgba(20, 184, 166, 0.4)",
               }}
             >
               <span className="relative z-10">Gift Founder's Access - $49</span>
@@ -212,7 +212,7 @@ export default function SeniorInterface() {
               transition={{ delay: 0.3 }}
               viewport={{ once: true }}
             >
-              <Smartphone className="w-16 h-16 text-gold" />
+              <Smartphone className="w-16 h-16 text-brand-teal" />
             </motion.div>
 
             <motion.div
@@ -221,7 +221,7 @@ export default function SeniorInterface() {
               transition={{ delay: 0.5, type: "spring" }}
               viewport={{ once: true }}
             >
-              <QrCode className="w-20 h-20 text-ember" />
+              <QrCode className="w-20 h-20 text-brand-cyan" />
             </motion.div>
           </div>
         </motion.div>
@@ -229,7 +229,7 @@ export default function SeniorInterface() {
 
       {/* Footer */}
       <footer className="py-12 text-center">
-        <p className="text-xs font-light tracking-breathe text-gray-600">
+        <p className="text-xs font-light tracking-breathe text-slate-600">
           Made with love for families.
         </p>
       </footer>

@@ -11,11 +11,20 @@ export default {
         sm: ".1875rem", /* 3px */
       },
       colors: {
-        // Deep Christmas Design System
-        midnight: "#0a0e0f",
-        forest: "#0d1613",
-        ember: "#d4380d",
-        gold: "#faad14",
+        // Modern Minimalist Teal/Cyan Professional Palette
+        midnight: "#020617", // Slate 950
+        forest: "#0f172a",   // Slate 900
+        ember: "#14b8a6",    // Mapped to teal-500 for auto-fix
+        gold: "#22d3ee",     // Mapped to cyan-400 for auto-fix
+        // Primary brand colors
+        brand: {
+          teal: "#14b8a6",
+          "teal-dark": "#0d9488",
+          cyan: "#06b6d4",
+          slate: "#0f172a",
+        },
+        // Subtle Christmas accent (use sparingly)
+        crimson: "#be123c",
         // Flat / base colors (regular buttons)
         background: "hsl(var(--background) / <alpha-value>)",
         foreground: "hsl(var(--foreground) / <alpha-value>)",

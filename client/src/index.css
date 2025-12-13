@@ -2,10 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
-/* DEEP CHRISTMAS GLOBAL STYLES */
+/* HIGH-END TEAL PROFESSIONAL DARK MODE */
 body {
-  background: linear-gradient(180deg, #0a0e0f 0%, #0d1613 100%);
-  color: #fafafa;
+  background: linear-gradient(to bottom, #0f172a, #020617);
+  color: #e2e8f0;
   font-family: 'Poppins', system-ui, sans-serif;
 }
 

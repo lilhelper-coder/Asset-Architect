@@ -139,23 +139,28 @@ export default function Dashboard() {
 
           {/* Right Column */}
           <div className="space-y-6">
-            {/* Whisper Link QR Code Card */}
+            {/* Pair Your Phone - QR Code Card */}
             {user?.id && (
-              <Card className="p-6">
+              <Card className="p-6 border-teal-500/20" style={{
+                background: "rgba(20, 184, 166, 0.05)",
+                backdropFilter: "blur(12px)",
+              }}>
                 <div className="flex items-center gap-2 mb-4">
-                  <QrCode className="w-5 h-5 text-gold" />
-                  <h3 className="text-lg font-whisper tracking-breathe">Whisper Link</h3>
+                  <QrCode className="w-5 h-5 text-teal-500" />
+                  <h3 className="text-lg font-light tracking-breathe text-white">Pair Your Phone</h3>
                 </div>
-                <div className="bg-white p-4 rounded-lg inline-block">
-                  <QRCode
-                    value={`${window.location.origin}/whisper/${user.id}`}
-                    size={200}
-                    level="M"
+                <p className="text-sm text-slate-400 font-light tracking-breathe mb-4">
+                  Scan to enable Touch & Whisper
+                </p>
+                <div className="bg-midnight p-4 rounded-lg inline-block border border-teal-500/30">
+                  <img 
+                    src={`https://api.qrserver.com/v1/create-qr-code/?size=200x200&color=14b8a6&bgcolor=020617&data=${encodeURIComponent(`${window.location.origin}/whisper/${user.id}`)}`}
+                    alt="Scan to Pair"
+                    className="rounded-lg mix-blend-screen"
+                    width="200"
+                    height="200"
                   />
                 </div>
-                <p className="text-sm text-muted-foreground mt-4 font-light tracking-breathe">
-                  Scan to send a Whisper. Be there instantly.
-                </p>
               </Card>
             )}
 
