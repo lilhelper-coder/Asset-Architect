@@ -1,13 +1,11 @@
 import { useState, useEffect } from 'react'
 import { supabase } from '../lib/supabase'
-import { useNavigate } from 'react-router-dom'
 import QRCode from 'react-qr-code'
 import LivingOrb from '../components/LivingOrb'
 import GhostTouchCanvas from '../components/GhostTouchCanvas'
 
 export default function SeniorInterface() {
   const [user, setUser] = useState<any>(null)
-  const navigate = useNavigate()
 
   useEffect(() => {
     supabase.auth.getUser().then(({ data: { user } }) => {
@@ -15,77 +13,76 @@ export default function SeniorInterface() {
     })
   }, [])
 
-  // Forces the Live URL (Not Localhost)
+  // 1. FORCE PRODUCTION LINK (Safety for Mobile)
   const magicLink = user?.id 
     ? `https://www.lilhelper.ai/whisper/${user.id}`
     : `https://www.lilhelper.ai/connect`
 
-  const handleCopyLink = () => {
-    navigator.clipboard.writeText(magicLink)
-    alert("Link copied! Send it to your phone.")
-  }
-
   return (
-    <div className="min-h-screen bg-[#050505] text-zinc-300 font-light overflow-hidden relative selection:bg-cyan-500/30">
+    <div className="min-h-screen bg-[#050505] text-zinc-300 overflow-hidden relative selection:bg-cyan-500/30">
       
-      {/* Ghost Touch Layer */}
+      {/* 2. Ghost Touch Canvas (Invisible Interaction Layer) */}
       <div className="absolute inset-0 z-50 pointer-events-none mix-blend-screen">
         <GhostTouchCanvas />
       </div>
 
-      {/* Main Content */}
-      <div className="relative z-10 flex flex-col items-center justify-center min-h-[90vh] px-6 pt-32 pb-20">
+      {/* 3. Main Content - Moved UP for "First Frame" Visibility */}
+      <div className="relative z-10 flex flex-col items-center min-h-screen px-6 pt-20">
         
-        {/* The Orb */}
-        <div className="mb-16">
-          <LivingOrb isListening={false} isSpeaking={false} />
-        </div>
-
-        {/* Headline */}
-        <h1 className="text-4xl md:text-6xl font-thin tracking-tight text-center mb-6 bg-gradient-to-b from-white to-white/40 bg-clip-text text-transparent">
+        {/* Headline: Razor Thin, Wide Spacing, Subtle Glass Gradient */}
+        <h1 className="text-4xl md:text-5xl font-thin tracking-tight text-center mb-4 bg-gradient-to-b from-white to-white/40 bg-clip-text text-transparent opacity-90">
           Give the Gift of Connection
         </h1>
 
-        <p className="text-lg md:text-xl font-light tracking-wide text-zinc-500 text-center mb-16 max-w-lg">
+        {/* Tagline: Muted, High-End */}
+        <p className="text-sm md:text-base font-light tracking-[0.2em] text-zinc-500 uppercase text-center mb-12">
           Be there. Even when you're not.
         </p>
 
-        {/* The Connection Card */}
-        <div className="flex flex-col items-center gap-8 w-full max-w-md animate-fade-in">
+        {/* The Orb */}
+        <div className="mb-12 scale-90 md:scale-100 opacity-90 hover:opacity-100 transition-opacity duration-1000">
+          <LivingOrb isListening={false} isSpeaking={false} />
+        </div>
+
+        {/* 4. The "Floating" QR Code (No Boxes, No Borders) */}
+        <div className="flex flex-col items-center animate-fade-in gap-6">
           
-          <div className="backdrop-blur-xl bg-white/[0.02] border border-white/10 rounded-3xl p-8 flex flex-col items-center shadow-2xl relative group">
+          <div className="relative group">
+            {/* Subtle backlight glow behind QR */}
+            <div className="absolute inset-0 bg-cyan-500/10 blur-[60px] rounded-full opacity-0 group-hover:opacity-50 transition-opacity duration-1000" />
             
-            {/* QR CODE */}
-            <div className="p-4 bg-white/5 rounded-xl mb-6">
+            {/* QR Code: Cyan on Transparent (Looks like floating data) */}
+            <div className="relative z-10 opacity-80 hover:opacity-100 transition-opacity">
               <QRCode 
                 value={magicLink}
-                size={180}
+                size={160}
                 bgColor="transparent"
-                fgColor="#22d3ee" 
+                fgColor="#22d3ee" // Cyan-400 (Electric but thin)
                 level="M"
               />
             </div>
-
-            {/* Buttons */}
-            <div className="flex flex-col gap-3 w-full">
-               {!user && (
-                 <button 
-                   onClick={() => navigate('/dashboard')}
-                   className="mb-4 text-xs text-center text-cyan-400 hover:text-cyan-300 tracking-widest uppercase"
-                 >
-                   Sign in to Pair
-                 </button>
-               )}
-
-              <button 
-                onClick={handleCopyLink}
-                className="w-full py-4 px-6 rounded-full bg-cyan-900/20 border border-cyan-500/20 text-cyan-400 font-light tracking-widest text-sm hover:bg-cyan-500/10 transition-all"
-              >
-                COPY MAGIC LINK 🔗
-              </button>
-            </div>
           </div>
+
+          {/* Minimal Instruction */}
+          <span className="text-[10px] tracking-[0.3em] text-cyan-500/40 uppercase">
+            Scan to Pair
+          </span>
+
         </div>
+
+        {/* 5. Minimal Features (Floating Icons) */}
+        <div className="absolute bottom-12 flex items-center justify-center gap-12 opacity-30">
+           <div className="flex flex-col items-center gap-2">
+              <span className="text-cyan-400 text-lg">✦</span>
+              <span className="text-[9px] tracking-[0.3em] uppercase text-zinc-500">Always Ready</span>
+           </div>
+           <div className="w-px h-6 bg-zinc-800" />
+           <div className="flex flex-col items-center gap-2">
+              <span className="text-cyan-400 text-lg">●</span>
+              <span className="text-[9px] tracking-[0.3em] uppercase text-zinc-500">Human Touch</span>
+           </div>
+        </div>
+
       </div>
     </div>
   )

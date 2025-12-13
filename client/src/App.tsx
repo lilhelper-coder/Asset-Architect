@@ -25,13 +25,15 @@ function App() {
   }, [])
 
   return (
-    <div className="min-h-screen bg-black text-white selection:bg-cyan-500/30">
+    <div className="min-h-screen bg-[#050505] text-zinc-200 font-light selection:bg-cyan-900/30">
       <Routes>
         <Route path="/" element={<SeniorInterface />} />
         <Route path="/dashboard" element={<Dashboard />} />
-        {/* THIS FIXES THE BROKEN LINK: */}
+        
+        {/* THE CRITICAL MAGIC ROUTES */}
         <Route path="/connect" element={<Helper />} />
         <Route path="/whisper/:userId" element={<Helper />} />
+        
         <Route path="/mirror/:userId" element={<Mirror />} />
         <Route path="/auth/callback" element={<AuthCallback />} />
       </Routes>
