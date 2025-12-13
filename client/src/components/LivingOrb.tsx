@@ -55,21 +55,21 @@ export function LivingOrb({ state, onTap, disabled = false, showHint = false }: 
     },
   } : {};
 
-  // Glow effect - High-End Teal/Cyan with subtle red center
+  // Glow effect - Pure Cyan/Teal Oceanic Depth
   const getGlowStyle = () => {
     switch (state) {
       case "listening":
         return {
-          filter: "drop-shadow(0 0 30px rgba(20, 184, 166, 0.8)) drop-shadow(0 0 60px rgba(6, 182, 212, 0.5))",
+          filter: "drop-shadow(0 0 30px rgba(34, 211, 238, 0.8)) drop-shadow(0 0 60px rgba(20, 184, 166, 0.5))",
           transform: "scale(1.08)",
         };
       case "speaking":
         return {
-          filter: "drop-shadow(0 0 25px rgba(20, 184, 166, 0.6)) drop-shadow(0 0 50px rgba(6, 182, 212, 0.4))",
+          filter: "drop-shadow(0 0 25px rgba(34, 211, 238, 0.6)) drop-shadow(0 0 50px rgba(20, 184, 166, 0.4))",
         };
       default:
         return {
-          filter: "drop-shadow(0 0 20px rgba(20, 184, 166, 0.4)) drop-shadow(0 0 40px rgba(6, 182, 212, 0.3)) drop-shadow(0 0 10px rgba(190, 18, 60, 0.2))",
+          filter: "drop-shadow(0 0 20px rgba(34, 211, 238, 0.4)) drop-shadow(0 0 40px rgba(20, 184, 166, 0.3))",
         };
     }
   };
@@ -78,9 +78,9 @@ export function LivingOrb({ state, onTap, disabled = false, showHint = false }: 
   const glowBreatheAnimation = shouldReduceMotion ? {} : {
     filter: state === "idle" 
       ? [
-          "drop-shadow(0 0 20px rgba(20, 184, 166, 0.4)) drop-shadow(0 0 40px rgba(6, 182, 212, 0.3)) drop-shadow(0 0 10px rgba(190, 18, 60, 0.2))",
-          "drop-shadow(0 0 30px rgba(20, 184, 166, 0.6)) drop-shadow(0 0 60px rgba(6, 182, 212, 0.4)) drop-shadow(0 0 15px rgba(190, 18, 60, 0.3))",
-          "drop-shadow(0 0 20px rgba(20, 184, 166, 0.4)) drop-shadow(0 0 40px rgba(6, 182, 212, 0.3)) drop-shadow(0 0 10px rgba(190, 18, 60, 0.2))",
+          "drop-shadow(0 0 20px rgba(34, 211, 238, 0.4)) drop-shadow(0 0 40px rgba(20, 184, 166, 0.3))",
+          "drop-shadow(0 0 30px rgba(34, 211, 238, 0.6)) drop-shadow(0 0 60px rgba(20, 184, 166, 0.4))",
+          "drop-shadow(0 0 20px rgba(34, 211, 238, 0.4)) drop-shadow(0 0 40px rgba(20, 184, 166, 0.3))",
         ]
       : undefined,
     transition: {

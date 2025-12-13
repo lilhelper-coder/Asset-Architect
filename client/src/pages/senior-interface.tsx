@@ -83,8 +83,9 @@ export default function SeniorInterface() {
   };
 
   const handleFounderCTA = () => {
-    const stripeUrl = "https://buy.stripe.com/6oUfZgDU5L9ixa3izgA801";
-    window.open(stripeUrl, '_blank');
+    // Scroll to demo section instead of Stripe
+    const demoSection = document.getElementById("demo-section");
+    demoSection?.scrollIntoView({ behavior: "smooth" });
   };
 
   return (
@@ -102,15 +103,15 @@ export default function SeniorInterface() {
     >
       <h1 className="sr-only">LilHelper: The Gift of Connection</h1>
 
-      {/* Hero Section - 40% height */}
+      {/* Hero Section */}
       <section 
         className="flex flex-col items-center px-6 relative"
-        style={{ minHeight: "40vh", paddingTop: "12vh" }}
+        style={{ minHeight: "100vh", paddingTop: "12vh" }}
         aria-label="LilHelper Voice Assistant"
       >
         {/* Top Right Sign In */}
         <motion.button
-          className="absolute top-6 right-6 z-20 transition-colors font-light tracking-breathe"
+          className="absolute top-6 right-6 z-20 transition-colors font-light tracking-luxury"
           style={{
             fontSize: "14px",
             fontWeight: "300",
@@ -128,12 +129,28 @@ export default function SeniorInterface() {
           Sign In
         </motion.button>
 
+        {/* The Orb - Hero Position */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 1.2, ease: "easeOut" }}
+          className="mb-12"
+        >
+          <ChristmasOrb 
+            state={orbState} 
+            onTap={handleOrbTap}
+            disabled={false}
+            showHint={!hasInteracted && orbState === "idle"}
+            scrollY={scrollY}
+          />
+        </motion.div>
+
         {/* Hero Headline */}
         <motion.div
-          className="text-center max-w-4xl mb-12"
+          className="text-center max-w-3xl"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3, duration: 1 }}
+          transition={{ delay: 0.6, duration: 1 }}
         >
           <h2 
             className="text-5xl md:text-7xl font-light tracking-luxury mb-6 text-white"
@@ -147,76 +164,106 @@ export default function SeniorInterface() {
             No apps. No setup. Just presence.
           </p>
 
-          {/* Glass Pill Button */}
+          {/* Glass Pill CTA */}
           <Button
             onClick={handleFounderCTA}
-            className="backdrop-blur-md bg-white/5 border border-white/10 hover:bg-white/10 text-white rounded-full px-8 py-3 font-light tracking-luxury transition-all duration-300"
-            style={{
-              boxShadow: "0 0 0 rgba(34, 211, 238, 0.2)",
-            }}
+            className="backdrop-blur-xl bg-white/5 border border-white/20 hover:bg-white/10 text-white rounded-full px-10 py-4 font-light tracking-luxury transition-all duration-300"
             onMouseEnter={(e) => {
               e.currentTarget.style.boxShadow = "0 0 30px rgba(34, 211, 238, 0.3)";
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.boxShadow = "0 0 0 rgba(34, 211, 238, 0.2)";
+              e.currentTarget.style.boxShadow = "0 0 0 rgba(34, 211, 238, 0)";
             }}
           >
-            Gift Founder's Access - $49
+            Try the Magic Connection
           </Button>
         </motion.div>
       </section>
 
-      {/* The Orb Demo - Center Stage */}
-      <section className="flex flex-col items-center px-6 py-24">
+      {/* Live Demo Section */}
+      <section 
+        id="demo-section"
+        className="py-32 px-6"
+      >
         <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 1.2, ease: "easeOut", delay: 0.6 }}
-        >
-          <ChristmasOrb 
-            state={orbState} 
-            onTap={handleOrbTap}
-            disabled={false}
-            showHint={!hasInteracted && orbState === "idle"}
-            scrollY={scrollY}
-          />
-        </motion.div>
-      </section>
-
-      {/* Whisper Teaser */}
-      <section className="py-32 px-6">
-        <motion.div
-          className="max-w-3xl mx-auto text-center"
+          className="max-w-lg mx-auto"
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
           viewport={{ once: true }}
         >
-          <p className="text-2xl md:text-3xl font-light tracking-luxury text-white mb-8">
+          <div 
+            className="backdrop-blur-xl border border-white/10 rounded-3xl p-12"
+            style={{
+              background: "rgba(255, 255, 255, 0.03)",
+            }}
+          >
+            <h3 className="text-3xl font-light tracking-luxury text-white text-center mb-8">
+              Pair Your Phone
+            </h3>
+
+            {userId ? (
+              <>
+                <div 
+                  className="p-6 rounded-2xl mx-auto w-fit border"
+                  style={{
+                    background: "#000000",
+                    borderColor: "rgba(34, 211, 238, 0.3)",
+                    boxShadow: "0 0 30px rgba(34, 211, 238, 0.15)",
+                  }}
+                >
+                  <img 
+                    src={`https://api.qrserver.com/v1/create-qr-code/?size=240x240&format=svg&color=22d3ee&bgcolor=000000&data=${encodeURIComponent(`${window.location.origin}/whisper/${userId}`)}`}
+                    alt="Scan to Pair"
+                    className="rounded-xl"
+                    width="240"
+                    height="240"
+                  />
+                </div>
+
+                <button
+                  onClick={async () => {
+                    const url = `${window.location.origin}/whisper/${userId}`;
+                    await navigator.clipboard.writeText(url);
+                    alert('Link copied! Send it to your family.');
+                  }}
+                  className="mt-8 w-full backdrop-blur-md bg-white/5 border border-white/10 hover:bg-white/10 text-white rounded-full px-6 py-3 font-light tracking-luxury transition-all duration-300"
+                >
+                  Copy Link 🔗
+                </button>
+              </>
+            ) : (
+              <div className="text-center">
+                <p className="text-slate-400 font-light mb-6">
+                  Sign in to get your personal pairing link
+                </p>
+                <Button
+                  onClick={() => setIsSignInOpen(true)}
+                  className="backdrop-blur-md bg-white/5 border border-white/10 hover:bg-white/10 text-white rounded-full px-8 py-3 font-light tracking-luxury transition-all duration-300"
+                >
+                  Sign In
+                </Button>
+              </div>
+            )}
+          </div>
+        </motion.div>
+      </section>
+
+      {/* Whisper Teaser - Minimal */}
+      <section className="py-24 px-6">
+        <motion.div
+          className="max-w-2xl mx-auto text-center"
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          viewport={{ once: true }}
+        >
+          <p className="text-2xl md:text-3xl font-light tracking-luxury text-white mb-4">
             Whisper in her ear from 3,000 miles away.
           </p>
-
-          {/* Visual: Phone scanning QR code (CSS mockup) */}
-          <div className="flex items-center justify-center gap-8 mt-12">
-            <motion.div
-              className="relative"
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.3 }}
-              viewport={{ once: true }}
-            >
-              <Smartphone className="w-16 h-16 text-cyan-400" />
-            </motion.div>
-
-            <motion.div
-              initial={{ scale: 0 }}
-              whileInView={{ scale: 1 }}
-              transition={{ delay: 0.5, type: "spring" }}
-              viewport={{ once: true }}
-            >
-              <QrCode className="w-20 h-20 text-teal-400" />
-            </motion.div>
-          </div>
+          <p className="text-sm text-slate-500 font-light tracking-luxury">
+            Real-time touch. Voice connection. No apps required.
+          </p>
         </motion.div>
       </section>
 

@@ -4,10 +4,17 @@
 @tailwind components;
 @tailwind utilities;
 
-/* VOID & GLASS - MONOLITH AESTHETIC */
+/* PURE VOID - FORCED MONOLITH */
+html, body, #root {
+  background-color: #000000 !important;
+  color: #ffffff;
+}
+
+.bg-void {
+  background-color: #000000 !important;
+}
+
 body {
-  background: #000000;
-  color: #e2e8f0;
   font-family: 'Inter', sans-serif;
   font-weight: 300;
   -webkit-font-smoothing: antialiased;
