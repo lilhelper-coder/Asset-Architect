@@ -16,6 +16,7 @@ interface UseGhostSessionOptions {
   onTranscriptUpdate?: (transcript: string) => void;
   onViewChange?: (view: string) => void;
   onWhisperReceived?: (text: string) => void;
+  onGhostTouch?: (x: number, y: number) => void;
 }
 
 interface UseGhostSessionReturn {
@@ -24,6 +25,7 @@ interface UseGhostSessionReturn {
   error: string | null;
   updateTranscript: (transcript: string) => Promise<void>;
   updateView: (view: string) => Promise<void>;
+  ghostTouch: { x: number; y: number; lastActive: number };
 }
 
 /**
@@ -46,11 +48,13 @@ export function useGhostSession({
   onTranscriptUpdate,
   onViewChange,
   onWhisperReceived,
+  onGhostTouch,
 }: UseGhostSessionOptions): UseGhostSessionReturn {
   const [session, setSession] = useState<GhostSession | null>(null);
   const [isConnected, setIsConnected] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [channel, setChannel] = useState<RealtimeChannel | null>(null);
+  const [ghostTouch, setGhostTouch] = useState({ x: 0.5, y: 0.5, lastActive: 0 });
 
   // Initialize session and subscribe to changes
   useEffect(() => {
@@ -135,6 +139,24 @@ export function useGhostSession({
           }
         }
       )
+      .on('broadcast', { event: 'GHOST_TOUCH' }, (payload) => {
+        // Ghost Touch received - update coordinates
+        if (role === 'senior' && payload.payload?.x !== undefined && payload.payload?.y !== undefined) {
+          const x = payload.payload.x as number;
+          const y = payload.payload.y as number;
+          
+          setGhostTouch({
+            x,
+            y,
+            lastActive: Date.now(),
+          });
+
+          // Trigger callback
+          if (onGhostTouch) {
+            onGhostTouch(x, y);
+          }
+        }
+      })
       .on('broadcast', { event: 'WHISPER_MSG' }, (payload) => {
         // Whisper received - play chime and speak
         if (role === 'senior' && payload.payload?.text) {
@@ -191,7 +213,7 @@ export function useGhostSession({
     return () => {
       realtimeChannel.unsubscribe();
     };
-  }, [roomId, role, onTranscriptUpdate, onViewChange, onWhisperReceived]);
+  }, [roomId, role, onTranscriptUpdate, onViewChange, onWhisperReceived, onGhostTouch]);
 
   // Update transcript (called by Senior)
   const updateTranscript = useCallback(
@@ -239,6 +261,7 @@ export function useGhostSession({
     error,
     updateTranscript,
     updateView,
+    ghostTouch,
   };
 }
 

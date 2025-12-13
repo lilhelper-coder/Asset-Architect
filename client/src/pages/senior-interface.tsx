@@ -1,21 +1,40 @@
 import { useState, useEffect, useRef } from "react";
 import { ChristmasOrb } from "@/components/ChristmasOrb";
 import { useVoiceConnection } from "@/hooks/useVoiceConnection";
+import { useGhostSession } from "@/hooks/useGhostSession";
 import { motion } from "framer-motion";
 import { SignInModal } from "@/components/SignInModal";
+import { GhostTouchCanvas } from "@/components/GhostTouchCanvas";
 import { Button } from "@/components/ui/button";
 import { Smartphone, QrCode } from "lucide-react";
+import { supabase, isSupabaseAvailable } from "@/lib/supabase";
 
 export default function SeniorInterface() {
   const [hasInteracted, setHasInteracted] = useState(false);
   const [isSignInOpen, setIsSignInOpen] = useState(false);
   const [scrollY, setScrollY] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
+  const [userId, setUserId] = useState<string | null>(null);
   const [seniorConfig, setSeniorConfig] = useState<{
     seniorName: string;
     gifterName: string;
     bioContext: string;
   } | null>(null);
+
+  // Get user ID for Ghost Session
+  useEffect(() => {
+    if (isSupabaseAvailable() && supabase) {
+      supabase.auth.getSession().then(({ data: { session } }) => {
+        setUserId(session?.user?.id || null);
+      });
+    }
+  }, []);
+
+  // Initialize Ghost Session for touch receiving
+  const { ghostTouch } = useGhostSession({
+    roomId: userId || 'guest',
+    role: 'senior',
+  });
 
   useEffect(() => {
     const storedConfig = localStorage.getItem("lilhelper_senior_config");
@@ -218,6 +237,13 @@ export default function SeniorInterface() {
       <SignInModal 
         isOpen={isSignInOpen} 
         onClose={() => setIsSignInOpen(false)} 
+      />
+
+      {/* Ghost Touch Canvas Overlay */}
+      <GhostTouchCanvas 
+        x={ghostTouch.x}
+        y={ghostTouch.y}
+        lastActive={ghostTouch.lastActive}
       />
     </div>
   );

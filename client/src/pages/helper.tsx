@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useRoute } from "wouter";
 import { supabase } from "@/lib/supabase";
 import { Button } from "@/components/ui/button";
@@ -14,6 +14,62 @@ export default function WhisperPage() {
   const [isSending, setIsSending] = useState(false);
   const [delivered, setDelivered] = useState(false);
   const { toast } = useToast();
+  const [localTouch, setLocalTouch] = useState({ x: 0.5, y: 0.5, visible: false });
+  const lastTouchSent = useRef(0);
+  const channelRef = useRef<any>(null);
+
+  // Initialize channel for sending touches
+  useState(() => {
+    if (supabase && userId) {
+      const channel = supabase.channel(`room:${userId}`);
+      channel.subscribe();
+      channelRef.current = channel;
+
+      return () => {
+        channel.unsubscribe();
+      };
+    }
+  });
+
+  const sendGhostTouch = (x: number, y: number) => {
+    const now = Date.now();
+    
+    // Throttle to max 50ms (20 updates per second)
+    if (now - lastTouchSent.current < 50) return;
+    lastTouchSent.current = now;
+
+    // Send via Supabase
+    if (channelRef.current) {
+      channelRef.current.send({
+        type: 'broadcast',
+        event: 'GHOST_TOUCH',
+        payload: { x, y },
+      });
+    }
+
+    // Update local feedback
+    setLocalTouch({ x, y, visible: true });
+
+    // Hide local feedback after 1 second
+    setTimeout(() => {
+      setLocalTouch(prev => ({ ...prev, visible: false }));
+    }, 1000);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (!e.touches[0]) return;
+    const touch = e.touches[0];
+    const x = touch.clientX / window.innerWidth;
+    const y = touch.clientY / window.innerHeight;
+    sendGhostTouch(x, y);
+  };
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    // For desktop testing
+    const x = e.clientX / window.innerWidth;
+    const y = e.clientY / window.innerHeight;
+    sendGhostTouch(x, y);
+  };
 
   const handleSendWhisper = async () => {
     if (!whisper.trim() || !supabase) return;
@@ -64,11 +120,36 @@ export default function WhisperPage() {
 
   return (
     <div 
-      className="min-h-screen flex items-center justify-center p-6"
+      className="min-h-screen flex items-center justify-center p-6 relative"
       style={{
         background: "linear-gradient(180deg, #0a0e0f 0%, #0d1613 100%)",
       }}
+      onTouchMove={handleTouchMove}
+      onTouchStart={handleTouchMove}
+      onMouseMove={handleMouseMove}
     >
+      {/* Local Touch Feedback */}
+      {localTouch.visible && (
+        <motion.div
+          className="fixed pointer-events-none z-50"
+          style={{
+            left: `${localTouch.x * 100}%`,
+            top: `${localTouch.y * 100}%`,
+            transform: 'translate(-50%, -50%)',
+          }}
+          initial={{ opacity: 0, scale: 0 }}
+          animate={{ opacity: 0.5, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.8 }}
+        >
+          <div 
+            className="w-12 h-12 rounded-full border-2 border-gold bg-gold/20"
+            style={{
+              filter: 'blur(2px)',
+              boxShadow: '0 0 20px rgba(250, 173, 20, 0.6)',
+            }}
+          />
+        </motion.div>
+      )}
       <motion.div
         className="w-full max-w-lg"
         initial={{ opacity: 0, y: 20 }}

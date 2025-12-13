@@ -232,7 +232,7 @@ export default function MirrorPage() {
         </footer>
       )}
 
-      <GhostTouchCanvas enabled={isConnected} roomId={roomId} />
+      <GhostTouchCanvas x={0.5} y={0.5} lastActive={0} />
     </div>
   );
 }
