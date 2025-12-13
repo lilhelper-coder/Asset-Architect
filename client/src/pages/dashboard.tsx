@@ -9,11 +9,13 @@ import { SessionHistory } from "@/components/dashboard/SessionHistory";
 import { SettingsPanel } from "@/components/dashboard/SettingsPanel";
 import { StatsCard } from "@/components/dashboard/StatsCard";
 import { SeniorConfigCard } from "@/components/dashboard/SeniorConfigCard";
-import { Activity, Gift, Video, MessageSquare } from "lucide-react";
+import { Activity, Gift, Video, MessageSquare, QrCode } from "lucide-react";
 import { motion } from "framer-motion";
 import { getQueryFn } from "@/lib/queryClient";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
+import { Card } from "@/components/ui/card";
+import QRCode from "react-qr-code";
 
 export default function Dashboard() {
   const { user, isLoading, isAuthenticated } = useAuth();
@@ -137,6 +139,29 @@ export default function Dashboard() {
 
           {/* Right Column */}
           <div className="space-y-6">
+            {/* Ghost Mode QR Code Card */}
+            {user?.id && (
+              <Card className="p-6">
+                <div className="flex items-center gap-2 mb-4">
+                  <QrCode className="w-5 h-5 text-teal-600" />
+                  <h3 className="text-lg font-semibold">Ghost Mode (Family Link)</h3>
+                </div>
+                <div className="bg-white p-4 rounded-lg inline-block">
+                  <QRCode
+                    value={`${window.location.origin}/ghost/${user.id}`}
+                    size={200}
+                    level="M"
+                  />
+                </div>
+                <p className="text-sm text-muted-foreground mt-4">
+                  <strong>Scan this with your phone</strong> to join this session and help in real-time
+                </p>
+                <p className="text-xs text-muted-foreground mt-2">
+                  Family members can see your conversation and send messages to help you
+                </p>
+              </Card>
+            )}
+
             {sessions && (
               <SessionHistory
                 sessions={sessions.map((s: any) => ({

@@ -225,16 +225,38 @@ export function useVoiceConnection(options: VoiceConnectionOptions = {}) {
     if ("speechSynthesis" in window) {
       window.speechSynthesis.cancel();
       const utterance = new SpeechSynthesisUtterance(text);
-      utterance.rate = 0.85;
-      utterance.pitch = 1.0;
+      
+      // TASK 3: Better voice selection for seniors
+      utterance.rate = 0.9; // Slightly slower for clarity
+      utterance.pitch = 1.1; // Slightly higher/friendlier
       utterance.volume = 0.9;
       
+      // Get all available voices
       const voices = window.speechSynthesis.getVoices();
-      const preferredVoice = voices.find(
-        (v) => v.name.includes("Samantha") || v.name.includes("Google") || v.lang.startsWith("en")
+      
+      // Priority 1: Google US English (Android/Chrome - most natural)
+      let preferredVoice = voices.find(v => 
+        v.name.includes("Google") && v.lang.includes("en-US")
       );
+      
+      // Priority 2: Samantha (iOS - warm and clear)
+      if (!preferredVoice) {
+        preferredVoice = voices.find(v => v.name.includes("Samantha"));
+      }
+      
+      // Priority 3: Any US English voice
+      if (!preferredVoice) {
+        preferredVoice = voices.find(v => v.lang.includes("en-US"));
+      }
+      
+      // Priority 4: Any English voice
+      if (!preferredVoice) {
+        preferredVoice = voices.find(v => v.lang.startsWith("en"));
+      }
+      
       if (preferredVoice) {
         utterance.voice = preferredVoice;
+        console.log("Using voice:", preferredVoice.name);
       }
       
       utterance.onend = () => {

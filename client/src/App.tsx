@@ -13,6 +13,7 @@ import NotFound from "@/pages/not-found";
 import SeniorInterface from "@/pages/senior-interface";
 import MirrorPage from "@/pages/mirror";
 import Dashboard from "@/pages/dashboard";
+import HelperPage from "@/pages/helper";
 import { supabase, isSupabaseAvailable } from "@/lib/supabase";
 import type { User } from "@supabase/supabase-js";
 
@@ -100,6 +101,7 @@ function Router() {
         <Route path="/senior" component={SeniorInterface} />
         <Route path="/claim/:code" component={SeniorInterface} />
         <Route path="/mirror" component={MirrorPage} />
+        <Route path="/ghost/:userId" component={HelperPage} />
         <Route path="/dashboard" component={Dashboard} />
         <Route path="/dashboard/:section" component={Dashboard} />
         <Route component={NotFound} />
