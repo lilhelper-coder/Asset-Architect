@@ -105,63 +105,77 @@ export function SignInModal({ isOpen, onClose }: SignInModalProps) {
               </button>
 
               <h2 
-                className="text-center text-xl font-medium text-gray-800 mb-2"
+                className="text-center text-2xl font-semibold text-gray-800 mb-2"
                 style={{ fontFamily: "'Poppins', sans-serif" }}
               >
-                {emailSent ? "Check your email!" : "Sign in to Crystal"}
+                {emailSent ? "Check your email! 📧" : "Welcome to LilHelper"}
               </h2>
 
               {emailSent ? (
                 <div className="text-center space-y-4 py-6">
-                  <Mail className="w-16 h-16 mx-auto text-teal-600" />
-                  <p className="text-gray-600">
-                    We sent a magic link to <strong>{email}</strong>
+                  <Mail className="w-20 h-20 mx-auto text-teal-600" />
+                  <p className="text-lg text-gray-700 font-medium">
+                    We sent a link to:
                   </p>
-                  <p className="text-sm text-gray-500">
-                    Click the link in your email to log in. You can close this window.
+                  <p className="text-xl text-teal-600 font-semibold">
+                    {email}
+                  </p>
+                  <p className="text-sm text-gray-600 px-4">
+                    Click the link in your email to sign in instantly. 
+                    You can close this window and come back anytime.
                   </p>
                   <Button
                     onClick={() => setEmailSent(false)}
                     variant="outline"
                     className="mt-4"
+                    style={{ minHeight: "48px" }}
                   >
-                    Try different email
+                    Use different email
                   </Button>
                 </div>
               ) : (
                 <>
-                  <p className="text-center text-sm text-gray-600 mb-6">
-                    We'll email you a magic link to log in
+                  <p className="text-center text-base text-gray-600 mb-6 px-2">
+                    Enter your email. We'll send you a magic link to sign in instantly.
                   </p>
 
-                  <form onSubmit={handleMagicLinkLogin} className="space-y-4">
-                    <Input
-                      type="email"
-                      placeholder="Your email"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-teal-500 focus:ring-teal-500"
-                      data-testid="input-email"
-                      disabled={isLoading}
-                      required
-                    />
+                  <form onSubmit={handleMagicLinkLogin} className="space-y-5">
+                    <div>
+                      <label 
+                        htmlFor="email-input" 
+                        className="block text-sm font-medium text-gray-700 mb-2"
+                      >
+                        Email Address
+                      </label>
+                      <Input
+                        id="email-input"
+                        type="email"
+                        placeholder="your@email.com"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        className="w-full px-4 py-4 rounded-lg border-2 border-gray-300 focus:border-teal-500 focus:ring-teal-500 text-lg"
+                        data-testid="input-email"
+                        disabled={isLoading}
+                        required
+                      />
+                    </div>
 
                     <Button
                       type="submit"
-                      className="w-full py-3 rounded-lg text-white font-medium"
+                      className="w-full py-4 rounded-lg text-white font-semibold text-lg hover:bg-teal-700 transition-colors"
                       style={{ 
                         backgroundColor: "#0d9488",
-                        minHeight: "48px",
+                        minHeight: "56px",
                       }}
                       data-testid="button-login"
                       disabled={isLoading}
                     >
-                      {isLoading ? "Sending magic link..." : "Send magic link"}
+                      {isLoading ? "Sending..." : "Send Magic Link ✨"}
                     </Button>
                   </form>
 
-                  <p className="text-center text-xs text-gray-500 mt-6">
-                    By continuing, you agree to Crystal's Terms of Service and Privacy Policy
+                  <p className="text-center text-xs text-gray-500 mt-6 px-4">
+                    No password needed. We'll email you a secure link.
                   </p>
                 </>
               )}
