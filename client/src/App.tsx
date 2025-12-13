@@ -14,6 +14,7 @@ import SeniorInterface from "@/pages/senior-interface";
 import MirrorPage from "@/pages/mirror";
 import Dashboard from "@/pages/dashboard";
 import HelperPage from "@/pages/helper";
+import ConnectDemo from "@/pages/connect-demo";
 import { supabase, isSupabaseAvailable } from "@/lib/supabase";
 import type { User } from "@supabase/supabase-js";
 
@@ -100,6 +101,7 @@ function Router() {
         <Route path="/" component={SeniorInterface} />
         <Route path="/senior" component={SeniorInterface} />
         <Route path="/claim/:code" component={SeniorInterface} />
+        <Route path="/connect" component={ConnectDemo} />
         <Route path="/mirror" component={MirrorPage} />
         <Route path="/ghost/:userId" component={HelperPage} />
         <Route path="/whisper/:userId" component={HelperPage} />
